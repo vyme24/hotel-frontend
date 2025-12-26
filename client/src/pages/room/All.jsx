@@ -147,17 +147,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img5.jpg" alt="hotel-img" />
+                      <img src="/images/img5.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img29.jpg" alt="hotel-img" />
+                      <img src="/images/img29.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img30.jpg" alt="hotel-img" />
+                      <img src="/images/img30.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -213,17 +213,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -279,17 +279,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -345,17 +345,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -411,17 +411,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -487,17 +487,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -553,17 +553,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -619,17 +619,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img5.jpg" alt="hotel-img" />
+                      <img src="/images/img5.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img29.jpg" alt="hotel-img" />
+                      <img src="/images/img29.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img30.jpg" alt="hotel-img" />
+                      <img src="/images/img30.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -685,17 +685,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -751,17 +751,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -827,17 +827,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img5.jpg" alt="hotel-img" />
+                      <img src="/images/img5.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img29.jpg" alt="hotel-img" />
+                      <img src="/images/img29.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img30.jpg" alt="hotel-img" />
+                      <img src="/images/img30.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -893,17 +893,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -959,17 +959,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -1025,17 +1025,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -1091,17 +1091,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -1167,17 +1167,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -1233,17 +1233,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -1299,17 +1299,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img5.jpg" alt="hotel-img" />
+                      <img src="/images/img5.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img29.jpg" alt="hotel-img" />
+                      <img src="/images/img29.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img30.jpg" alt="hotel-img" />
+                      <img src="/images/img30.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -1365,17 +1365,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>
@@ -1431,17 +1431,17 @@ const RoomAll = () => {
                 <div className="card-img-carousel carousel-action carousel--action">
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img31.jpg" alt="hotel-img" />
+                      <img src="/images/img31.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img32.jpg" alt="hotel-img" />
+                      <img src="/images/img32.jpg" alt="hotel-img" />
                     </a>
                   </div>
                   <div className="card-img">
                     <a href="room-details.html" className="d-block">
-                      <img src="images/img33.jpg" alt="hotel-img" />
+                      <img src="/images/img33.jpg" alt="hotel-img" />
                     </a>
                   </div>
                 </div>

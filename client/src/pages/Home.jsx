@@ -115,12 +115,12 @@ const Home = () => {
         <div className="col-lg-6">
           <div className="image-box about-img-box">
             <img
-              src="images/img5.jpg"
+              src="/images/img5.jpg"
               alt="about-img"
               className="img__item img__item-1"
             />
             <img
-              src="images/tripadvisor.png"
+              src="/images/tripadvisor.png"
               alt="about-img"
               className="img__item img__item-2"
             />
@@ -157,7 +157,7 @@ const Home = () => {
             <div className="image-box">
               <a href="room-list.html" className="d-block">
                 <img
-                  src="images/img27.jpg"
+                  src="/images/img27.jpg"
                   alt="room type img"
                   className="img__item"
                 />
@@ -174,7 +174,7 @@ const Home = () => {
             <div className="image-box">
               <a href="room-list.html" className="d-block">
                 <img
-                  src="images/img28.jpg"
+                  src="/images/img28.jpg"
                   alt="room type img"
                   className="img__item"
                 />
@@ -219,7 +219,7 @@ const Home = () => {
               <div className="card-item">
                 <div className="card-img">
                   <a href="hotel-single.html" className="d-block">
-                    <img src="images/img1.jpg" alt="hotel-img" />
+                    <img src="/images/img1.jpg" alt="hotel-img" />
                   </a>
                   <span className="badge">Bestseller</span>
                   <span className="badge badge-ribbon">30% off</span>
@@ -255,7 +255,7 @@ const Home = () => {
               <div className="card-item">
                 <div className="card-img">
                   <a href="hotel-single.html" className="d-block">
-                    <img src="images/img2.jpg" alt="hotel-img" />
+                    <img src="/images/img2.jpg" alt="hotel-img" />
                   </a>
                 </div>
                 <div className="card-body">
@@ -287,7 +287,7 @@ const Home = () => {
               <div className="card-item">
                 <div className="card-img">
                   <a href="hotel-single.html" className="d-block">
-                    <img src="images/img3.jpg" alt="hotel-img" />
+                    <img src="/images/img3.jpg" alt="hotel-img" />
                   </a>
                   <span className="badge">Featured</span>
                   <span className="badge badge-ribbon">20% off</span>
@@ -323,7 +323,7 @@ const Home = () => {
               <div className="card-item">
                 <div className="card-img">
                   <a href="hotel-single.html" className="d-block">
-                    <img src="images/img4.jpg" alt="hotel-img" />
+                    <img src="/images/img4.jpg" alt="hotel-img" />
                   </a>
                   <span className="badge">Popular</span>
                 </div>
@@ -358,7 +358,7 @@ const Home = () => {
               <div className="card-item">
                 <div className="card-img">
                   <a href="hotel-single.html" className="d-block">
-                    <img src="images/img5.jpg" alt="hotel-img" />
+                    <img src="/images/img5.jpg" alt="hotel-img" />
                   </a>
                 </div>
                 <div className="card-body">
@@ -390,7 +390,7 @@ const Home = () => {
               <div className="card-item">
                 <div className="card-img">
                   <a href="hotel-single.html" className="d-block">
-                    <img src="images/img6.jpg" alt="hotel-img" />
+                    <img src="/images/img6.jpg" alt="hotel-img" />
                   </a>
                   <span className="badge badge-ribbon">10% off</span>
                 </div>
@@ -447,7 +447,7 @@ const Home = () => {
         <div className="col-lg-12">
           <div className="discount-box">
             <div className="discount-img">
-              <img src="images/discount-hotel-img.jpg" alt="discount img" />
+              <img src="/images/discount-hotel-img.jpg" alt="discount img" />
             </div>
             {/* end discount-img */}
             <div className="discount-content">
@@ -467,7 +467,7 @@ const Home = () => {
             </div>
             {/* end discount-content */}
             <div className="company-logo">
-              <img src="images/logo2.png" alt="" />
+              <img src="/images/logo2.png" alt="" />
               <p className="text-white font-size-14 text-end">*Terms applied</p>
             </div>
             {/* end company-logo */}
@@ -514,7 +514,7 @@ const Home = () => {
               </div>
               <div className="author-content d-flex align-items-center">
                 <div className="author-img">
-                  <img src="images/team8.jpg" alt="testimonial image" />
+                  <img src="/images/team8.jpg" alt="testimonial image" />
                 </div>
                 <div className="author-bio">
                   <h4 className="author__title">Leroy Bell</h4>
@@ -540,7 +540,7 @@ const Home = () => {
               </div>
               <div className="author-content d-flex align-items-center">
                 <div className="author-img">
-                  <img src="images/team9.jpg" alt="testimonial image" />
+                  <img src="/images/team9.jpg" alt="testimonial image" />
                 </div>
                 <div className="author-bio">
                   <h4 className="author__title">Richard Pam</h4>
@@ -566,7 +566,7 @@ const Home = () => {
               </div>
               <div className="author-content d-flex align-items-center">
                 <div className="author-img">
-                  <img src="images/team10.jpg" alt="testimonial image" />
+                  <img src="/images/team10.jpg" alt="testimonial image" />
                 </div>
                 <div className="author-bio">
                   <h4 className="author__title">Luke Jacobs</h4>
@@ -592,7 +592,7 @@ const Home = () => {
               </div>
               <div className="author-content d-flex align-items-center">
                 <div className="author-img">
-                  <img src="images/team8.jpg" alt="testimonial image" />
+                  <img src="/images/team8.jpg" alt="testimonial image" />
                 </div>
                 <div className="author-bio">
                   <h4 className="author__title">Chulbul Panday</h4>
@@ -641,7 +641,7 @@ const Home = () => {
         <div className="col-lg-4 responsive-column">
           <div className="card-item blog-card">
             <div className="card-img">
-              <img src="images/img5.jpg" alt="blog-img" />
+              <img src="/images/img5.jpg" alt="blog-img" />
               <div className="post-format icon-element">
                 <i className="la la-photo" />
               </div>
@@ -669,7 +669,7 @@ const Home = () => {
             <div className="card-footer d-flex align-items-center justify-content-between">
               <div className="author-content d-flex align-items-center">
                 <div className="author-img">
-                  <img src="images/small-team1.jpg" alt="testimonial image" />
+                  <img src="/images/small-team1.jpg" alt="testimonial image" />
                 </div>
                 <div className="author-bio">
                   <a href="#" className="author__title">
@@ -709,7 +709,7 @@ const Home = () => {
         <div className="col-lg-4 responsive-column">
           <div className="card-item blog-card">
             <div className="card-img">
-              <img src="images/img6.jpg" alt="blog-img" />
+              <img src="/images/img6.jpg" alt="blog-img" />
               <div className="post-format icon-element">
                 <i className="la la-play" />
               </div>
@@ -734,7 +734,7 @@ const Home = () => {
             <div className="card-footer d-flex align-items-center justify-content-between">
               <div className="author-content d-flex align-items-center">
                 <div className="author-img">
-                  <img src="images/small-team2.jpg" alt="testimonial image" />
+                  <img src="/images/small-team2.jpg" alt="testimonial image" />
                 </div>
                 <div className="author-bio">
                   <a href="#" className="author__title">
@@ -774,7 +774,7 @@ const Home = () => {
         <div className="col-lg-4 responsive-column">
           <div className="card-item blog-card">
             <div className="card-img">
-              <img src="images/img7.jpg" alt="blog-img" />
+              <img src="/images/img7.jpg" alt="blog-img" />
               <div className="post-format icon-element">
                 <i className="la la-music" />
               </div>
@@ -799,7 +799,7 @@ const Home = () => {
             <div className="card-footer d-flex align-items-center justify-content-between">
               <div className="author-content d-flex align-items-center">
                 <div className="author-img">
-                  <img src="images/small-team3.jpg" alt="testimonial image" />
+                  <img src="/images/small-team3.jpg" alt="testimonial image" />
                 </div>
                 <div className="author-bio">
                   <a href="#" className="author__title">

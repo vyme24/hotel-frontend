@@ -60,7 +60,7 @@ const Footer = () => {
           <div className="footer-item">
             <div className="footer-logo padding-bottom-30px">
               <a href="index.html" className="foot__logo">
-                <img src="images/logo.png" alt="logo" />
+                <img src="/images/logo.png" alt="logo" />
               </a>
             </div>
             {/* end logo */}
@@ -151,7 +151,7 @@ const Footer = () => {
             <p className="footer__desc pb-3">
               Pay any way you choose, we support all payment options.
             </p>
-            <img src="images/payment-img.png" alt="" />
+            <img src="/images/payment-img.png" alt="" />
           </div>
           {/* end footer-item */}
         </div>
