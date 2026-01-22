@@ -5,7 +5,7 @@ import Dashboard from './pages/Dashboard'
 import {BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from './pages/Not-Found';
 import Login from './pages/auth/Login';
-import AddHotel from './pages/forms/hotel/AddHotel';
+import AddHotel from './pages/hotels/AddHotel';
 import {Toaster} from "react-hot-toast"
 import Users from './pages/Users';
 
@@ -29,7 +29,7 @@ import TrashHotels from './pages/hotels/TrashHotels';
 import SingleHotel from './pages/hotels/SingleHotel';
 
 // Rooms
-import Rooms from './pages/rooms';
+import Rooms from './pages/rooms/Rooms';
 import RoomTypes from './pages/rooms/RoomTypes';
 import AvailableRooms from './pages/rooms/AvailableRooms';
 import SoldOutRooms from './pages/rooms/SoldOutRooms';
@@ -44,17 +44,17 @@ import GuestHistory from './pages/guests/GuestHistory';
 import GuestDetails from './pages/guests/GuestDetails';
 
 // Staff
-import Staff from './pages/staff';
+import Staff from './pages/staff/Staff';
 import RolesPermissions from './pages/staff/RolesPermissions';
 import StaffAttendance from './pages/staff/StaffAttendance';
 
 // Reviews
-import Reviews from './pages/reviews';
+import Reviews from './pages/reviews/Reviews';
 import PendingReviews from './pages/reviews/PendingReviews';
 import ReportedReviews from './pages/reviews/ReportedReviews';
 
 // Payments
-import Payments from './pages/payments';
+import Payments from './pages/payments/AllPayments';
 import SuccessfulPayments from './pages/payments/SuccessfulPayments';
 import FailedPayments from './pages/payments/FailedPayments';
 import PendingPayments from './pages/payments/PendingPayments';
@@ -80,102 +80,99 @@ import PoliciesSettings from './pages/settings/PoliciesSettings';
 import NotificationSettings from './pages/settings/NotificationSettings';
 
 function App() {
-
   return (
     <>
-    <BrowserRouter>
-      <Routes>
+      <BrowserRouter>
+        <Routes>
 
-        <Route path='/' element={<AppLayout/>}>
-          <Route path='/login' element={<Login/>}/>
-        </Route>
+          <Route path='/' element={<AppLayout/>}>
+            <Route path='login' element={<Login/>}/>
+          </Route>
 
-        <Route path='/' element={<DashboardLayout/>}>
-         <Route index element={<Dashboard/>}/>
+          <Route path='/' element={<DashboardLayout/>}>
+  <Route index element={<Dashboard/>}/>
+  <Route path="admin/dashboard" element={<Dashboard/>} />
 
-          {/* Booking Management */}
-          <Route path="/bookings" element={<Bookings />} />
-          <Route path="/bookings/new" element={<NewBookings />} />
-          <Route path="/bookings/confirmed" element={<ConfirmedBookings />} />
-          <Route path="/bookings/check-in" element={<CheckInToday />} />
-          <Route path="/bookings/check-out" element={<CheckOutToday />} />
-          <Route path="/bookings/cancelled" element={<CancelledBookings />} />
-          <Route path="/bookings/refunds" element={<RefundRequests />} />
-          <Route path="/bookings/:id" element={<BookingDetails />} />
+            {/* Booking Management */}
+            <Route path="/bookings" element={<Bookings />} />
+            <Route path="/bookings/new" element={<NewBookings />} />
+            <Route path="/bookings/confirmed" element={<ConfirmedBookings />} />
+            <Route path="/bookings/check-in" element={<CheckInToday />} />
+            <Route path="/bookings/check-out" element={<CheckOutToday />} />
+            <Route path="/bookings/cancelled" element={<CancelledBookings />} />
+            <Route path="/bookings/refunds" element={<RefundRequests />} />
+            <Route path="/bookings/:id" element={<BookingDetails />} />
 
-          {/* Hotel Management */}
-          <Route path="/hotels" element={<Hotels />} />
-          <Route path="/hotels/add" element={<AddHotel />} />
-          <Route path="/hotels/active" element={<ActiveHotels />} />
-          <Route path="/hotels/inactive" element={<InactiveHotels />} />
-          <Route path="/hotels/pending" element={<PendingHotels />} />
-          <Route path="/hotels/featured" element={<FeaturedHotels />} />
-          <Route path="/hotels/trash" element={<TrashHotels />} />
-          <Route path="/hotels/:id" element={<SingleHotel />} />
+            {/* Hotel Management */}
+            <Route path="/hotels" element={<Hotels />} />
+            <Route path="/hotels/add" element={<AddHotel />} />
+            <Route path="/hotels/active" element={<ActiveHotels />} />
+            <Route path="/hotels/inactive" element={<InactiveHotels />} />
+            <Route path="/hotels/pending" element={<PendingHotels />} />
+            <Route path="/hotels/featured" element={<FeaturedHotels />} />
+            <Route path="/hotels/trash" element={<TrashHotels />} />
+            <Route path="/hotels/:id" element={<SingleHotel />} />
 
-          {/* Room Management */}
-          <Route path="/rooms" element={<Rooms />} />
-          <Route path="/rooms/types" element={<RoomTypes />} />
-          <Route path="/rooms/available" element={<AvailableRooms />} />
-          <Route path="/rooms/sold-out" element={<SoldOutRooms />} />
-          <Route path="/rooms/inactive" element={<InactiveRooms />} />
-          <Route path="/inventory" element={<RoomInventory />} />
-          <Route path="/rooms/:id" element={<SingleRoom />} />
+            {/* Room Management */}
+            <Route path="/rooms" element={<Rooms />} />
+            <Route path="/rooms/types" element={<RoomTypes />} />
+            <Route path="/rooms/available" element={<AvailableRooms />} />
+            <Route path="/rooms/sold-out" element={<SoldOutRooms />} />
+            <Route path="/rooms/inactive" element={<InactiveRooms />} />
+            <Route path="/inventory" element={<RoomInventory />} />
+            <Route path="/rooms/:id" element={<SingleRoom />} />
 
-          {/* Guests / Customers */}
-          <Route path="/guests" element={<Guests />} />
-          <Route path="/guests/check-in" element={<CurrentGuests />} />
-          <Route path="/guests/history" element={<GuestHistory />} />
-          <Route path="/guests/:id" element={<GuestDetails />} />
+            {/* Guests */}
+            <Route path="/guests" element={<Guests />} />
+            <Route path="/guests/check-in" element={<CurrentGuests />} />
+            <Route path="/guests/history" element={<GuestHistory />} />
+            <Route path="/guests/:id" element={<GuestDetails />} />
 
-          {/* Staff & Roles */}
-          <Route path="/staff" element={<Staff />} />
-          <Route path="/staff/roles" element={<RolesPermissions />} />
-          <Route path="/staff/attendance" element={<StaffAttendance />} />
+            {/* Staff */}
+            <Route path="/staff" element={<Staff />} />
+            <Route path="/staff/roles" element={<RolesPermissions />} />
+            <Route path="/staff/attendance" element={<StaffAttendance />} />
 
-          {/* Reviews */}
-          <Route path="/reviews" element={<Reviews />} />
-          <Route path="/reviews/pending" element={<PendingReviews />} />
-          <Route path="/reviews/reported" element={<ReportedReviews />} />
+            {/* Reviews */}
+            <Route path="/reviews" element={<Reviews />} />
+            <Route path="/reviews/pending" element={<PendingReviews />} />
+            <Route path="/reviews/reported" element={<ReportedReviews />} />
 
-          {/* Finance & Payments */}
-          <Route path="/payments" element={<Payments />} />
-          <Route path="/payments/success" element={<SuccessfulPayments />} />
-          <Route path="/payments/failed" element={<FailedPayments />} />
-          <Route path="/payments/pending" element={<PendingPayments />} />
-          <Route path="/invoice" element={<Invoice />} />
-          <Route path="/refunds" element={<Refunds />} />
-          <Route path="/taxes" element={<TaxesCharges />} />
+            {/* Payments */}
+            <Route path="/payments" element={<Payments />} />
+            <Route path="/payments/success" element={<SuccessfulPayments />} />
+            <Route path="/payments/failed" element={<FailedPayments />} />
+            <Route path="/payments/pending" element={<PendingPayments />} />
+            <Route path="/invoice/:id" element={<Invoice />} />
+            <Route path="/refunds" element={<Refunds />} />
+            <Route path="/taxes" element={<TaxesCharges />} />
 
-          {/* Marketing */}
-          <Route path="/coupons" element={<Coupons />} />
-          <Route path="/offers" element={<Offers />} />
-          <Route path="/featured" element={<FeaturedListings />} />
+            {/* Marketing */}
+            <Route path="/coupons" element={<Coupons />} />
+            <Route path="/offers" element={<Offers />} />
+            <Route path="/featured" element={<FeaturedListings />} />
 
-          {/* Reports */}
-          <Route path="/reports/bookings" element={<BookingReports />} />
-          <Route path="/reports/revenue" element={<RevenueReports />} />
-          <Route path="/reports/occupancy" element={<OccupancyReports />} />
-          <Route path="/reports/customers" element={<CustomerReports />} />
+            {/* Reports */}
+            <Route path="/reports/bookings" element={<BookingReports />} />
+            <Route path="/reports/revenue" element={<RevenueReports />} />
+            <Route path="/reports/occupancy" element={<OccupancyReports />} />
+            <Route path="/reports/customers" element={<CustomerReports />} />
 
-          {/* Settings */}
-          <Route path="/settings/general" element={<GeneralSettings />} />
-          <Route path="/settings/hotel" element={<HotelSettings />} />
-          <Route path="/settings/policies" element={<PoliciesSettings />} />
-          <Route path="/settings/notifications" element={<NotificationSettings />} />
+            {/* Settings */}
+            <Route path="/settings/general" element={<GeneralSettings />} />
+            <Route path="/settings/hotel" element={<HotelSettings />} />
+            <Route path="/settings/policies" element={<PoliciesSettings />} />
+            <Route path="/settings/notifications" element={<NotificationSettings />} />
 
-          {/* Users */}
-          <Route path="/users" element={<Users />} />
-        
-        </Route>
+            {/* Users */}
+            <Route path="/users" element={<Users />} />
+          </Route>
 
-        <Route path='*' element={<NotFound/>}/>
-      
-      </Routes>
-    </BrowserRouter>
-    <Toaster position="top-center"
-  reverseOrder={false}/>
-      
+          <Route path='*' element={<NotFound/>}/>
+        </Routes>
+      </BrowserRouter>
+
+      <Toaster position="top-center" reverseOrder={false}/>
     </>
   )
 }

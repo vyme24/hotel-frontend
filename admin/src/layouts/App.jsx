@@ -13,10 +13,9 @@ const AppLayout = () => {
   
     }, [])
   return (
-    <div className="app-layout py-5">
-        {/* App layout content goes here */}
-        <Header />
-       <div className="col-lg-4 col-12 mx-auto py-5 min-vh-100 flex flex-column justify-content-center">
+    <div className="app-layout">
+       
+       <div className="flex-1">
          <Outlet/>
        </div>
         <Footer />

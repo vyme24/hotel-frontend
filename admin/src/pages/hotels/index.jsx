@@ -1,193 +1,162 @@
 import { useEffect, useState } from 'react';
-import {useGetHotelAllQuery} from '../../services/hotelService';
+import { Link } from 'react-router-dom';
+import { useGetAllHotelsQuery } from '../../services/hotelService';
 
 const Hotels = () => {
-  const {isLoading,isError, error, data, refetch, isSuccess} = useGetHotelAllQuery();
+  const { isLoading, isError, data, isSuccess } = useGetAllHotelsQuery();
   const [hotels, setHotels] = useState([]);
 
-
   useEffect(() => {
-    if(isSuccess && data) {
-      setHotels(data.data)
+    if (isSuccess && data) {
+      setHotels(data.data);
     }
-  
+  }, [data, isSuccess]);
 
-  },[data,  isSuccess, refetch, isLoading, error, isError]);
-  
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this hotel?")) {
+      console.log("Delete hotel:", id);
+    }
+  };
+
+  if (isLoading) {
     return (
-        <>
-    
-     <div className="container-fluid">
-    <div className="row">
-      <div className="col-lg-12">
-        <div className="form-box">
-          <div className="form-title-wrap">
-            <div>
-              <h3 className="title">Traveller Lists</h3>
-              <p className="font-size-14">Showing 1 to 10 of 20 entries</p>
-            </div>
-          </div>
-          <div className="form-content">
-            <div className="table-form table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Country</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-              {hotels && hotels.map((hotel, index) => (
-                <>
-                    <tr key={index}>
-                    <th scope="row">{index + 1}</th>
-                    <td>
-                      <div className="table-content">
-                        <h3 className="title">{hotel.name}</h3>
-                      </div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-pulse text-gray-500 text-lg">Loading hotels...</div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center space-y-4">
+          <div className="text-red-500 text-2xl font-semibold">Failed to load hotels</div>
+          <p className="text-gray-600">Please try again later or contact support.</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">All Hotels</h1>
+        <p className="text-sm text-gray-600">
+          Showing 1 to {hotels.length} of {hotels.length} entries
+        </p>
+      </div>
+
+      {/* Table */}
+      <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">No</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Brand</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Property Type</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Star</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+              </tr>
+            </thead>
+
+            <tbody className="bg-white divide-y divide-gray-200">
+              {hotels.length === 0 ? (
+                <tr>
+                  <td colSpan="8" className="px-6 py-12 text-center text-gray-500">
+                    No hotels found
+                  </td>
+                </tr>
+              ) : (
+                hotels.map((hotel, index) => (
+                  <tr key={hotel._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                      {index + 1}
                     </td>
-                    <td>alexsmith@gmail.com</td>
-                    <td>United States</td>
-                    <td>New York</td>
-                    <td>
-                      <span className="badge text-bg-success py-1 px-2">
-                        Active
+
+                    <td className="px-6 py-4">
+                      <img
+                        src={
+                          hotel.images && hotel.images.length > 0
+                            ? hotel.images[0]
+                            : "/images/no-hotel.png"
+                        }
+                        alt={hotel.name}
+                        className="w-40 h-24 object-cover rounded-lg border shadow-sm"
+                      />
+                    </td>
+
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                      {hotel.name}
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      {hotel.brand || "-"}
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      {hotel.propertyType}
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      {hotel.starRating ? `${hotel.starRating} ⭐` : "-"}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <span
+                        className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          hotel.status === "active"
+                            ? "bg-green-100 text-green-800"
+                            : hotel.status === "inactive"
+                            ? "bg-gray-100 text-gray-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {hotel.status}
                       </span>
                     </td>
-                    <td>
-                      <div className="table-content">
-                        <a
-                          href={"/hotels/" + hotel._id}
-                          className="theme-btn theme-btn-small me-2"
-                          data-bs-toggle="tooltip"
-                          data-placement="top"
-                          aria-label="View"
-                          data-bs-original-title="View"
+
+                    <td className="px-6 py-4 space-x-2">
+                      <Link
+                        to={`/hotels/${hotel._id}`}
+                        className="px-3 py-2 rounded-md text-white bg-green-600 hover:bg-green-700"
+                      >
+                        View
+                      </Link>
+
+                      <Link
+                        to={`/hotels/edit/${hotel._id}`}
+                        className="px-3 py-2 rounded-md text-gray-900 bg-yellow-400 hover:bg-yellow-500"
+                      >
+                        Edit
+                      </Link>
+
+                       <Link
+                          to={`/hotels/delete/${hotel._id}`}
+                          className="px-3 py-2 rounded-md text-white  bg-red-500"
                         >
-                          <i className="la la-eye" />
-                        </a>
-                        <a
-                          href="#"
-                          className="theme-btn theme-btn-small"
-                          data-bs-toggle="tooltip"
-                          data-placement="top"
-                          aria-label="Edit"
-                          data-bs-original-title="Edit"
-                        >
-                          <i className="la la-edit" />
-                        </a>
-                      </div>
+                          Delete
+                        </Link>
                     </td>
                   </tr>
-                </>
-              ))}
-             
-                </tbody>
-              </table>
-            </div>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-        {/* end form-box */}
-      </div>
-      {/* end col-lg-12 */}
-    </div>
-    {/* end row */}
-    <div className="row">
-      <div className="col-lg-12">
-        <nav aria-label="Page navigation example">
-          <ul className="pagination">
-            <li className="page-item">
-              <a
-                className="page-link page-link-nav"
-                href="#"
-                aria-label="Previous"
-              >
-                <span aria-hidden="true">
-                  <i className="la la-angle-left" />
-                </span>
-                <span className="sr-only">Previous</span>
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link page-link-nav" href="#">
-                1
-              </a>
-            </li>
-            <li className="page-item active">
-              <a className="page-link page-link-nav" href="#">
-                2 <span className="sr-only">(current)</span>
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link page-link-nav" href="#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link page-link-nav" href="#" aria-label="Next">
-                <span aria-hidden="true">
-                  <i className="la la-angle-right" />
-                </span>
-                <span className="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
       </div>
     </div>
-    <div className="border-top mt-5" />
-    <div className="row align-items-center">
-      <div className="col-lg-7">
-        <div className="copy-right padding-top-30px">
-          <p className="copy__desc">
-            © Copyright Trizen <span id="get-year">2026</span> . Made with{" "}
-            <span className="la la-heart" /> by
-            <a href="https://themeforest.net/user/techydevs/portfolio">
-              TechyDevs
-            </a>
-          </p>
-        </div>
-        {/* end copy-right */}
-      </div>
-      {/* end col-lg-7 */}
-      <div className="col-lg-5">
-        <div className="copy-right-content text-end padding-top-30px">
-          <ul className="social-profile">
-            <li>
-              <a href="#">
-                <i className="lab la-facebook-f" />
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i className="lab la-twitter" />
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i className="lab la-instagram" />
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i className="lab la-linkedin-in" />
-              </a>
-            </li>
-          </ul>
-        </div>
-        {/* end copy-right-content */}
-      </div>
-      {/* end col-lg-5 */}
-    </div>
-    {/* end row */}
-  </div>
-</>
-    )
+  );
+};
 
-}
 export default Hotels;

@@ -1,398 +1,174 @@
-import { useEffect } from "react";
-import { useLogoutMutation } from "../services/userService";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
+import Notification from "./Header/Notification";
+import { useLoginMutation } from "../services/adminService";
 
+import {
+  Menu,
+  ChevronDown,
+  User,
+  Settings,
+  LogOut,
+  Home,
+} from "lucide-react";
 
-const HeaderTwo = ({user}) => {
-   const [logouthandle,{isLoading, isError, data, isSuccess}] = useLogoutMutation()
+const HeaderTwo = ({ user, toggleSidebar }) => {
+  const location = useLocation();
+  const [logouthandle, { isLoading, data, isSuccess }] = useLoginMutation();
 
-   useEffect(() => {
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-    if(isSuccess && data){
-        localStorage.removeItem("token")
-        toast.success(data.message)
-        window.location.href="/login"
+  useEffect(() => {
+    if (isSuccess && data) {
+      localStorage.removeItem("token");
+      toast.success(data.message || "Logged out successfully");
+      window.location.href = "/login";
     }
+  }, [isSuccess, data]);
 
-
-   },[isLoading, isError, isSuccess, data])
-
-  const logoutSubmit = async() => {
-      const confirm = window.confirm("Are you sure you want to logout?")
-      if(confirm){
-      await logouthandle().unwrap();
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsUserMenuOpen(false);
       }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const logoutSubmit = async () => {
+    const confirm = window.confirm("Are you sure you want to logout?");
+    if (confirm) {
+      await logouthandle().unwrap();
+    }
+  };
+
+  const pageTitle = () => {
+    const path = location.pathname;
+    if (path.includes("dashboard")) return "Dashboard";
+    if (path.includes("bookings")) return "Bookings";
+    if (path.includes("hotels")) return "Hotels";
+    if (path.includes("rooms")) return "Rooms";
+    if (path.includes("guests")) return "Guests";
+    if (path.includes("staff")) return "Staff";
+    if (path.includes("reviews")) return "Reviews";
+    if (path.includes("payments")) return "Payments";
+    if (path.includes("reports")) return "Reports";
+    if (path.includes("settings")) return "Settings";
+    return "Admin Panel";
   };
 
   return (
-    <div className="dashboard-nav dashboard--nav">
-  <div className="container-fluid">
-    <div className="row">
-      <div className="col-lg-12">
-        <div className="menu-wrapper">
-          <div className="logo me-5">
-            <a href="index.html">
-              <img src="/images/logo2.png" alt="logo" />
-            </a>
-            <div className="menu-toggler">
-              <i className="la la-bars" />
-              <i className="la la-times" />
+    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
+      <div className="px-4 lg:px-6">
+        <div className="h-14 lg:h-16 flex items-center justify-between gap-3">
+          {/* LEFT */}
+          <div className="flex items-center gap-3 min-w-0">
+            <button
+              className="lg:hidden h-10 w-10 inline-flex items-center justify-center rounded-xl border border-gray-200 hover:bg-gray-50 transition"
+              onClick={toggleSidebar}
+            >
+              <Menu className="w-5 h-5 text-gray-700" />
+            </button>
+
+            <div className="min-w-0">
+              <h2 className="text-base lg:text-lg font-bold text-gray-900 truncate">
+                {pageTitle()}
+              </h2>
+              <p className="text-[11px] text-gray-500 hidden sm:block truncate">
+                Welcome back, manage everything easily
+              </p>
             </div>
-            {/* end menu-toggler */}
-            <div className="user-menu-open">
-              <i className="la la-user" />
-            </div>
-            {/* end user-menu-open */}
           </div>
-          <div className="dashboard-search-box">
-            <div className="contact-form-action">
-              <form action="#">
-                <div className="form-group mb-0">
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="text"
-                    placeholder="Search"
-                  />
-                  <button className="search-btn">
-                    <i className="la la-search" />
-                  </button>
+
+          {/* RIGHT */}
+          <div className="flex items-center gap-2">
+            <Notification />
+
+            {/* User Dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                className="flex items-center gap-2 px-2 py-1.5 rounded-xl border border-transparent hover:border-gray-200 hover:bg-gray-50 transition"
+                onClick={() => setIsUserMenuOpen((p) => !p)}
+              >
+                <img
+                  src={user?.avatar || "/images/team9.jpg"}
+                  alt="user"
+                  className="h-9 w-9 rounded-xl object-cover ring-1 ring-gray-200"
+                />
+                <div className="hidden md:block text-left leading-tight">
+                  <p className="text-sm font-semibold text-gray-900 truncate max-w-[140px]">
+                    {user?.name || "Admin"}
+                  </p>
+                  <p className="text-[11px] text-gray-500 truncate max-w-[140px]">
+                    {user?.role || "Administrator"}
+                  </p>
                 </div>
-              </form>
-            </div>
-          </div>
-          <div className="nav-btn ms-auto">
-            <div className="notification-wrap d-flex align-items-center">
-              <div className="notification-item me-2">
-                <div className="dropdown">
-                  <a
-                    href="#"
-                    className="dropdown-toggle drop-reveal-toggle-icon"
-                    id="notificationDropdownMenu"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i className="la la-bell" />
-                    <span className="noti-count">4</span>
-                  </a>
-                  <div className="dropdown-menu dropdown-reveal dropdown-menu-xl dropdown-menu-right">
-                    <div className="dropdown-header drop-reveal-header">
-                      <h6 className="title">
-                        You have
-                        <strong className="text-black">4</strong>
-                        notifications
-                      </h6>
-                    </div>
-                    <div className="list-group drop-reveal-list">
-                      <a
-                        href="#"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body d-flex align-items-center">
-                          <div className="icon-element flex-shrink-0 me-3 ms-0">
-                            <i className="la la-bell" />
-                          </div>
-                          <div className="msg-content w-100">
-                            <h3 className="title pb-1">
-                              Your request has been sent
-                            </h3>
-                            <p className="msg-text">2 min ago</p>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <a
-                        href="#"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body d-flex align-items-center">
-                          <div className="icon-element bg-2 flex-shrink-0 me-3 ms-0">
-                            <i className="la la-check" />
-                          </div>
-                          <div className="msg-content w-100">
-                            <h3 className="title pb-1">
-                              Your account has been created
-                            </h3>
-                            <p className="msg-text">1 day ago</p>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <a
-                        href="#"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body d-flex align-items-center">
-                          <div className="icon-element bg-3 flex-shrink-0 me-3 ms-0">
-                            <i className="la la-user" />
-                          </div>
-                          <div className="msg-content w-100">
-                            <h3 className="title pb-1">Your account updated</h3>
-                            <p className="msg-text">2 hrs ago</p>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <a
-                        href="#"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body d-flex align-items-center">
-                          <div className="icon-element bg-4 flex-shrink-0 me-3 ms-0">
-                            <i className="la la-lock" />
-                          </div>
-                          <div className="msg-content w-100">
-                            <h3 className="title pb-1">
-                              Your password changed
-                            </h3>
-                            <p className="msg-text">Yesterday</p>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                    </div>
-                    <a
-                      href="#"
-                      className="dropdown-item drop-reveal-btn text-center"
+                <ChevronDown
+                  className={`w-4 h-4 text-gray-500 transition-transform ${
+                    isUserMenuOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isUserMenuOpen && (
+                <div className="absolute right-0 mt-2 w-64 rounded-xl border border-gray-200 bg-white shadow-xl overflow-hidden z-[999999]">
+                  <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+                    <p className="text-xs text-gray-500">Signed in as</p>
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                      {user?.email || user?.name || "Admin"}
+                    </p>
+                  </div>
+
+                  <div className="p-2 space-y-1">
+                    <Link
+                      to="/"
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+                      onClick={() => setIsUserMenuOpen(false)}
                     >
-                      View all
-                    </a>
-                  </div>
-                  {/* end dropdown-menu */}
-                </div>
-              </div>
-              {/* end notification-item */}
-              <div className="notification-item me-2">
-                <div className="dropdown">
-                  <a
-                    href="#"
-                    className="dropdown-toggle drop-reveal-toggle-icon"
-                    id="messageDropdownMenu"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i className="la la-envelope" />
-                    <span className="noti-count">4</span>
-                  </a>
-                  <div className="dropdown-menu dropdown-reveal dropdown-menu-xl dropdown-menu-right">
-                    <div className="dropdown-header drop-reveal-header">
-                      <h6 className="title">
-                        You have
-                        <strong className="text-black">4</strong> messages
-                      </h6>
-                    </div>
-                    <div className="list-group drop-reveal-list">
-                      <a
-                        href="#"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body d-flex align-items-center">
-                          <div className="avatar flex-shrink-0 me-3">
-                            <img src="/images/team8.jpg" alt="" />
-                          </div>
-                          <div className="msg-content w-100">
-                            <div className="d-flex align-items-center justify-content-between">
-                              <h3 className="title pb-1">Steve Wornder</h3>
-                              <span className="msg-text">3 min ago</span>
-                            </div>
-                            <p className="msg-text">
-                              Ancillae delectus necessitatibus no eam
-                            </p>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <a
-                        href="#"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body d-flex align-items-center">
-                          <div className="avatar flex-shrink-0 me-3">
-                            <img src="/images/team9.jpg" alt="" />
-                          </div>
-                          <div className="msg-content w-100">
-                            <div className="d-flex align-items-center justify-content-between">
-                              <h3 className="title pb-1">Marc Twain</h3>
-                              <span className="msg-text">1 hrs ago</span>
-                            </div>
-                            <p className="msg-text">
-                              Ancillae delectus necessitatibus no eam
-                            </p>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <a
-                        href="#"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body d-flex align-items-center">
-                          <div className="avatar flex-shrink-0 me-3">
-                            <img src="/images/team10.jpg" alt="" />
-                          </div>
-                          <div className="msg-content w-100">
-                            <div className="d-flex align-items-center justify-content-between">
-                              <h3 className="title pb-1">Enzo Ferrari</h3>
-                              <span className="msg-text">2 hrs ago</span>
-                            </div>
-                            <p className="msg-text">
-                              Ancillae delectus necessitatibus no eam
-                            </p>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <a
-                        href="#"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body d-flex align-items-center">
-                          <div className="avatar flex-shrink-0 me-3">
-                            <img src="/images/team11.jpg" alt="" />
-                          </div>
-                          <div className="msg-content w-100">
-                            <div className="d-flex align-items-center justify-content-between">
-                              <h3 className="title pb-1">Lucas Swing</h3>
-                              <span className="msg-text">3 hrs ago</span>
-                            </div>
-                            <p className="msg-text">
-                              Ancillae delectus necessitatibus no eam
-                            </p>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                    </div>
-                    <a
-                      href="#"
-                      className="dropdown-item drop-reveal-btn text-center"
+                      <Home className="w-4 h-4 text-gray-500" />
+                      Home
+                    </Link>
+
+                    <Link
+                      to="/profile"
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+                      onClick={() => setIsUserMenuOpen(false)}
                     >
-                      View all
-                    </a>
+                      <User className="w-4 h-4 text-gray-500" />
+                      Profile
+                    </Link>
+
+                    <Link
+                      to="/settings"
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <Settings className="w-4 h-4 text-gray-500" />
+                      Settings
+                    </Link>
+
+                    <div className="border-t border-gray-100 my-1" />
+
+                    <button
+                      onClick={logoutSubmit}
+                      disabled={isLoading}
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 transition disabled:opacity-60"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      {isLoading ? "Logging out..." : "Logout"}
+                    </button>
                   </div>
-                  {/* end dropdown-menu */}
                 </div>
-              </div>
-              {/* end notification-item */}
-              <div className="notification-item">
-                <div className="dropdown">
-                  <a
-                    href="#"
-                    className="dropdown-toggle"
-                    id="userDropdownMenu"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <div className="d-flex align-items-center">
-                      <div className="avatar avatar-sm flex-shrink-0 me-2">
-                        <img src={user?.avatar} alt="team-img" />
-                      </div>
-                      <span className="font-size-14 font-weight-bold">
-                        {user?.name} {user?.role}
-                      </span>
-                      
-                    </div>
-                  </a>
-                  <div className="dropdown-menu dropdown-reveal dropdown-menu-md dropdown-menu-right">
-                    <div className="dropdown-item drop-reveal-header user-reveal-header">
-                      <h6 className="title text-uppercase">Welcome!</h6>
-                    </div>
-                    <div className="list-group drop-reveal-list user-drop-reveal-list">
-                      <a
-                        href="admin-dashboard-settings.html"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body">
-                          <div className="msg-content">
-                            <h3 className="title">
-                              <i className="la la-user me-2" /> Edit Profile
-                            </h3>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <a
-                        href="admin-dashboard-orders.html"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body">
-                          <div className="msg-content">
-                            <h3 className="title">
-                              <i className="la la-shopping-cart me-2" />
-                              Orders
-                            </h3>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <a
-                        href="#"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body">
-                          <div className="msg-content">
-                            <h3 className="title">
-                              <i className="la la-bell me-2" />
-                              Messages
-                            </h3>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <a
-                        href="admin-dashboard-settings.html"
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body">
-                          <div className="msg-content">
-                            <h3 className="title">
-                              <i className="la la-gear me-2" />
-                              Settings
-                            </h3>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                      <div className="section-block" />
-                      <a
-                        href="#"
-                        onClick={logoutSubmit}
-                        className="list-group-item list-group-item-action"
-                      >
-                        <div className="msg-body">
-                          <div className="msg-content">
-                            <h3 className="title">
-                              <i className="la la-power-off me-2" />
-                              Logout
-                            </h3>
-                          </div>
-                        </div>
-                        {/* end msg-body */}
-                      </a>
-                    </div>
-                  </div>
-                  {/* end dropdown-menu */}
-                </div>
-              </div>
-              {/* end notification-item */}
+              )}
             </div>
           </div>
-          {/* end nav-btn */}
         </div>
-        {/* end menu-wrapper */}
       </div>
-      {/* end col-lg-12 */}
-    </div>
-    {/* end row */}
-  </div>
-  {/* end container-fluid */}
-</div>
-
-  )
-
+    </header>
+  );
 };
 
 export default HeaderTwo;

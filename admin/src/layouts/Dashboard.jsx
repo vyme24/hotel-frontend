@@ -1,48 +1,52 @@
-import { useEffect } from "react";
-import BreadCrumb from "../components/Breadcrumb";
-import Footer from "../components/Footer";
-import HeaderTwo from "../components/HeaderTwo";
-import Sidebar from "../components/Sidebar";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import HeaderTwo from "../components/HeaderTwo";
 import { useGetUserQuery } from "../services/userService";
 
 const DashboardLayout = () => {
   const [user, setUser] = useState(null);
- const {isLoading, isError, data, isSuccess} = useGetUserQuery()
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // mobile
+  const [isCollapsed, setIsCollapsed] = useState(true); // ✅ default minimal
+
+  const { isLoading, isError, data, isSuccess } = useGetUserQuery();
 
   useEffect(() => {
-      const token = localStorage.getItem("token");
-      if(!token){
-       window.location.href="/login"
-      }else{
-
-        setUser(data?.data)
-        
-      }
-
-  }, [isLoading, isError, isSuccess, data])
- 
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
+    setUser(data?.data);
+  }, [isLoading, isError, isSuccess, data]);
 
   return (
-    <div className="section-bg dashboard-layout">
-        {/* Dashboard layout content goes here */}
-       
-        <Sidebar/>
-          <section className="dashboard-area">
-             <HeaderTwo user={user}/>
-             <div className="dashboard-content-wrap">
-            <BreadCrumb/>
-  
-  <div class="dashboard-main-content">
-     <Outlet/>
+    <div className="min-h-screen bg-gray-50 flex">
+      <Sidebar
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+        user={user}
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+      />
 
-  </div>
-         
-          </div>
-        </section>
-        <Footer />
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          isCollapsed ? "lg:ml-20" : "lg:ml-72"
+        }`}
+      >
+        <HeaderTwo
+          user={user}
+          toggleSidebar={() => setIsSidebarOpen((p) => !p)}
+        />
+
+        <main className="p-4 lg:p-6">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
-}
+};
+
 export default DashboardLayout;

@@ -1,228 +1,298 @@
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
-const Sidebar = () => {
+import {
+  LayoutDashboard,
+  CalendarCheck2,
+  Hotel,
+  BedDouble,
+  Users,
+  UserCog,
+  Star,
+  Wallet,
+  Megaphone,
+  BarChart3,
+  Settings,
+  ChevronDown,
+  Menu,
+  User,
+} from "lucide-react";
+
+const Sidebar = ({ isOpen, setIsOpen, user, isCollapsed, setIsCollapsed }) => {
+  const location = useLocation();
+
+  const [openMenus, setOpenMenus] = useState({
+    booking: false,
+    hotel: false,
+    room: false,
+    guest: false,
+    staff: false,
+    review: false,
+    finance: false,
+    marketing: false,
+    report: false,
+    setting: false,
+  });
+
+  const [hoverMenu, setHoverMenu] = useState(null);
+  const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
+
+  const handleMenuClick = () => {
+    if (window.innerWidth < 1024) setIsOpen(false);
+  };
+
+  const toggleMenu = (key) => {
+    setOpenMenus((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const menuConfig = [
+    { id: "dashboard", label: "Dashboard", link: "/admin/dashboard", icon: LayoutDashboard },
+    {
+      id: "booking",
+      label: "Booking Management",
+      icon: CalendarCheck2,
+      children: [
+        { label: "All Bookings", link: "/bookings" },
+        { label: "New Bookings", link: "/bookings/new" },
+      ],
+    },
+    { id: "hotel", label: "Hotel Management", icon: Hotel, children: [{ label: "All Hotels", link: "/hotels" }] },
+    { id: "room", label: "Room Management", icon: BedDouble, children: [{ label: "All Rooms", link: "/rooms" }] },
+    { id: "guest", label: "Guests", icon: Users, children: [{ label: "All Guests", link: "/guests" }] },
+    { id: "staff", label: "Staff", icon: UserCog, children: [{ label: "All Staff", link: "/staff" }] },
+    { id: "review", label: "Reviews", icon: Star, children: [{ label: "All Reviews", link: "/reviews" }] },
+    { id: "finance", label: "Payments", icon: Wallet, children: [{ label: "All Payments", link: "/payments" }] },
+    { id: "marketing", label: "Marketing", icon: Megaphone, children: [{ label: "Coupons", link: "/coupons" }] },
+    { id: "report", label: "Reports", icon: BarChart3, children: [{ label: "Booking Report", link: "/reports/bookings" }] },
+    { id: "setting", label: "Settings", icon: Settings, children: [{ label: "General Settings", link: "/settings/general" }] },
+  ];
+
+  const SidebarWidth = isCollapsed ? "w-20" : "w-72";
+
   return (
-    <div className="sidebar-nav sidebar--nav">
-      <div className="sidebar-nav-body">
-        <div className="side-menu-close">
-          <i className="la la-times" />
-        </div>
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
 
-        {/* Admin Profile */}
-        <div className="author-content">
-          <div className="d-flex align-items-center">
-            <div className="author-img avatar-sm">
-              <img src="/images/team9.jpg" alt="admin" />
-            </div>
-            <div className="author-bio">
-              <h4 className="author__title">Hotel Admin Panel</h4>
-              <span className="author__meta">Manage Hotels, Rooms & Bookings</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Sidebar Menu */}
-        <div className="sidebar-menu-wrap">
-          <ul className="sidebar-menu toggle-menu list-items">
-
-            {/* Dashboard */}
-            <li className="page-active">
-              <Link to="/admin/dashboard">
-                <i className="la la-dashboard me-2" />
-                Dashboard
-              </Link>
-            </li>
-
-            {/* Booking Management */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-shopping-cart me-2 text-color" />
-                Booking Management
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/bookings">All Bookings</Link></li>
-                <li><Link to="/bookings/new">New Bookings</Link></li>
-                <li><Link to="/bookings/confirmed">Confirmed</Link></li>
-                <li><Link to="/bookings/check-in">Check-in Today</Link></li>
-                <li><Link to="/bookings/check-out">Check-out Today</Link></li>
-                <li><Link to="/bookings/cancelled">Cancelled</Link></li>
-                <li><Link to="/bookings/refunds">Refund Requests</Link></li>
-              </ul>
-            </li>
-
-            {/* Hotel Management */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-hotel me-2 text-color-2" />
-                Hotel Management
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/hotels">All Hotels</Link></li>
-                <li><Link to="/hotels/active">Active Hotels</Link></li>
-                <li><Link to="/hotels/inactive">Inactive Hotels</Link></li>
-                <li><Link to="/hotels/pending">Pending Approval</Link></li>
-                <li><Link to="/hotels/featured">Featured Hotels</Link></li>
-                <li><Link to="/hotels/trash">Trash</Link></li>
-              </ul>
-            </li>
-
-            {/* Room Management */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-bed me-2 text-color-3" />
-                Room Management
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/rooms">All Rooms</Link></li>
-                <li><Link to="/rooms/types">Room Types</Link></li>
-                <li><Link to="/rooms/available">Available Rooms</Link></li>
-                <li><Link to="/rooms/sold-out">Sold Out</Link></li>
-                <li><Link to="/rooms/inactive">Inactive Rooms</Link></li>
-                <li><Link to="/inventory">Room Inventory</Link></li>
-              </ul>
-            </li>
-
-            {/* Guests / Customers */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-users me-2 text-color-4" />
-                Guests / Customers
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/guests">All Guests</Link></li>
-                <li><Link to="/guests/check-in">Currently Staying</Link></li>
-                <li><Link to="/guests/history">Guest History</Link></li>
-              </ul>
-            </li>
-
-            {/* Staff / Roles */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-id-badge me-2 text-color-5" />
-                Staff & Roles
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/staff">All Staff</Link></li>
-                <li><Link to="/staff/roles">Roles & Permissions</Link></li>
-                <li><Link to="/staff/attendance">Attendance</Link></li>
-              </ul>
-            </li>
-
-            {/* Reviews */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-star me-2 text-color-6" />
-                Reviews & Ratings
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/reviews">All Reviews</Link></li>
-                <li><Link to="/reviews/pending">Pending Approval</Link></li>
-                <li><Link to="/reviews/reported">Reported Reviews</Link></li>
-              </ul>
-            </li>
-
-            {/* Finance */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-area-chart me-2 text-color-7" />
-                Finance & Payments
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/payments">All Payments</Link></li>
-                <li><Link to="/payments/success">Successful</Link></li>
-                <li><Link to="/payments/failed">Failed</Link></li>
-                <li><Link to="/payments/pending">Pending</Link></li>
-                <li><Link to="/invoice">Invoices</Link></li>
-                <li><Link to="/refunds">Refunds</Link></li>
-                <li><Link to="/taxes">Taxes & Charges</Link></li>
-              </ul>
-            </li>
-
-            {/* Marketing */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-bullhorn me-2 text-color-8" />
-                Marketing
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/coupons">Coupons</Link></li>
-                <li><Link to="/offers">Offers & Deals</Link></li>
-                <li><Link to="/featured">Featured Listings</Link></li>
-              </ul>
-            </li>
-
-            {/* Reports */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-bar-chart me-2 text-color-9" />
-                Reports
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/reports/bookings">Booking Report</Link></li>
-                <li><Link to="/reports/revenue">Revenue Report</Link></li>
-                <li><Link to="/reports/occupancy">Occupancy Report</Link></li>
-                <li><Link to="/reports/customers">Customer Report</Link></li>
-              </ul>
-            </li>
-
-            {/* Settings */}
-            <li>
-              <span className="side-menu-icon toggle-menu-icon">
-                <i className="la la-angle-down" />
-              </span>
-              <Link to="#">
-                <i className="la la-cog me-2 text-color-10" />
-                Settings
-              </Link>
-              <ul className="toggle-drop-menu">
-                <li><Link to="/settings/general">General Settings</Link></li>
-                <li><Link to="/settings/hotel">Hotel Settings</Link></li>
-                <li><Link to="/settings/policies">Policies</Link></li>
-                <li><Link to="/settings/notifications">Notifications</Link></li>
-              </ul>
-            </li>
-
-            {/* Logout */}
-            <li>
-              <Link to="/logout">
-                <i className="la la-power-off me-2 text-color-11" />
-                Logout
-              </Link>
-            </li>
-
-          </ul>
-        </div>
-        {/* end sidebar-menu-wrap */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 shadow-xl transition-all duration-300
+        ${SidebarWidth}
+        ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
+      >
+      {/* TOP AREA */}
+<div className="relative border-b border-gray-100">
+  <div
+    className={`h-16 flex items-center ${
+      isCollapsed ? "justify-center" : "justify-between px-4"
+    }`}
+  >
+    {/* ✅ Logo Icon Always */}
+    <Link
+      to="/admin/dashboard"
+      className="flex items-center gap-2"
+      title="Dashboard"
+    >
+      <div className="h-10 w-10 rounded-xl bg-gradient-to-r from-red-800 to-red-600 text-white flex items-center justify-center shadow-sm">
+        <span className="font-extrabold text-sm">L</span>
       </div>
-    </div>
+
+      {/* Show text only when expanded */}
+      {!isCollapsed && (
+        <div className="leading-tight">
+          <p className="font-extrabold text-gray-900 text-lg">
+            <span className="text-red-600">LUX</span>STAY
+          </p>
+          <p className="text-[11px] text-gray-500 -mt-1">Admin Panel</p>
+        </div>
+      )}
+    </Link>
+  </div>
+
+  {/* Floating Toggle Button */}
+  <button
+    className="absolute -right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white border border-gray-200 shadow-lg hover:bg-gray-50 transition flex items-center justify-center"
+    onClick={() => setIsCollapsed((p) => !p)}
+    title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+  >
+    <Menu className="w-5 h-5 text-gray-700" />
+  </button>
+</div>
+
+
+        {/* USER ICON ON MINIMAL */}
+        {isCollapsed && (
+          <div className="px-3 py-4 border-b border-gray-100 flex justify-center">
+            <Link
+              to="/profile"
+              className="h-12 w-12 rounded-xl border border-gray-200 hover:bg-gray-50 transition flex items-center justify-center"
+              title={user?.name || "Profile"}
+            >
+              {user?.avatar ? (
+                <img
+                  src={user.avatar}
+                  alt="user"
+                  className="h-10 w-10 rounded-xl object-cover"
+                />
+              ) : (
+                <User className="w-5 h-5 text-gray-700" />
+              )}
+            </Link>
+          </div>
+        )}
+
+        {/* MENU */}
+        <div className="p-3 overflow-y-auto h-[calc(100vh-90px)]">
+          <nav className="space-y-2">
+            {menuConfig.map((item) => {
+              const Icon = item.icon;
+
+              const active = item.link && location.pathname === item.link;
+              const isDropdownActive =
+                item.children && item.children.some((c) => location.pathname === c.link);
+
+              return (
+                <div
+                  key={item.id}
+                  className="relative"
+                  onMouseEnter={(e) => {
+                    if (isCollapsed && item.children) {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      setPopupPos({ top: rect.top, left: rect.right + 12 });
+                      setHoverMenu(item.id);
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (isCollapsed && item.children) setHoverMenu(null);
+                  }}
+                >
+                  {/* Parent */}
+                  <div
+                    className={`flex items-center rounded-xl border transition cursor-pointer
+                    ${isCollapsed ? "justify-center px-3 py-3" : "px-4 py-3"}
+                    ${
+                      active || isDropdownActive
+                        ? "bg-gradient-to-r from-red-800 to-red-600 text-white border-red-700 shadow-md"
+                        : "bg-white text-gray-700 border-gray-100 hover:bg-gray-50"
+                    }`}
+                    onClick={() => {
+                      if (item.children) {
+                        if (!isCollapsed) toggleMenu(item.id);
+                      }
+                    }}
+                    title={isCollapsed ? item.label : ""}
+                  >
+                    <Icon className="w-5 h-5" />
+
+                    {!isCollapsed && (
+                      <div className="flex items-center w-full ml-3">
+                        {item.children ? (
+                          <>
+                            <span className="font-medium">{item.label}</span>
+                            <ChevronDown
+                              className={`w-4 h-4 ml-auto transition-transform ${
+                                openMenus[item.id] ? "rotate-180" : ""
+                              }`}
+                            />
+                          </>
+                        ) : (
+                          <Link to={item.link} className="w-full" onClick={handleMenuClick}>
+                            <span className="font-medium">{item.label}</span>
+                          </Link>
+                        )}
+                      </div>
+                    )}
+
+                    {isCollapsed && !item.children && (
+                      <Link to={item.link} className="absolute inset-0" onClick={handleMenuClick} />
+                    )}
+                  </div>
+
+                  {/* Expanded children */}
+                  {!isCollapsed && item.children && (
+                    <div
+                      className={`ml-3 overflow-hidden transition-all duration-300 ${
+                        openMenus[item.id] ? "max-h-[500px] mt-2 opacity-100" : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      <div className="bg-gray-50 border border-gray-100 rounded-xl p-2 space-y-1">
+                        {item.children.map((child) => {
+                          const childActive = location.pathname === child.link;
+                          return (
+                            <Link
+                              key={child.link}
+                              to={child.link}
+                              onClick={handleMenuClick}
+                              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition
+                              ${
+                                childActive
+                                  ? "bg-white text-red-700 shadow border border-red-100"
+                                  : "text-gray-700 hover:bg-white"
+                              }`}
+                            >
+                              <span className="w-2 h-2 rounded-full bg-gray-400" />
+                              {child.label}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Collapsed Hover Popup */}
+                  {isCollapsed && item.children && hoverMenu === item.id && (
+                    <div
+                      className="fixed w-64"
+                      style={{
+                        top: popupPos.top,
+                        left: popupPos.left,
+                        zIndex: 999999,
+                      }}
+                    >
+                      <div className="bg-white border border-gray-200 shadow-2xl rounded-xl overflow-hidden">
+                        <div className="px-4 py-3 border-b bg-gray-50">
+                          <p className="font-semibold text-gray-900 text-sm">
+                            {item.label}
+                          </p>
+                        </div>
+
+                        <div className="p-2 space-y-1">
+                          {item.children.map((child) => {
+                            const childActive = location.pathname === child.link;
+
+                            return (
+                              <Link
+                                key={child.link}
+                                to={child.link}
+                                onClick={handleMenuClick}
+                                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition
+                                ${
+                                  childActive
+                                    ? "bg-red-50 text-red-700"
+                                    : "text-gray-700 hover:bg-gray-50"
+                                }`}
+                              >
+                                <span className="w-2 h-2 rounded-full bg-gray-400" />
+                                {child.label}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+        </div>
+      </aside>
+    </>
   );
-}
+};
 
 export default Sidebar;
