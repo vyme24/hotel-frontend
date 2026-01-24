@@ -12,11 +12,13 @@ import { reviewService } from "./services/reviewService";
 import { notificationService } from "./services/notificationService";
 import { messageService } from "./services/messageService";
 import { roleApi } from "./services/roleService";
+import { dashboardService } from "./services/dashboardService";
 
 export const store = configureStore({
   reducer: {
     [adminService.reducerPath]: adminService.reducer,
     [userService.reducerPath]: userService.reducer,
+    [dashboardService.reducerPath]: dashboardService.reducer,
     [hotelService.reducerPath]: hotelService.reducer,
     [bookingService.reducerPath]: bookingService.reducer,
     [couponService.reducerPath]: couponService.reducer,
@@ -33,6 +35,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       adminService.middleware,
       userService.middleware,
+      dashboardService.middleware,
       hotelService.middleware,
       bookingService.middleware,
       couponService.middleware,

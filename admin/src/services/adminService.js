@@ -1,14 +1,15 @@
-import  {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import  {createApi} from "@reduxjs/toolkit/query/react";
+import baseQueryWithReAuth from "./baseAPI";
 
 
 export const adminService = createApi({
     reducerPath : "AuthService",
-    baseQuery : fetchBaseQuery({baseUrl: "http://127.0.0.1:5000/api/admin/auth"}),
+    baseQuery : baseQueryWithReAuth,
     endpoints : builder => ({
 
         login : builder.mutation({
             query : (body) => ({
-                url: "/login",
+                url: "/auth/login",
                 method: "POST",
                 body: body
             })

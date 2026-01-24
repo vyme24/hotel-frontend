@@ -1,35 +1,27 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import baseQueryWithReAuth from "./baseAPI";
 
 export const userService = createApi({
   reducerPath: "UserService",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:5000/api/admin/user",
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        headers.set("authorization", `${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithReAuth,
   endpoints: (builder) => ({
     getUser: builder.query({
       query: () => ({
-        url: "/get",
+        url: "/user/get",
         method: "GET",
       }),
     }),
 
     getAllUsers: builder.query({
       query: () => ({
-        url: "/all",
+        url: "/user/all",
         method: "GET",
       }),
     }),
 
     logout: builder.mutation({
       query: () => ({
-        url: "/logout",
+        url: "/user/logout",
         method: "POST",
       }),
     }),

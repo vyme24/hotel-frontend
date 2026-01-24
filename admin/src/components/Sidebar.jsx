@@ -46,7 +46,12 @@ const Sidebar = ({ isOpen, setIsOpen, user, isCollapsed, setIsCollapsed }) => {
   };
 
   const menuConfig = [
-    { id: "dashboard", label: "Dashboard", link: "/admin/dashboard", icon: LayoutDashboard },
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      link: "/admin/dashboard",
+      icon: LayoutDashboard,
+    },
     {
       id: "booking",
       label: "Booking Management",
@@ -54,17 +59,115 @@ const Sidebar = ({ isOpen, setIsOpen, user, isCollapsed, setIsCollapsed }) => {
       children: [
         { label: "All Bookings", link: "/bookings" },
         { label: "New Bookings", link: "/bookings/new" },
+        { label: "Confirmed", link: "/bookings/confirmed" },
+        { label: "Check-in Today", link: "/bookings/check-in" },
+        { label: "Check-out Today", link: "/bookings/check-out" },
+        { label: "Cancelled", link: "/bookings/cancelled" },
+        { label: "Refund Requests", link: "/bookings/refunds" },
       ],
     },
-    { id: "hotel", label: "Hotel Management", icon: Hotel, children: [{ label: "All Hotels", link: "/hotels" }] },
-    { id: "room", label: "Room Management", icon: BedDouble, children: [{ label: "All Rooms", link: "/rooms" }] },
-    { id: "guest", label: "Guests", icon: Users, children: [{ label: "All Guests", link: "/guests" }] },
-    { id: "staff", label: "Staff", icon: UserCog, children: [{ label: "All Staff", link: "/staff" }] },
-    { id: "review", label: "Reviews", icon: Star, children: [{ label: "All Reviews", link: "/reviews" }] },
-    { id: "finance", label: "Payments", icon: Wallet, children: [{ label: "All Payments", link: "/payments" }] },
-    { id: "marketing", label: "Marketing", icon: Megaphone, children: [{ label: "Coupons", link: "/coupons" }] },
-    { id: "report", label: "Reports", icon: BarChart3, children: [{ label: "Booking Report", link: "/reports/bookings" }] },
-    { id: "setting", label: "Settings", icon: Settings, children: [{ label: "General Settings", link: "/settings/general" }] },
+    {
+      id: "hotel",
+      label: "Hotel Management",
+      icon: Hotel,
+      children: [
+        { label: "All Hotels", link: "/hotels" },
+        { label: "Active Hotels", link: "/hotels/active" },
+        { label: "Inactive Hotels", link: "/hotels/inactive" },
+        { label: "Pending Approval", link: "/hotels/pending" },
+        { label: "Featured Hotels", link: "/hotels/featured" },
+        { label: "Trash", link: "/hotels/trash" },
+      ],
+    },
+    {
+      id: "room",
+      label: "Room Management",
+      icon: BedDouble,
+      children: [
+        { label: "All Rooms", link: "/rooms" },
+        { label: "Room Types", link: "/rooms/types" },
+        { label: "Available Rooms", link: "/rooms/available" },
+        { label: "Sold Out", link: "/rooms/sold-out" },
+        { label: "Inactive Rooms", link: "/rooms/inactive" },
+        { label: "Room Inventory", link: "/inventory" },
+      ],
+    },
+    {
+      id: "guest",
+      label: "Guests / Customers",
+      icon: Users,
+      children: [
+        { label: "All Guests", link: "/guests" },
+        { label: "Currently Staying", link: "/guests/check-in" },
+        { label: "Guest History", link: "/guests/history" },
+      ],
+    },
+    {
+      id: "staff",
+      label: "Staff & Roles",
+      icon: UserCog,
+      children: [
+        { label: "All Staff", link: "/staff" },
+        { label: "Roles & Permissions", link: "/staff/roles" },
+        { label: "Attendance", link: "/staff/attendance" },
+      ],
+    },
+    {
+      id: "review",
+      label: "Reviews & Ratings",
+      icon: Star,
+      children: [
+        { label: "All Reviews", link: "/reviews" },
+        { label: "Pending Approval", link: "/reviews/pending" },
+        { label: "Reported Reviews", link: "/reviews/reported" },
+      ],
+    },
+    {
+      id: "finance",
+      label: "Finance & Payments",
+      icon: Wallet,
+      children: [
+        { label: "All Payments", link: "/payments" },
+        { label: "Successful", link: "/payments/success" },
+        { label: "Failed", link: "/payments/failed" },
+        { label: "Pending", link: "/payments/pending" },
+        { label: "Invoices", link: "/invoice" },
+        { label: "Refunds", link: "/refunds" },
+        { label: "Taxes & Charges", link: "/taxes" },
+      ],
+    },
+    {
+      id: "marketing",
+      label: "Marketing",
+      icon: Megaphone,
+      children: [
+        { label: "Coupons", link: "/coupons" },
+        { label: "Offers & Deals", link: "/offers" },
+        { label: "Featured Listings", link: "/featured" },
+      ],
+    },
+    {
+      id: "report",
+      label: "Reports",
+      icon: BarChart3,
+      children: [
+        { label: "Booking Report", link: "/reports/bookings" },
+        { label: "Revenue Report", link: "/reports/revenue" },
+        { label: "Occupancy Report", link: "/reports/occupancy" },
+        { label: "Customer Report", link: "/reports/customers" },
+      ],
+    },
+    {
+      id: "setting",
+      label: "Settings",
+      icon: Settings,
+      children: [
+        { label: "General Settings", link: "/settings/general" },
+        { label: "Hotel Settings", link: "/settings/hotel" },
+        { label: "Policies", link: "/settings/policies" },
+        { label: "Notifications", link: "/settings/notifications" },
+      ],
+    },
   ];
 
   const SidebarWidth = isCollapsed ? "w-20" : "w-72";

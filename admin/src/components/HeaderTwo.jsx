@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import Notification from "./Header/Notification";
-import { useLoginMutation } from "../services/adminService";
+import { useLogoutMutation } from "../services/userService";
 
 import {
   Menu,
@@ -11,14 +11,18 @@ import {
   Settings,
   LogOut,
   Home,
+  X,
 } from "lucide-react";
 
 const HeaderTwo = ({ user, toggleSidebar }) => {
   const location = useLocation();
-  const [logouthandle, { isLoading, data, isSuccess }] = useLoginMutation();
+  const [logouthandle, { isLoading, data, isSuccess }] = useLogoutMutation();
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  // ✅ Logout modal state
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -38,10 +42,19 @@ const HeaderTwo = ({ user, toggleSidebar }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const logoutSubmit = async () => {
-    const confirm = window.confirm("Are you sure you want to logout?");
-    if (confirm) {
+  // ✅ Open modal instead of window.confirm
+  const logoutSubmit = () => {
+    setIsUserMenuOpen(false);
+    setIsLogoutModalOpen(true);
+  };
+
+  // ✅ Confirm logout
+  const confirmLogout = async () => {
+    try {
       await logouthandle().unwrap();
+      setIsLogoutModalOpen(false);
+    } catch (err) {
+      toast.error(err?.data?.message || "Logout failed");
     }
   };
 
@@ -61,113 +74,162 @@ const HeaderTwo = ({ user, toggleSidebar }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
-      <div className="px-4 lg:px-6">
-        <div className="h-14 lg:h-16 flex items-center justify-between gap-3">
-          {/* LEFT */}
-          <div className="flex items-center gap-3 min-w-0">
-            <button
-              className="lg:hidden h-10 w-10 inline-flex items-center justify-center rounded-xl border border-gray-200 hover:bg-gray-50 transition"
-              onClick={toggleSidebar}
-            >
-              <Menu className="w-5 h-5 text-gray-700" />
-            </button>
-
-            <div className="min-w-0">
-              <h2 className="text-base lg:text-lg font-bold text-gray-900 truncate">
-                {pageTitle()}
-              </h2>
-              <p className="text-[11px] text-gray-500 hidden sm:block truncate">
-                Welcome back, manage everything easily
-              </p>
-            </div>
-          </div>
-
-          {/* RIGHT */}
-          <div className="flex items-center gap-2">
-            <Notification />
-
-            {/* User Dropdown */}
-            <div className="relative" ref={dropdownRef}>
+    <>
+      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
+        <div className="px-4 lg:px-6">
+          <div className="h-14 lg:h-16 flex items-center justify-between gap-3">
+            {/* LEFT */}
+            <div className="flex items-center gap-3 min-w-0">
               <button
-                className="flex items-center gap-2 px-2 py-1.5 rounded-xl border border-transparent hover:border-gray-200 hover:bg-gray-50 transition"
-                onClick={() => setIsUserMenuOpen((p) => !p)}
+                className="lg:hidden h-10 w-10 inline-flex items-center justify-center rounded-xl border border-gray-200 hover:bg-gray-50 transition"
+                onClick={toggleSidebar}
               >
-                <img
-                  src={user?.avatar || "/images/team9.jpg"}
-                  alt="user"
-                  className="h-9 w-9 rounded-xl object-cover ring-1 ring-gray-200"
-                />
-                <div className="hidden md:block text-left leading-tight">
-                  <p className="text-sm font-semibold text-gray-900 truncate max-w-[140px]">
-                    {user?.name || "Admin"}
-                  </p>
-                  <p className="text-[11px] text-gray-500 truncate max-w-[140px]">
-                    {user?.role || "Administrator"}
-                  </p>
-                </div>
-                <ChevronDown
-                  className={`w-4 h-4 text-gray-500 transition-transform ${
-                    isUserMenuOpen ? "rotate-180" : ""
-                  }`}
-                />
+                <Menu className="w-5 h-5 text-gray-700" />
               </button>
 
-              {isUserMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 rounded-xl border border-gray-200 bg-white shadow-xl overflow-hidden z-[999999]">
-                  <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
-                    <p className="text-xs text-gray-500">Signed in as</p>
-                    <p className="text-sm font-semibold text-gray-900 truncate">
-                      {user?.email || user?.name || "Admin"}
+              <div className="min-w-0">
+                <h2 className="text-base lg:text-lg font-bold text-gray-900 truncate">
+                  {pageTitle()}
+                </h2>
+                <p className="text-[11px] text-gray-500 hidden sm:block truncate">
+                  Welcome back, manage everything easily
+                </p>
+              </div>
+            </div>
+
+            {/* RIGHT */}
+            <div className="flex items-center gap-2">
+              <Notification />
+
+              {/* User Dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  className="flex items-center gap-2 px-2 py-1.5 rounded-xl border border-transparent hover:border-gray-200 hover:bg-gray-50 transition"
+                  onClick={() => setIsUserMenuOpen((p) => !p)}
+                >
+                  <img
+                    src={user?.avatar || "/images/team9.jpg"}
+                    alt="user"
+                    className="h-9 w-9 rounded-xl object-cover ring-1 ring-gray-200"
+                  />
+                  <div className="hidden md:block text-left leading-tight">
+                    <p className="text-sm font-semibold text-gray-900 truncate max-w-[140px]">
+                      {user?.name || "Admin"}
+                    </p>
+                    <p className="text-[11px] text-gray-500 truncate max-w-[140px]">
+                      {user?.role || "Administrator"}
                     </p>
                   </div>
+                  <ChevronDown
+                    className={`w-4 h-4 text-gray-500 transition-transform ${
+                      isUserMenuOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-                  <div className="p-2 space-y-1">
-                    <Link
-                      to="/"
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    >
-                      <Home className="w-4 h-4 text-gray-500" />
-                      Home
-                    </Link>
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-64 rounded-xl border border-gray-200 bg-white shadow-xl overflow-hidden z-[999999]">
+                    <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+                      <p className="text-xs text-gray-500">Signed in as</p>
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user?.email || user?.name || "Admin"}
+                      </p>
+                    </div>
 
-                    <Link
-                      to="/profile"
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    >
-                      <User className="w-4 h-4 text-gray-500" />
-                      Profile
-                    </Link>
+                    <div className="p-2 space-y-1">
+                      <Link
+                        to="/"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <Home className="w-4 h-4 text-gray-500" />
+                        Home
+                      </Link>
 
-                    <Link
-                      to="/settings"
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    >
-                      <Settings className="w-4 h-4 text-gray-500" />
-                      Settings
-                    </Link>
+                      <Link
+                        to="/profile"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <User className="w-4 h-4 text-gray-500" />
+                        Profile
+                      </Link>
 
-                    <div className="border-t border-gray-100 my-1" />
+                      <Link
+                        to="/settings"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <Settings className="w-4 h-4 text-gray-500" />
+                        Settings
+                      </Link>
 
-                    <button
-                      onClick={logoutSubmit}
-                      disabled={isLoading}
-                      className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 transition disabled:opacity-60"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      {isLoading ? "Logging out..." : "Logout"}
-                    </button>
+                      <div className="border-t border-gray-100 my-1" />
+
+                      <button
+                        onClick={logoutSubmit}
+                        disabled={isLoading}
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 transition disabled:opacity-60"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        {isLoading ? "Logging out..." : "Logout"}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* ✅ Logout Confirmation Modal */}
+      {isLogoutModalOpen && (
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center">
+          {/* Overlay */}
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => !isLoading && setIsLogoutModalOpen(false)}
+          />
+
+          {/* Modal Box */}
+          <div className="relative bg-white w-[92%] max-w-md rounded-2xl shadow-2xl border border-gray-200 p-6">
+            {/* Close */}
+            <button
+              onClick={() => !isLoading && setIsLogoutModalOpen(false)}
+              className="absolute top-3 right-3 h-9 w-9 rounded-xl hover:bg-gray-50 flex items-center justify-center"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+
+            <h2 className="text-lg font-bold text-gray-900">
+              Confirm Logout
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Are you sure you want to logout from the admin panel?
+            </p>
+
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button
+                onClick={() => setIsLogoutModalOpen(false)}
+                disabled={isLoading}
+                className="px-4 py-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={confirmLogout}
+                disabled={isLoading}
+                className="px-4 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 disabled:opacity-60"
+              >
+                {isLoading ? "Logging out..." : "Yes, Logout"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

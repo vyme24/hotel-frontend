@@ -1,28 +1,27 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import baseQueryWithReAuth from "./baseAPI";
 
 export const notificationService = createApi({
   reducerPath: "notificationService",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:5000/api/notification",
-  }),
+  baseQuery: baseQueryWithReAuth,
   endpoints: (builder) => ({
     getAllNotifications: builder.query({
       query: () => ({ 
-        url: "/getAll",
+        url: "/notification/getAll",
         method: "GET"
       }),
     }),
 
     getNotification: builder.query({
       query: (id) => ({ 
-        url: `/get/${id}`,
+        url: `/notification/get/${id}`,
         method: "GET"
       }),
     }),
 
     markNotificationAsRead: builder.mutation({
       query: (id) => ({
-        url: `/update/${id}`,
+        url: `/notification/update/${id}`,
         method: "PUT"
       }),
     }),

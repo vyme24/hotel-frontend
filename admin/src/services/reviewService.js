@@ -1,14 +1,13 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import baseQueryWithReAuth from "./baseAPI";
 
 export const reviewService = createApi({
   reducerPath: "reviewService",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:5000/api/review",
-  }),
+  baseQuery: baseQueryWithReAuth,
   endpoints: (builder) => ({
     getAllReviews: builder.query({
       query: () => ({
-         url: "/getAll",
+         url: "/review/getAll",
           method: "GET" }),
     }),
   }),

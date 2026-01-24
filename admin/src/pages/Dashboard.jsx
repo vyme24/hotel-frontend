@@ -26,92 +26,25 @@ import {
   Bar,
 } from "recharts";
 
-import { useGetAllBookingsQuery } from "../services/bookingService";
-import { useGetAllHotelsQuery } from "../services/hotelService";
-import { useGetAllRoomsQuery } from "../services/roomService";
-import { useGetAllUsersQuery } from "../services/userService";
-import { useGetRolesQuery } from "../services/roleService";
-import { useGetAllReviewsQuery } from "../services/reviewService";
-import { useGetAllPaymentsQuery } from "../services/paymentService";
+import { useGetMatrixQuery } from "../services/dashboardService";
 
 /* -------------------- Helpers -------------------- */
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-const safeArray = (res) => res?.data || res || [];
+const safeArray = (arr) => (Array.isArray(arr) ? arr : []);
 
-const parseDate = (v) => {
-  const d = new Date(v);
-  return Number.isNaN(d.getTime()) ? null : d;
+const normalizeMonthlyData = (arr, key) => {
+  // ensures all months exist
+  const map = new Map(MONTHS.map((m) => [m, 0]));
+
+  safeArray(arr).forEach((x) => {
+    if (x?.month && map.has(x.month)) {
+      map.set(x.month, Number(x[key] || 0));
+    }
+  });
+
+  return MONTHS.map((m) => ({ month: m, [key]: map.get(m) }));
 };
-
-const getMonthIndex = (dateVal) => {
-  const d = parseDate(dateVal);
-  if (!d) return null;
-  return d.getMonth(); // 0-11
-};
-
-const getPaymentAmount = (p) => {
-  const amount =
-    p?.amount ??
-    p?.totalAmount ??
-    p?.paidAmount ??
-    p?.price ??
-    p?.total ??
-    0;
-
-  const num = Number(amount);
-  return Number.isNaN(num) ? 0 : num;
-};
-
-/* -------------------- Skeleton UI -------------------- */
-const StatCardSkeleton = () => (
-  <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 animate-pulse">
-    <div className="flex items-start justify-between">
-      <div className="flex items-center gap-3">
-        <div className="h-11 w-11 rounded-xl bg-gray-200" />
-        <div>
-          <div className="h-4 w-40 bg-gray-200 rounded-md" />
-          <div className="h-3 w-28 bg-gray-100 rounded-md mt-2" />
-        </div>
-      </div>
-      <div>
-        <div className="h-7 w-16 bg-gray-200 rounded-md" />
-        <div className="h-3 w-10 bg-gray-100 rounded-md mt-2 ml-auto" />
-      </div>
-    </div>
-    <div className="mt-4 flex items-center justify-between">
-      <div className="h-4 w-24 bg-gray-100 rounded-md" />
-      <div className="h-4 w-12 bg-gray-100 rounded-md" />
-    </div>
-  </div>
-);
-
-const ChartSkeleton = () => (
-  <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 animate-pulse">
-    <div className="flex items-center justify-between">
-      <div>
-        <div className="h-4 w-32 bg-gray-200 rounded-md" />
-        <div className="h-3 w-44 bg-gray-100 rounded-md mt-2" />
-      </div>
-      <div className="h-8 w-24 bg-gray-100 rounded-xl" />
-    </div>
-    <div className="mt-4 h-[260px] bg-gray-100 rounded-xl" />
-  </div>
-);
-
-const TableSkeleton = () => (
-  <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden animate-pulse">
-    <div className="px-5 py-4 border-b border-gray-100">
-      <div className="h-4 w-40 bg-gray-200 rounded-md" />
-      <div className="h-3 w-56 bg-gray-100 rounded-md mt-2" />
-    </div>
-    <div className="p-5 space-y-3">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="h-10 bg-gray-100 rounded-xl" />
-      ))}
-    </div>
-  </div>
-);
 
 /* -------------------- UI Components -------------------- */
 const StatCard = ({ title, count, description, link, icon: Icon, gradient }) => {
@@ -136,7 +69,7 @@ const StatCard = ({ title, count, description, link, icon: Icon, gradient }) => 
 
           <div className="text-right">
             <p className="text-2xl font-extrabold text-gray-900 leading-none">
-              {count}
+              {count ?? 0}
             </p>
             <p className="text-[11px] text-gray-500 mt-1">Total</p>
           </div>
@@ -162,103 +95,28 @@ const StatCard = ({ title, count, description, link, icon: Icon, gradient }) => 
 };
 
 const Dashboard = () => {
-  /* -------------------- API Calls -------------------- */
-  const { data: bookingsData, isLoading: bookingsLoading } = useGetAllBookingsQuery();
-  const { data: hotelsData, isLoading: hotelsLoading } = useGetAllHotelsQuery();
-  const { data: roomsData, isLoading: roomsLoading } = useGetAllRoomsQuery();
-  const { data: usersData, isLoading: usersLoading } = useGetAllUsersQuery();
-  const { data: rolesData, isLoading: rolesLoading } = useGetRolesQuery();
-  const { data: reviewsData, isLoading: reviewsLoading } = useGetAllReviewsQuery();
-  const { data: paymentsData, isLoading: paymentsLoading } = useGetAllPaymentsQuery();
+  /* -------------------- API Call -------------------- */
+  const { data: matrixData, isLoading: matrixLoading } = useGetMatrixQuery();
 
-  const bookings = safeArray(bookingsData);
-  const payments = safeArray(paymentsData);
+  const stats = matrixData || matrixData?.data || {};
+  const api = matrixData?.data || matrixData || {};
 
-  /* -------------------- Totals -------------------- */
-  const totalBookings = bookings.length || 0;
-  const totalHotels = hotelsData?.data?.length || 0;
-  const totalRooms = roomsData?.data?.length || 0;
-  const totalGuests = usersData?.data?.length || 0;
-  const totalStaff = rolesData?.data?.length || 0;
-  const totalReviews = reviewsData?.data?.length || 0;
-  const totalPayments = payments.length || 0;
+  // Your response looks like: matrixData.data = { booking:{total}, ... }
+  const totalBookings = api?.booking?.total || 0;
+  const totalHotels = api?.hotel?.total || 0;
+  const totalRooms = api?.room?.total || 0;
+  const totalGuests = api?.guest?.total || 0;
+  const totalStaff = api?.user?.total || 0;
+  const totalReviews = api?.review?.total || 0;
+  const totalPayments = api?.payment?.total || 0;
+  const totalCoupons = api?.coupon?.total || 0;
 
-  const isStatsLoading =
-    bookingsLoading ||
-    hotelsLoading ||
-    roomsLoading ||
-    usersLoading ||
-    rolesLoading ||
-    reviewsLoading ||
-    paymentsLoading;
-
-  /* -------------------- Chart Data (with sample fallback) -------------------- */
-  let bookingsChartData = MONTHS.map((m) => ({ month: m, bookings: 0 }));
-  let revenueChartData = MONTHS.map((m) => ({ month: m, revenue: 0 }));
-
-  // Fill bookings chart
-  bookings.forEach((b) => {
-    const idx = getMonthIndex(b?.createdAt || b?.created_at);
-    if (idx === null) return;
-    bookingsChartData[idx].bookings += 1;
-  });
-
-  // Fill revenue chart
-  payments.forEach((p) => {
-    const idx = getMonthIndex(p?.createdAt || p?.created_at);
-    if (idx === null) return;
-    revenueChartData[idx].revenue += getPaymentAmount(p);
-  });
-
-  // Check empty chart
-  const isBookingsEmpty = bookingsChartData.every((x) => x.bookings === 0);
-  const isRevenueEmpty = revenueChartData.every((x) => x.revenue === 0);
-
-  // Sample fallback
-  if (isBookingsEmpty) {
-    bookingsChartData = [
-      { month: "Jan", bookings: 12 },
-      { month: "Feb", bookings: 18 },
-      { month: "Mar", bookings: 10 },
-      { month: "Apr", bookings: 25 },
-      { month: "May", bookings: 20 },
-      { month: "Jun", bookings: 28 },
-      { month: "Jul", bookings: 22 },
-      { month: "Aug", bookings: 30 },
-      { month: "Sep", bookings: 19 },
-      { month: "Oct", bookings: 26 },
-      { month: "Nov", bookings: 15 },
-      { month: "Dec", bookings: 33 },
-    ];
-  }
-
-  if (isRevenueEmpty) {
-    revenueChartData = [
-      { month: "Jan", revenue: 45000 },
-      { month: "Feb", revenue: 68000 },
-      { month: "Mar", revenue: 52000 },
-      { month: "Apr", revenue: 90000 },
-      { month: "May", revenue: 74000 },
-      { month: "Jun", revenue: 98000 },
-      { month: "Jul", revenue: 88000 },
-      { month: "Aug", revenue: 120000 },
-      { month: "Sep", revenue: 76000 },
-      { month: "Oct", revenue: 105000 },
-      { month: "Nov", revenue: 64000 },
-      { month: "Dec", revenue: 140000 },
-    ];
-  }
-
-  const showSampleBadge = isBookingsEmpty || isRevenueEmpty;
+  /* -------------------- Chart Data (Real API Only) -------------------- */
+  const revenueChartData = normalizeMonthlyData(api?.RevenueOverview, "revenue");
+  const bookingsChartData = normalizeMonthlyData(api?.BookingsOverview, "bookings");
 
   /* -------------------- Recent Bookings -------------------- */
-  const recentBookings = [...bookings]
-    .sort((a, b) => {
-      const da = new Date(a?.createdAt || a?.created_at || 0).getTime();
-      const db = new Date(b?.createdAt || b?.created_at || 0).getTime();
-      return db - da;
-    })
-    .slice(0, 8);
+  const recentBookings = safeArray(api?.RecentBookings).slice(0, 8);
 
   /* -------------------- Cards Config -------------------- */
   const dashboardItems = [
@@ -321,7 +179,7 @@ const Dashboard = () => {
     {
       title: "Marketing",
       icon: Megaphone,
-      count: "—",
+      count: totalCoupons,
       description: "Coupons & campaigns",
       link: "/coupons",
       gradient: "bg-gradient-to-r from-orange-600 to-amber-500",
@@ -329,7 +187,7 @@ const Dashboard = () => {
     {
       title: "Reports",
       icon: BarChart3,
-      count: "—",
+      count: totalBookings,
       description: "Reports generated",
       link: "/reports/bookings",
       gradient: "bg-gradient-to-r from-fuchsia-600 to-pink-500",
@@ -378,116 +236,65 @@ const Dashboard = () => {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {isStatsLoading
-          ? Array.from({ length: 8 }).map((_, i) => <StatCardSkeleton key={i} />)
-          : dashboardItems.map((item, index) => <StatCard key={index} {...item} />)}
+        {matrixLoading
+          ? Array.from({ length: 8 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 animate-pulse"
+              >
+                <div className="h-4 w-32 bg-gray-200 rounded-md" />
+                <div className="h-8 w-20 bg-gray-100 rounded-md mt-3" />
+              </div>
+            ))
+          : dashboardItems.map((item, index) => (
+              <StatCard key={index} {...item} />
+            ))}
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {/* Revenue Chart */}
-        {paymentsLoading ? (
-          <ChartSkeleton />
-        ) : (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-bold text-gray-900">
-                  Revenue Overview
-                </h3>
-                <p className="text-xs text-gray-500 mt-1">
-                  Monthly revenue from payments
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                {showSampleBadge && (
-                  <span className="text-[11px] font-semibold text-orange-700 bg-orange-100 px-2 py-1 rounded-full">
-                    Sample Data
-                  </span>
-                )}
-
-                <Link
-                  to="/payments"
-                  className="text-sm font-semibold text-red-700 hover:text-red-800 transition"
-                >
-                  View Payments
-                </Link>
-              </div>
-            </div>
-
-            <div className="mt-4 h-[260px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={revenueChartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Area type="monotone" dataKey="revenue" strokeWidth={2} />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        )}
-
-        {/* Bookings Chart */}
-        {bookingsLoading ? (
-          <ChartSkeleton />
-        ) : (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-bold text-gray-900">
-                  Bookings Overview
-                </h3>
-                <p className="text-xs text-gray-500 mt-1">
-                  Monthly bookings count
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                {showSampleBadge && (
-                  <span className="text-[11px] font-semibold text-orange-700 bg-orange-100 px-2 py-1 rounded-full">
-                    Sample Data
-                  </span>
-                )}
-
-                <Link
-                  to="/bookings"
-                  className="text-sm font-semibold text-red-700 hover:text-red-800 transition"
-                >
-                  View Bookings
-                </Link>
-              </div>
-            </div>
-
-            <div className="mt-4 h-[260px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={bookingsChartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="bookings" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Recent Bookings Table */}
-      {bookingsLoading ? (
-        <TableSkeleton />
-      ) : (
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+          <div className="flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-gray-900">
-                Recent Bookings
+                Revenue Overview
               </h3>
               <p className="text-xs text-gray-500 mt-1">
-                Latest booking activity in your system
+                Monthly revenue from payments
+              </p>
+            </div>
+
+            <Link
+              to="/payments"
+              className="text-sm font-semibold text-red-700 hover:text-red-800 transition"
+            >
+              View Payments
+            </Link>
+          </div>
+
+          <div className="mt-4 h-[260px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={revenueChartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Area type="monotone" dataKey="revenue" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Bookings Chart */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-gray-900">
+                Bookings Overview
+              </h3>
+              <p className="text-xs text-gray-500 mt-1">
+                Monthly bookings count
               </p>
             </div>
 
@@ -495,69 +302,98 @@ const Dashboard = () => {
               to="/bookings"
               className="text-sm font-semibold text-red-700 hover:text-red-800 transition"
             >
-              View All
+              View Bookings
             </Link>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-gray-600">
-                <tr>
-                  <th className="text-left px-5 py-3 font-semibold">Booking ID</th>
-                  <th className="text-left px-5 py-3 font-semibold">Guest</th>
-                  <th className="text-left px-5 py-3 font-semibold">Hotel</th>
-                  <th className="text-left px-5 py-3 font-semibold">Status</th>
-                  <th className="text-left px-5 py-3 font-semibold">Date</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {recentBookings.length > 0 ? (
-                  recentBookings.map((b) => (
-                    <tr
-                      key={b?.id}
-                      className="border-t border-gray-100 hover:bg-gray-50 transition"
-                    >
-                      <td className="px-5 py-4 font-semibold text-gray-900">
-                        #{b?.id || "—"}
-                      </td>
-
-                      <td className="px-5 py-4 text-gray-700">
-                        {b?.guestName || b?.guest?.name || "Guest"}
-                      </td>
-
-                      <td className="px-5 py-4 text-gray-700">
-                        {b?.hotelName || b?.hotel?.name || "Hotel"}
-                      </td>
-
-                      <td className="px-5 py-4">
-                        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
-                          {b?.status || "Pending"}
-                        </span>
-                      </td>
-
-                      <td className="px-5 py-4 text-gray-600">
-                        {b?.createdAt || b?.created_at
-                          ? new Date(b.createdAt || b.created_at).toLocaleDateString()
-                          : "—"}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan={5}
-                      className="px-5 py-10 text-center text-gray-500"
-                    >
-                      No recent bookings found.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+          <div className="mt-4 h-[260px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={bookingsChartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="bookings" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
-      )}
+      </div>
+
+      {/* Recent Bookings Table */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-bold text-gray-900">Recent Bookings</h3>
+            <p className="text-xs text-gray-500 mt-1">
+              Latest booking activity in your system
+            </p>
+          </div>
+
+          <Link
+            to="/bookings"
+            className="text-sm font-semibold text-red-700 hover:text-red-800 transition"
+          >
+            View All
+          </Link>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 text-gray-600">
+              <tr>
+                <th className="text-left px-5 py-3 font-semibold">Booking ID</th>
+                <th className="text-left px-5 py-3 font-semibold">Guests</th>
+                <th className="text-left px-5 py-3 font-semibold">Payment</th>
+                <th className="text-left px-5 py-3 font-semibold">Status</th>
+                <th className="text-left px-5 py-3 font-semibold">Check In</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {recentBookings.length > 0 ? (
+                recentBookings.map((b) => (
+                  <tr
+                    key={b?._id}
+                    className="border-t border-gray-100 hover:bg-gray-50 transition"
+                  >
+                    <td className="px-5 py-4 font-semibold text-gray-900">
+                      {b?.bookingId || "—"}
+                    </td>
+
+                    <td className="px-5 py-4 text-gray-700">
+                      {b?.guests?.adults ?? 0} Adults, {b?.guests?.children ?? 0}{" "}
+                      Kids
+                    </td>
+
+                    <td className="px-5 py-4 text-gray-700">
+                      {b?.paymentStatus || "—"}
+                    </td>
+
+                    <td className="px-5 py-4">
+                      <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                        {b?.bookingStatus || "—"}
+                      </span>
+                    </td>
+
+                    <td className="px-5 py-4 text-gray-600">
+                      {b?.checkInDate
+                        ? new Date(b.checkInDate).toLocaleDateString()
+                        : "—"}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="px-5 py-10 text-center text-gray-500">
+                    No recent bookings found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       {/* Footer */}
       <p className="text-xs text-gray-500 text-center pt-2">

@@ -1,21 +1,20 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import baseQueryWithReAuth from "./baseAPI";
 
 export const inventoryService = createApi({
   reducerPath: "inventoryService",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:5000/api/inventory",
-  }),
+  baseQuery: baseQueryWithReAuth,
   endpoints: (builder) => ({
     getAllInventories: builder.query({
       query: () => ({ 
-        url: "/getAll"
+        url: "/inventory/getAll"
         , method: "GET"
        }),
     }),
 
     getInventory: builder.query({
       query: (id) => ({ 
-        url: `/get/${id}`,
+        url: `/inventory/get/${id}`,
          method: "GET" }),
     }),
   }),

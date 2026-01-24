@@ -78,6 +78,7 @@ import GeneralSettings from './pages/settings/GeneralSettings';
 import HotelSettings from './pages/settings/HotelSettings';
 import PoliciesSettings from './pages/settings/PoliciesSettings';
 import NotificationSettings from './pages/settings/NotificationSettings';
+import Profile from './pages/account/profile';
 
 function App() {
   return (
@@ -163,6 +164,9 @@ function App() {
             <Route path="/settings/hotel" element={<HotelSettings />} />
             <Route path="/settings/policies" element={<PoliciesSettings />} />
             <Route path="/settings/notifications" element={<NotificationSettings />} />
+
+            {/* Acccount */ }
+            <Route path="/profile" element={<Profile />} />
 
             {/* Users */}
             <Route path="/users" element={<Users />} />

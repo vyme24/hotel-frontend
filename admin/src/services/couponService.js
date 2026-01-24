@@ -1,24 +1,22 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import baseQueryWithReAuth from "./baseAPI";
 
 export const couponService = createApi({
   reducerPath: "couponService",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:5000/api/coupon",
-  }),
-  
+  baseQuery:baseQueryWithReAuth,
   endpoints: (builder) => ({
 
     getAllCoupons: builder.query({
 
       query: () => ({ 
-        url: "/getAll",
+        url: "/coupon/getAll",
          method: "GET" 
         }),
     }),
 
     getCoupon: builder.query({
       query: (id) => ({
-         url: `/get/${id}`,
+         url: `/coupon/get/${id}`,
           method: "GET"
          }),
     }),

@@ -1,33 +1,27 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import baseQueryWithReAuth from "./baseAPI";
 
 export const hotelService = createApi({
   reducerPath: "hotelService",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:5000/api/admin/hotel",
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      if (token) headers.set("authorization", `Bearer ${token}`);
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithReAuth, 
   endpoints: (builder) => ({
     getAllHotels: builder.query({
       query: () => ({
-         url: "/getAll",
+         url: "/hotel/getAll",
           method: "GET" 
         }),
     }),
 
     getHotel: builder.query({
       query: (id) => ({ 
-        url: `/get/${id}`,
+        url: `/hotel/get/${id}`,
          method: "GET"
          }),
     }),
 
     addHotel: builder.mutation({
       query: (body) => ({
-        url: "/addHotel",
+        url: "/hotel/addHotel",
         method: "POST",
         body,
       }),
