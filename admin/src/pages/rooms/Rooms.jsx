@@ -28,9 +28,8 @@ const Rooms = () => {
       </div>
     );
   }
-
-  const rooms = data?.data || [];
-
+const rooms = data?.data?.rooms?? [];
+ 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center">

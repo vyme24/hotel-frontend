@@ -29,14 +29,6 @@ const CurrentGuests = () => {
     );
   }
 
-  const today = new Date();
-  const guests =
-    data?.data?.filter(
-      (b) =>
-        b.bookingStatus === "confirmed" &&
-        new Date(b.checkInDate) <= today &&
-        new Date(b.checkOutDate) >= today
-    ) || [];
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">

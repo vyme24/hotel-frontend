@@ -33,7 +33,6 @@ const BookingDetails = () => {
     );
   }
 
-  const booking = data.data;
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {

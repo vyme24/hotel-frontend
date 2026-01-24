@@ -12,21 +12,7 @@ const Guests = () => {
     return <div className="p-6 text-red-500">Failed to load guests.</div>;
   }
 
-  // Only checked-in bookings = current guests
-  const checkedIn = data?.data?.filter(
-    (b) => b.bookingStatus === "checked_in"
-  ) || [];
-
-  // Make unique guests by userId
-  const uniqueGuests = Object.values(
-    checkedIn.reduce((acc, b) => {
-      if (b.userId?._id && !acc[b.userId._id]) {
-        acc[b.userId._id] = b;
-      }
-      return acc;
-    }, {})
-  );
-
+  
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">

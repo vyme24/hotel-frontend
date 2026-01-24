@@ -5,7 +5,6 @@ import { toast, Toaster } from "react-hot-toast";
 const Reviews = () => {
   const { data, isLoading, isError, refetch } = useGetAllReviewsQuery();
   const [deleteReview] = useDeleteReviewMutation();
-  const [selectedRating, setSelectedRating] = useState("All");
 
   if (isLoading) {
     return (
@@ -28,9 +27,7 @@ const Reviews = () => {
     );
   }
 
-  const allReviews = data?.data || [];
 
-  // Delete function
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this review?")) {
       try {

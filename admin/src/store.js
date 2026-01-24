@@ -12,6 +12,9 @@ import { reviewService } from "./services/reviewService";
 import { notificationService } from "./services/notificationService";
 import { messageService } from "./services/messageService";
 import { roleApi } from "./services/roleService";
+import { staffService } from "./services/staffService";
+import { settingsService } from "./services/settingsService";
+
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +30,10 @@ export const store = configureStore({
     [notificationService.reducerPath]: notificationService.reducer,
     [messageService.reducerPath]: messageService.reducer,
     [roleApi.reducerPath]: roleApi.reducer,
+    [staffService.reducerPath]: staffService.reducer,
+        [settingsService.reducerPath]: settingsService.reducer,
+  
+
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -42,6 +49,8 @@ export const store = configureStore({
       reviewService.middleware,
       notificationService.middleware,
       messageService.middleware,
-      roleApi.middleware
+      roleApi.middleware,
+      staffService.middleware,
+      settingsService.middleware
     ),
 });

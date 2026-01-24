@@ -20,10 +20,8 @@ const OccupancyReports = () => {
     );
   }
 
-  const bookings = data?.data || [];
-  const todayDate = new Date().toDateString();
 
-  // Categories
+  
   const checkedIn = bookings.filter(b => b.bookingStatus === "checked_in");
   const confirmed = bookings.filter(b => b.bookingStatus === "confirmed");
   const cancelled = bookings.filter(b => b.bookingStatus === "cancelled");

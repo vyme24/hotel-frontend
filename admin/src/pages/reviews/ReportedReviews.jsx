@@ -1,4 +1,3 @@
-// import { useGetAllReviewsQuery, useDeleteReviewMutation } from "../../services/reviewService";
 import { Link } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 
@@ -6,17 +5,6 @@ const ReportedReviews = () => {
   const { data, isLoading, isError, refetch } = useGetAllReviewsQuery();
   const [deleteReview] = useDeleteReviewMutation();
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this reported review?")) {
-      try {
-        await deleteReview(id).unwrap();
-        toast.success("Reported review deleted successfully");
-        refetch();
-      } catch (err) {
-        toast.error("Failed to delete the review");
-      }
-    }
-  };
 
   if (isLoading) {
     return (
@@ -34,8 +22,6 @@ const ReportedReviews = () => {
     );
   }
 
-  // Yahan filter logic aapke backend property ke hisab se change ho sakta hai (e.g., r.isReported === true)
-  const reported = data?.data?.filter((r) => r.isApproved === false) || [];
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">

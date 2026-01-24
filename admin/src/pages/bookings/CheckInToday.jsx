@@ -1,15 +1,7 @@
 import { Link } from "react-router-dom";
 import { useGetAllBookingsQuery } from "../../services/bookingService";
 
-const isToday = (dateStr) => {
-  const d = new Date(dateStr);
-  const t = new Date();
-  return (
-    d.getDate() === t.getDate() &&
-    d.getMonth() === t.getMonth() &&
-    d.getFullYear() === t.getFullYear()
-  );
-};
+
 
 const CheckInToday = () => {
   const { data, isLoading, isError } = useGetAllBookingsQuery();

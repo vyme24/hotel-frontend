@@ -12,8 +12,6 @@ const FeaturedListings = () => {
     return <div className="p-6 text-red-500">Failed to load listings.</div>;
   }
 
-  const featured =
-    data?.data?.filter((h) => h.isFeatured === true) || [];
 
   return (
     <div className="p-6 space-y-6">

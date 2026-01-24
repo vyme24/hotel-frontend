@@ -5,24 +5,8 @@ const PendingReviews = () => {
   const { data, isLoading, isError, refetch } = useGetAllReviewsQuery();
   const [updateReview] = useUpdateReviewMutation();
 
-  const handleApprove = async (id) => {
-    try {
-      await updateReview({ id, isApproved: true }).unwrap();
-      toast.success("Review approved successfully!");
-      refetch();
-    } catch (err) {
-      toast.error("Failed to approve review.");
-    }
-  };
 
-  const handleFeedback = (id) => {
-    const feedback = prompt("Enter your feedback/reply for this review:");
-    if (feedback) {
-      console.log(`Feedback for ${id}: ${feedback}`);
-      // Yahan aap feedback update karne ki API call laga sakte hain
-      toast.success("Feedback saved!");
-    }
-  };
+
 
   if (isLoading) {
     return (
@@ -40,8 +24,7 @@ const PendingReviews = () => {
     );
   }
 
-  const pending = data?.data?.filter((r) => r.isApproved === false) || [];
-
+  
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
       <Toaster position="top-right" />

@@ -33,7 +33,6 @@ const FeaturedHotels = () => {
     );
   }
 
-  const featured = data?.data?.filter((h) => h.isFeatured === true) || [];
 
   return (
     <div className="min-h-screen bg-gray-50">

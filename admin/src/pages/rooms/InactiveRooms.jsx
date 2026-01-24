@@ -1,20 +1,8 @@
 import { Link } from "react-router-dom";
 import { useGetAllRoomsQuery } from "../../services/roomService";
-// Maan lijiye aapke paas status update karne ke liye ye service hai
-// import { useUpdateRoomStatusMutation } from "../../services/roomService"; 
 
 const InactiveRooms = () => {
   const { data, isLoading, isError } = useGetAllRoomsQuery();
-  // const [updateStatus] = useUpdateRoomStatusMutation();
-
-  const handleToggleStatus = async (id, currentStatus) => {
-    const newStatus = currentStatus === "active" ? "inactive" : "active";
-    if (window.confirm(`Are you sure you want to make this room ${newStatus}?`)) {
-      console.log(`Changing status of ${id} to ${newStatus}`);
-      // Yahan aapka API call aayega:
-      // await updateStatus({ id, status: newStatus });
-    }
-  };
 
   if (isLoading) {
     return (
@@ -37,7 +25,6 @@ const InactiveRooms = () => {
     );
   }
 
-  const rooms = data?.data?.filter((r) => r.status === "inactive") || [];
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">

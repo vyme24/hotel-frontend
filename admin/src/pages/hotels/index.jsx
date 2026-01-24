@@ -14,7 +14,7 @@ const Hotels = () => {
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this hotel?")) {
-      console.log("Delete hotel:", id);
+      ("Delete hotel:", id);
     }
   };
 

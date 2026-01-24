@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import Notification from "./Header/Notification";
-import { useLoginMutation } from "../services/adminService";
+import { useLogoutMutation } from "../services/userService";
 
 import {
   Menu,
@@ -15,7 +15,7 @@ import {
 
 const HeaderTwo = ({ user, toggleSidebar }) => {
   const location = useLocation();
-  const [logouthandle, { isLoading, data, isSuccess }] = useLoginMutation();
+ const [logouthandle, { isLoading, data, isSuccess }] = useLogoutMutation();
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -37,7 +37,7 @@ const HeaderTwo = ({ user, toggleSidebar }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+  
   const logoutSubmit = async () => {
     const confirm = window.confirm("Are you sure you want to logout?");
     if (confirm) {
@@ -123,14 +123,7 @@ const HeaderTwo = ({ user, toggleSidebar }) => {
                   </div>
 
                   <div className="p-2 space-y-1">
-                    <Link
-                      to="/"
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    >
-                      <Home className="w-4 h-4 text-gray-500" />
-                      Home
-                    </Link>
+                
 
                     <Link
                       to="/profile"
@@ -141,15 +134,7 @@ const HeaderTwo = ({ user, toggleSidebar }) => {
                       Profile
                     </Link>
 
-                    <Link
-                      to="/settings"
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    >
-                      <Settings className="w-4 h-4 text-gray-500" />
-                      Settings
-                    </Link>
-
+                  
                     <div className="border-t border-gray-100 my-1" />
 
                     <button

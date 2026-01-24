@@ -28,8 +28,6 @@ const RoomTypes = () => {
     );
   }
 
-  const rooms = data?.data || [];
-  const uniqueTypes = Array.from(new Map(rooms.map(r => [r.roomTypeName, r])).values());
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">

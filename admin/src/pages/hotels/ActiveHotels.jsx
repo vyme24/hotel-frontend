@@ -33,7 +33,6 @@ const ActiveHotels = () => {
     );
   }
 
-  const activeHotels = data?.data?.filter((h) => h.status === "active") || [];
 
   return (
     <div className="min-h-screen bg-gray-50">

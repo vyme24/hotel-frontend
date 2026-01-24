@@ -5,17 +5,7 @@ const Offers = () => {
   //  const { data, isLoading, isError, refetch } = useGetAllCouponsQuery();
   //  const [deleteCoupon] = useDeleteCouponMutation();
 
-  //  const handleDelete = async (id) => {
-  //    if (window.confirm("Are you sure you want to delete this offer?")) {
-  //      try {
-  //        await deleteCoupon(id).unwrap();
-  //        toast.success("Offer deleted successfully");
-  //        refetch();
-  //      } catch (err) {
-  //        toast.error("Failed to delete offer");
-  //      }
-  //    }
-  //  };
+  
 
   //  if (isLoading) {
   //    return (
@@ -35,9 +25,7 @@ const Offers = () => {
   //    );
   //  }
 
-  //  const offers = data?.data?.filter((c) => c.status === "active") || [];
-
-  return (
+ // return (
     <>
          {/* <div className="p-8 space-y-8 bg-gray-50 min-h-screen">
        <Toaster position="top-right" />
@@ -145,7 +133,7 @@ const Offers = () => {
    
 
     </>
-  );
+ // );
 }
 
 export default Offers;

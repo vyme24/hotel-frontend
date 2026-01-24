@@ -6,17 +6,7 @@ const SuccessfulPayments = () => {
   const { data, isLoading, isError, refetch } = useGetAllPaymentsQuery();
   const [deletePayment] = useDeletePaymentMutation();
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this payment record?")) {
-      try {
-        await deletePayment(id).unwrap();
-        toast.success("Payment record deleted successfully");
-        refetch();
-      } catch (err) {
-        toast.error("Failed to delete payment record");
-      }
-    }
-  };
+
 
   if (isLoading) {
     return (
@@ -39,9 +29,8 @@ const SuccessfulPayments = () => {
     );
   }
 
-  // Sirf "success" status wali payments filter kar rahe hain
-  const success = data?.data?.filter((p) => p.status === "success") || [];
 
+  
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
       <Toaster position="top-right" />

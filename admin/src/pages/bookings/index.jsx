@@ -31,12 +31,6 @@ const Bookings = () => {
     );
   }
 
-  const bookings = data?.data || [];
-
-  const filteredBookings = selectedStatus === "Any Status" 
-    ? bookings 
-    : bookings.filter(booking => booking.bookingStatus === selectedStatus.toLowerCase());
-
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">

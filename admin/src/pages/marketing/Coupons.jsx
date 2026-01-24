@@ -23,7 +23,6 @@ const Coupons = () => {
     return <div className="p-6 text-red-500">Failed to load coupons.</div>;
   }
 
-  const coupons = data?.data || [];
 
   return (
     <div className="p-6 space-y-6">

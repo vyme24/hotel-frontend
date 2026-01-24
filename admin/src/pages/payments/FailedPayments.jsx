@@ -1,4 +1,3 @@
-// import { useGetAllPaymentsQuery, useDeletePaymentMutation } from "../../services/paymentService";
 import { Link } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 
@@ -6,17 +5,7 @@ const FailedPayments = () => {
   const { data, isLoading, isError, refetch } = useGetAllPaymentsQuery();
   const [deletePayment] = useDeletePaymentMutation();
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this failed payment record?")) {
-      try {
-        await deletePayment(id).unwrap();
-        toast.success("Transaction record removed");
-        refetch();
-      } catch (err) {
-        toast.error("Failed to delete record");
-      }
-    }
-  };
+
 
   if (isLoading) {
     return (
@@ -39,7 +28,6 @@ const FailedPayments = () => {
     );
   }
 
-  const failed = data?.data?.filter((p) => p.status === "failed") || [];
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">

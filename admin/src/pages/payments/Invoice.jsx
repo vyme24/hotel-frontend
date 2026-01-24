@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useGetPaymentQuery } from "../../services/paymentService";
 
 const Invoice = () => {
-  const { id } = useParams();
+
   const { data, isLoading, isError } = useGetPaymentQuery(id);
 
   if (isLoading) {
@@ -13,8 +13,6 @@ const Invoice = () => {
     return <div className="p-6 text-red-500">Invoice not found.</div>;
   }
 
-  const payment = data.data;
-  const booking = payment.bookingId;
 
   return (
     <div className="p-6 max-w-3xl mx-auto">

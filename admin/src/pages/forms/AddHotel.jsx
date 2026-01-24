@@ -3,7 +3,7 @@ import { useAddHotelMutation } from "../../services/hotelService";
 import { toast, Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 
-const AddHotel = () => {
+const AddHotel = async () => {
   const [form, setForm] = useState({
     name: "",
     brand: "",
@@ -15,17 +15,6 @@ const AddHotel = () => {
 
   const [addHotel, { isLoading }] = useAddHotelMutation();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!form.name || !form.propertyType) {
-      toast.error("Name and Property Type are required");
-      return;
-    }
 
     try {
       await addHotel(form).unwrap();
@@ -164,6 +153,4 @@ const AddHotel = () => {
       </form>
     </div>
   );
-};
-
 export default AddHotel;

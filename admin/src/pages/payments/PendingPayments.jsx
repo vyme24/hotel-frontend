@@ -12,10 +12,6 @@ const PendingPayments = () => {
     return <div className="p-6 text-red-500">Failed to load data.</div>;
   }
 
-  const pending =
-    data?.data?.filter(
-      (b) => b.paymentStatus === "pending"
-    ) || [];
 
   return (
     <div className="p-6 space-y-6">

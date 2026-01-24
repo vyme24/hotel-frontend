@@ -8,6 +8,7 @@ import Login from './pages/auth/Login';
 import AddHotel from './pages/hotels/AddHotel';
 import {Toaster} from "react-hot-toast"
 import Users from './pages/Users';
+import Profile from './pages/Profile';
 
 // Bookings
 import Bookings from './pages/bookings';
@@ -92,6 +93,7 @@ function App() {
           <Route path='/' element={<DashboardLayout/>}>
   <Route index element={<Dashboard/>}/>
   <Route path="admin/dashboard" element={<Dashboard/>} />
+  <Route path="/profile" element={<Profile/>} />
 
             {/* Booking Management */}
             <Route path="/bookings" element={<Bookings />} />

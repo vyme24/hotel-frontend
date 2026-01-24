@@ -22,24 +22,6 @@ const TaxesCharges = () => {
     );
   }
 
-  const bookings = data?.data || [];
-
-  const totalTax = bookings.reduce(
-    (sum, b) => sum + (b.price?.taxes || 0),
-    0
-  );
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this record?")) {
-      try {
-        await deleteBooking(id).unwrap();
-        toast.success("Record deleted successfully");
-        refetch();
-      } catch (err) {
-        toast.error("Failed to delete record");
-      }
-    }
-  };
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">

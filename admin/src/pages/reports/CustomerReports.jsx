@@ -20,41 +20,7 @@ const CustomerReports = () => {
     );
   }
 
-  const bookings = data?.data || [];
-  const customersMap = {};
 
-  bookings.forEach((b) => {
-    const u = b.userId;
-    if (!u?._id) return;
-
-    if (!customersMap[u._id]) {
-      customersMap[u._id] = {
-        _id: u._id,
-        name: u.name,
-        email: u.email,
-        totalBookings: 0,
-        confirmed: 0,
-        cancelled: 0,
-        pending: 0,
-        totalAmount: 0,
-        lastBooking: null,
-      };
-    }
-
-    const c = customersMap[u._id];
-    c.totalBookings += 1;
-    c.totalAmount += b.price?.totalAmount || 0;
-
-    if (b.bookingStatus === "confirmed") c.confirmed += 1;
-    if (b.bookingStatus === "cancelled") c.cancelled += 1;
-    if (b.bookingStatus === "pending") c.pending += 1;
-
-    if (!c.lastBooking || new Date(b.createdAt) > new Date(c.lastBooking)) {
-      c.lastBooking = b.createdAt;
-    }
-  });
-
-  const customers = Object.values(customersMap);
 
   return (
     <div className="p-8 space-y-8 bg-gray-50 min-h-screen">

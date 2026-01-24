@@ -6,9 +6,7 @@ const SingleRoom = () => {
   const { data, isLoading, isError } = useGetRoomQuery(id);
 
   if (isLoading) return <div className="p-6">Loading room...</div>;
-  if (isError || !data?.data) return <div className="p-6 text-red-500">Room not found.</div>;
-
-  const r = data.data;
+  
 
   return (
     <div className="p-6 space-y-4">

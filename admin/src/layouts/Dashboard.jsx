@@ -7,8 +7,8 @@ import { useGetUserQuery } from "../services/userService";
 const DashboardLayout = () => {
   const [user, setUser] = useState(null);
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // mobile
-  const [isCollapsed, setIsCollapsed] = useState(true); // ✅ default minimal
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const { isLoading, isError, data, isSuccess } = useGetUserQuery();
 

@@ -20,13 +20,6 @@ const BookingReports = () => {
     );
   }
 
-  const bookings = data?.data || [];
-
-  const total = bookings.length;
-  const confirmed = bookings.filter(b => b.bookingStatus === "confirmed").length;
-  const cancelled = bookings.filter(b => b.bookingStatus === "cancelled").length;
-  const pending = bookings.filter(b => b.bookingStatus === "pending").length;
-
   return (
     <div className="p-8 space-y-8 bg-gray-50 min-h-screen">
       {/* Header */}

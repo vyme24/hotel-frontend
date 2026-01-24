@@ -1,15 +1,7 @@
 import { Link } from "react-router-dom";
 import { useGetAllBookingsQuery } from "../../services/bookingService";
 
-const isToday = (dateStr) => {
-  const d = new Date(dateStr);
-  const t = new Date();
-  return (
-    d.getDate() === t.getDate() &&
-    d.getMonth() === t.getMonth() &&
-    d.getFullYear() === t.getFullYear()
-  );
-};
+
 
 const CheckOutToday = () => {
   const { data, isLoading, isError } = useGetAllBookingsQuery();
@@ -39,10 +31,6 @@ const CheckOutToday = () => {
     );
   }
 
-  const todayList =
-    data?.data?.filter(
-      (b) => b.checkOutDate && isToday(b.checkOutDate)
-    ) || [];
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">

@@ -6,17 +6,7 @@ const Refunds = () => {
   const { data, isLoading, isError, refetch } = useGetAllPaymentsQuery();
   const [deletePayment] = useDeletePaymentMutation();
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this refund record?")) {
-      try {
-        await deletePayment(id).unwrap();
-        toast.success("Refund record deleted");
-        refetch();
-      } catch (err) {
-        toast.error("Failed to delete record");
-      }
-    }
-  };
+
 
   if (isLoading) {
     return (
@@ -34,8 +24,6 @@ const Refunds = () => {
     );
   }
 
-  // Sirf wahi records jinka status "refunded" hai
-  const refunds = data?.data?.filter((p) => p.status === "refunded") || [];
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGetRolesQuery, useUpdateRoleMutation } from "../../services/roleService"; // Assuming these exist
+import { useGetRolesQuery, useUpdateRoleMutation } from "../../services/roleService"; 
 import { toast, Toaster } from "react-hot-toast";
 
 const RolesPermissions = () => {
@@ -14,33 +14,9 @@ const RolesPermissions = () => {
     }
   }, [data]);
 
-  const handlePermissionChange = (roleId, permission, checked) => {
-    setRoles(prevRoles =>
-      prevRoles.map(role =>
-        role._id === roleId
-          ? {
-              ...role,
-              permissions: checked
-                ? [...role.permissions, permission]
-                : role.permissions.filter(p => p !== permission)
-            }
-          : role
-      )
-    );
-  };
 
-  const handleSave = async () => {
-    try {
-      for (const role of roles) {
-        await updateRole({ id: role._id, permissions: role.permissions }).unwrap();
-      }
-      toast.success("Roles and permissions updated successfully");
-      setEditing(false);
-      refetch();
-    } catch (error) {
-      toast.error("Failed to update roles and permissions");
-    }
-  };
+
+
 
   if (isLoading) {
     return (

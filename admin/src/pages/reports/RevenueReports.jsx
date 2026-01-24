@@ -20,14 +20,13 @@ const RevenueReports = () => {
     );
   }
 
-  const bookings = data?.data || [];
 
   const today = new Date();
   const todayStr = today.toDateString();
   const currentMonth = today.getMonth();
   const currentYear = today.getFullYear();
 
-  // Financial Calculations
+
   const totalRevenue = bookings.reduce((sum, b) => sum + (b.price?.totalAmount || 0), 0);
   
   const todayRevenue = bookings

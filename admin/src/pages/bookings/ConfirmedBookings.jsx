@@ -29,10 +29,7 @@ const ConfirmedBookings = () => {
     );
   }
 
-  const confirmed =
-    data?.data?.filter(
-      (b) => b.bookingStatus === "confirmed"
-    ) || [];
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
