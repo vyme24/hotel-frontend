@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import Header from "../components/Header";
-import Video from "../pages/Video";
+import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import Facilities from "./Facilities"
 import Information from "../pages/Information";
@@ -14,7 +14,7 @@ const Home =()=>{
         <>
         <Header />
        
-   <Video/>
+   <Hero/>
    
    <Room/>
     <Room2/>
