@@ -1,256 +1,388 @@
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Sparkles, ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
+import { AuthAPI } from "../services/auth";
+
+const { useGetUserQuery } = AuthAPI;
+
 const Header = () => {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderHovered, setIsHeaderHovered] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const closeTimeoutRef = useRef(null);
+  const [imgError, setImgError] = useState(false);
+ 
+  const { data: userData, error, isLoading, isSuccess } = useGetUserQuery(token, {
+    skip: !token,
+  });
+
+
+  useEffect(() => {
+    if (userData?.data) {
+      setUser(userData.data);
+    } else if (token && error) {
+      localStorage.removeItem("token");
+      setToken(null);
+      setUser(null);
+    } else if (!token) {
+      setUser(null);
+    }
+  }, [userData, token, error]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+    window.location.href = "/";
+  };
+
+  const userDisplayData = user ? {
+    name: user.fullName || user.email?.split('@')[0] || "User",
+    email: user.email || "No email",
+  } : null;
+
+  const dropdownData = {
+    Stays: [
+      { label: "Luxury Suites", path: "/stays/luxury-suites" },
+      { label: "Standard Rooms", path: "/stays/standard-rooms" },
+      { label: "Deluxe Rooms", path: "/stays/deluxe-rooms" },
+      { label: "Executive Suites", path: "/stays/executive-suites" },
+      { label: "Family Rooms", path: "/stays/family-rooms" },
+      { label: "Penthouse", path: "/stays/penthouse" },
+      { label: "Villa", path: "/stays/villa" },
+      { label: "Bungalow", path: "/stays/bungalow" },
+      { label: "Ocean View Rooms", path: "/stays/ocean-view" },
+      { label: "Mountain View Suites", path: "/stays/mountain-view" },
+      { label: "Presidential Suite", path: "/stays/presidential-suite" },
+      { label: "Garden Villas", path: "/stays/garden-villas" },
+      { label: "City Center Apartments", path: "/stays/city-apartments" },
+      { label: "Rooftop Cabins", path: "/stays/rooftop-cabins" },
+      { label: "Heritage Rooms", path: "/stays/heritage-rooms" },
+      { label: "Spa Retreat Rooms", path: "/stays/spa-retreat" },
+      { label: "Business Class Suites", path: "/stays/business-suites" },
+      { label: "Honeymoon Villas", path: "/stays/honeymoon-villas" },
+      { label: "Accessible Rooms", path: "/stays/accessible-rooms" },
+      { label: "Pet-Friendly Suites", path: "/stays/pet-friendly" },
+    ],
+
+    Experiences: [
+      { label: "Spa Retreats", path: "/experiences/spa-retreats" },
+      { label: "Adventure Tours", path: "/experiences/adventure" },
+      { label: "Cultural Events", path: "/experiences/culture" },
+      { label: "Fine Dining", path: "/experiences/fine-dining" },
+      { label: "Wellness Programs", path: "/experiences/wellness" },
+      { label: "Excursions", path: "/experiences/excursions" },
+      { label: "Workshops", path: "/experiences/workshops" },
+      { label: "Nightlife", path: "/experiences/nightlife" },
+      { label: "Wine Tastings", path: "/experiences/wine" },
+      { label: "Cooking Classes", path: "/experiences/cooking" },
+      { label: "Art Galleries", path: "/experiences/art" },
+      { label: "Music Festivals", path: "/experiences/music" },
+      { label: "Yoga Sessions", path: "/experiences/yoga" },
+      { label: "Hiking Trails", path: "/experiences/hiking" },
+      { label: "Boat Cruises", path: "/experiences/cruise" },
+      { label: "Theater Shows", path: "/experiences/theater" },
+      { label: "Golf Lessons", path: "/experiences/golf" },
+      { label: "Scuba Diving", path: "/experiences/scuba" },
+      { label: "Photography Tours", path: "/experiences/photography" },
+      { label: "Meditation Retreats", path: "/experiences/meditation" },
+    ],
+
+    Destinations: [
+      { label: "Beach Resorts", path: "/destinations/beach" },
+      { label: "Mountain Lodges", path: "/destinations/mountain" },
+      { label: "City Centers", path: "/destinations/city" },
+      { label: "Island Getaways", path: "/destinations/island" },
+      { label: "Desert Oases", path: "/destinations/desert" },
+      { label: "Historic Sites", path: "/destinations/historic" },
+      { label: "National Parks", path: "/destinations/parks" },
+      { label: "Urban Escapes", path: "/destinations/urban" },
+      { label: "Tropical Islands", path: "/destinations/tropical" },
+      { label: "Ski Resorts", path: "/destinations/ski" },
+      { label: "Metropolitan Cities", path: "/destinations/metro" },
+      { label: "Countryside Retreats", path: "/destinations/countryside" },
+      { label: "Safari Adventures", path: "/destinations/safari" },
+      { label: "Lakefront Cabins", path: "/destinations/lakefront" },
+      { label: "Coastal Towns", path: "/destinations/coastal" },
+      { label: "Hill Stations", path: "/destinations/hill" },
+      { label: "Vineyard Estates", path: "/destinations/vineyard" },
+      { label: "Arctic Expeditions", path: "/destinations/arctic" },
+      { label: "Jungle Lodges", path: "/destinations/jungle" },
+      { label: "Coral Reef Resorts", path: "/destinations/coral-reef" },
+    ],
+
+    Support: [
+      { label: "Contact Us", path: "/support/contact" },
+      { label: "FAQs", path: "/support/faqs" },
+      { label: "Booking Help", path: "/support/booking-help" },
+      { label: "Cancellation Policy", path: "/support/cancellation" },
+      { label: "Terms of Service", path: "/support/terms" },
+      { label: "Privacy Policy", path: "/support/privacy" },
+      { label: "Customer Reviews", path: "/support/reviews" },
+      { label: "Feedback", path: "/support/feedback" },
+      { label: "Live Chat Support", path: "/support/chat" },
+      { label: "Phone Assistance", path: "/support/phone" },
+      { label: "Email Help", path: "/support/email" },
+      { label: "Travel Insurance", path: "/support/insurance" },
+      { label: "Refund Process", path: "/support/refund" },
+      { label: "Complaint Resolution", path: "/support/complaints" },
+      { label: "Accessibility Info", path: "/support/accessibility" },
+      { label: "Partnership Inquiries", path: "/support/partners" },
+      { label: "Newsletter Signup", path: "/support/newsletter" },
+      { label: "App Download", path: "/support/app" },
+      { label: "Site Map", path: "/support/sitemap" },
+      { label: "About Us", path: "/about" },
+    ],
+  };
+
+  const handleMouseEnterDropdown = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+  };
+
+  const handleMouseLeaveDropdown = () => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 300);
+  };
+
+  const handleItemClick = (category, item) => {
+    setSelectedItems(prev => {
+      const existing = prev.find(sel => sel.category === category && sel.item === item);
+      if (existing) {
+        return prev.filter(sel => !(sel.category === category && sel.item === item));
+      } else {
+        return [...prev, { category, item }];
+      }
+    });
+  };
+
+  const toggleProfileDropdown = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+  };
+
   return (
-   <>
-   <header className="header-area">
-  <div className="header-top-bar padding-right-100px padding-left-100px">
-    <div className="container-fluid">
-      <div className="row align-items-center">
-        <div className="col-lg-6">
-          <div className="header-top-content">
-            <div className="header-left">
-              <ul className="list-items">
-                <li>
-                  <a href="#">
-                    <i className="la la-phone me-1" />
-                    (123) 123-456
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="la la-envelope me-1" />
-                    trizen@example.com
-                  </a>
-                </li>
-              </ul>
-            </div>
+  
+   <nav className="fixed top-0 left-0 w-full z-[100] bg-white backdrop-blur-md shadow-md border-b border-gray-200"
+
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        
+        <Link to="/" className="flex items-center gap-2" aria-label="LuxStay homepage">
+          <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-red-500 rounded-xl flex items-center justify-center shadow-md">
+            <Sparkles size={22} className="text-white" />
           </div>
+          <span className="text-2xl font-black tracking-tighter text-gray-900">
+            LUX<span className="text-red-600">STAY</span>
+          </span>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-6">
+          {Object.keys(dropdownData).map((item) => (
+            <div
+              key={item}
+              className="relative"
+              onMouseEnter={() => {
+                handleMouseEnterDropdown();
+                setOpenDropdown(item);
+              }}
+              onMouseLeave={handleMouseLeaveDropdown}
+            >
+              <button
+                onClick={() => setOpenDropdown(openDropdown === item ? null : item)}
+                className="text-sm font-semibold px-3 py-2 rounded-lg transition-colors text-gray-700 hover:text-red-600"
+              >
+                {item}
+              </button>
+            </div>
+          ))}
         </div>
-        <div className="col-lg-6">
-          <div className="header-top-content">
-            <div className="header-right d-flex align-items-center justify-content-end">
-              <div className="header-right-action">
-                <div className="select-contain select--contain w-auto">
-                  <select className="select-contain-select">
-                    <option data-content='<span class="flag-icon flag-icon-id me-1"></span> Bahasa Indonesia'>
-                      Bahasa Indonesia
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-de me-1"></span> Deutsch'>
-                      Deutsch
-                    </option>
-                    <option
-                      data-content='<span class="flag-icon flag-icon-us me-1"></span> English(US)'
-                      selected=""
+
+        <div className="flex items-center gap-4 sm:gap-6">
+          {user ? (
+            <div className="relative profile-dropdown">
+            <button
+  onClick={toggleProfileDropdown}
+  className="
+    flex items-center gap-3
+    bg-white border-red-600 border-1 shadow-md rounded-full
+    px-4 py-2
+    w-36
+    overflow-hidden
+  "
+>
+  <div className="w-10 h-10 rounded-full overflow-hidden border shrink-0">
+    {!imgError && user?.avatar ? (
+      <img
+        src={user.avatar}
+        alt="user"
+        onError={() => setImgError(true)}
+        className="w-full h-full object-cover"
+      />
+    ) : (
+      <div className="w-full h-full flex items-center justify-center bg-gray-300 text-sm font-semibold text-gray-700">
+        {userDisplayData.name
+          ?.split(" ")
+          .map(n => n[0])
+          .join("")
+          .toUpperCase()
+          .slice(0, 2)}
+      </div>
+    )}
+  </div>
+
+  <span className="text-sm font-semibold text-gray-800 truncate">
+    {userDisplayData.name}
+  </span>
+</button>
+
+
+              {isProfileDropdownOpen && (
+                <div className="absolute right-0 mt-4 w-80 bg-white rounded-2xl shadow-2xl border z-50 overflow-hidden">
+                  <div className="p-4 flex items-start justify-between border-b">
+                    <div className="flex gap-3 items-center">
+                      <div className="w-14 h-14 rounded-full overflow-hidden border">
+                        {!imgError && user?.avatar ? (
+                          <img src={user.avatar} alt="user" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-300 text-sm font-semibold text-gray-700">
+                            {userDisplayData.name
+                              ?.split(" ")
+                              .map(n => n[0])
+                              .join("")
+                              .toUpperCase()
+                              .slice(0, 2)}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="min-w-0">
+                        <p className="font-semibold text-gray-900 truncate">
+                          {userDisplayData.name}
+                        </p>
+                        <p className="text-xs text-gray-500 truncate">
+                          {userDisplayData.email}
+                        </p>
+                        <Link to="/profile" className="text-xs text-blue-600 hover:underline">
+                          View & Update Profile
+                        </Link>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setIsProfileDropdownOpen(false)}
+                      className="text-gray-400 hover:text-gray-700"
                     >
-                      English US
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-gb-eng me-1"></span> English(UK)'>
-                      English UK
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-ro me-1"></span> Romanian'>
-                      Romanian
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-es me-1"></span> Español'>
-                      Español
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-fr me-1"></span> Francais'>
-                      Francais
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-it me-1"></span> Italiano'>
-                      Italiano
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-pl me-1"></span> Polski'>
-                      Polski
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-pt me-1"></span> Portuguese'>
-                      Portuguese
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-tr me-1"></span> Turkish'>
-                      Turkish
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-ru me-1"></span> Russian'>
-                      Russian
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-jp me-1"></span> Japanese'>
-                      Japanese
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-cn me-1"></span> Mandarin'>
-                      Mandarin
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-tw me-1"></span> Mandarin Chinese'>
-                      Mandarin Chinese
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-kr me-1"></span> Korean'>
-                      Korean
-                    </option>
-                    <option data-content='<span class="flag-icon flag-icon-in me-1"></span> Hindi'>
-                      Hindi
-                    </option>
-                  </select>
+                      ✕
+                    </button>
+                  </div>
+
+                  <div className="py-2">
+                    <Link to="/bookings" className="block px-4 py-2 text-sm hover:bg-gray-100">
+                      My Bookings
+                    </Link>
+                    <Link to="/settings" className="block px-4 py-2 text-sm hover:bg-gray-100">
+                      Settings
+                    </Link>
+                    <Link to="/help" className="block px-4 py-2 text-sm hover:bg-gray-100">
+                      FAQs
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="header-right-action">
-                <div className="select-contain select--contain w-auto">
-                  <select className="select-contain-select">
-                    <option value={1}>AED</option>
-                    <option value={2}>AUD</option>
-                    <option value={3}>BRL</option>
-                    <option value={4}>CAD</option>
-                    <option value={5}>CHF</option>
-                    <option value={6}>CNY</option>
-                    <option value={7}>EUR</option>
-                    <option value={8}>GBP</option>
-                    <option value={9}>HKD</option>
-                    <option value={10}>IDR</option>
-                    <option value={11}>INR</option>
-                    <option value={12}>JPY</option>
-                    <option value={13}>KRW</option>
-                    <option value={14}>MYR</option>
-                    <option value={15}>NZD</option>
-                    <option value={16}>PHP</option>
-                    <option value={17}>PLN</option>
-                    <option value={18}>RUB</option>
-                    <option value={19}>SAR</option>
-                    <option value={20}>SGD</option>
-                    <option value={21}>THB</option>
-                    <option value={22}>TRY</option>
-                    <option value={23}>TWD</option>
-                    <option value={24} selected="">
-                      USD
-                    </option>
-                    <option value={25}>VND</option>
-                    <option value={26}>MXN</option>
-                    <option value={27}>ARS</option>
-                    <option value={28}>INR</option>
-                  </select>
-                </div>
-              </div>
-              <div className="header-right-action">
-                <a
-                  href="#"
-                  className="theme-btn theme-btn-small theme-btn-transparent me-1"
-                  data-bs-toggle="modal"
-                  data-bs-target="#signupPopupForm"
+              )}
+            </div>
+          ) : (
+            <>
+              <div className="hidden md:flex items-center gap-3">
+                <Link
+                  to="/signin"
+                  className="px-4 py-2 rounded-xl font-semibold text-sm text-gray-700"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/signup"
+                  className="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-red-500/30"
                 >
                   Sign Up
-                </a>
-                <a
-                  href="#"
-                  className="theme-btn theme-btn-small"
-                  data-bs-toggle="modal"
-                  data-bs-target="#loginPopupForm"
-                >
-                  Login
-                </a>
+                </Link>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div className="header-menu-wrapper padding-right-100px padding-left-100px">
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-lg-12">
-          <div className="menu-wrapper justify-content-between">
-            <a href="#" className="down-button">
-              <i className="la la-angle-down" />
-            </a>
-            <div className="logo">
-              <a href="/">
-                <img src="/images/logo.png" alt="logo" />
-              </a>
-              <div className="menu-toggler">
-                <i className="la la-bars" />
-                <i className="la la-times" />
-              </div>
-              {/* end menu-toggler */}
-            </div>
-            {/* end logo */}
-            <div className="main-menu-content pe-0 ms-0">
-              <nav>
-                <ul>
-                  <li>
-                    <a href="/">
-                      Home 
-                    </a>
-                  </li>
-               
-                  <li>
-                    <a href="#">
-                      Hotel <i className="la la-angle-down" />
-                    </a>
-                    <ul className="dropdown-menu-item">
-                      <li>
-                        <a href="hotel-grid.html">Hotel grid</a>
-                      </li>
-                      <li>
-                        <a href="hotel-list.html">Hotel list</a>
-                      </li>
-                      <li>
-                        <a href="hotel-sidebar.html">Hotel sidebar </a>
-                      </li>
-                      <li>
-                        <a href="hotel-single.html">Hotel details</a>
-                      </li>
-                      <li>
-                        <a href="hotel-booking.html">Hotel Booking</a>
-                      </li>
-                      <li>
-                        <a href="hotel-search-result.html">
-                          Hotel Search Result
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          Rooms <i className="la la-plus" />
-                        </a>
-                        <ul className="sub-menu">
-                          <li>
-                            <a href="room-list.html">Room List</a>
-                          </li>
-                          <li>
-                            <a href="room-grid.html">Room Grid</a>
-                          </li>
-                          <li>
-                            <a href="room-search-result.html">Search Result</a>
-                          </li>
-                          <li>
-                            <a href="room-search-result-list.html">
-                              Search Result list
-                            </a>
-                          </li>
-                          <li>
-                            <a href="room-details.html">Room Details</a>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                 
-                </ul>
-              </nav>
-            </div>
-            {/* end main-menu-content */}
-            <div className="nav-btn">
-              <a href="become-local-expert.html" className="theme-btn">
-                Become Local Expert
-              </a>
-            </div>
-            {/* end nav-btn */}
-          </div>
-          {/* end menu-wrapper */}
-        </div>
-        {/* end col-lg-12 */}
-      </div>
-      {/* end row */}
-    </div>
-    {/* end container-fluid */}
-  </div>
-  {/* end header-menu-wrapper */}
-</header>
 
-   </>
+              <div className="md:hidden flex items-center gap-3">
+                <Link
+                  to="/signin"
+                  className="px-4 py-2 rounded-xl font-semibold text-sm text-gray-700"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/signup"
+                  className="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-red-500/30"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {openDropdown && (
+        <div
+          className="fixed top-20 left-0 w-screen bg-white shadow-lg border-t border-gray-200 z-[99] max-h-[40vh] overflow-y-auto transition-opacity duration-300"
+          onMouseEnter={handleMouseEnterDropdown}
+          onMouseLeave={handleMouseLeaveDropdown}
+        >
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="grid grid-rows-4 grid-cols-5 gap-4">
+              {dropdownData[openDropdown].map((subItem, index) => {
+                const isSelected = selectedItems.some(
+                  sel => sel.category === openDropdown && sel.item === subItem.label
+                );
+
+                return (
+                  <Link
+                    key={index}
+                    to={subItem.path}
+                    onClick={() => setOpenDropdown(null)}
+                    className={`block bg-gray-50 border rounded-lg p-3 hover:bg-red-50 transition-colors ${
+                      isSelected ? "border-red-500 bg-red-50" : "border-gray-200"
+                    }`}
+                  >
+                    <span className="text-gray-700 hover:text-red-600 font-medium text-sm block">
+                      {subItem.label}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
   );
 };
 
