@@ -1,23 +1,13 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import baseQuery from "./baseAPI";
 
 export const AuthAPI = createApi({
   reducerPath: "AuthAPI",
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://127.0.0.1:5000/auth',
-prepareHeaders: (headers) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    headers.set("Authorization", token); 
-  }
-  return headers;
-},
-
-
-  }),
+  baseQuery: baseQuery,
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (body) => ({
-        url: "/login",
+        url: "/auth/login",
         method: "POST",
         body,
       }),
@@ -25,7 +15,14 @@ prepareHeaders: (headers) => {
 
     verifyOtp: builder.mutation({
       query: (body) => ({
-        url: "/verify-otp",
+        url: "/auth/verify-otp",
+        method: "POST",
+        body,
+      }),
+    }),
+     resendOtp: builder.mutation({
+      query: (body) => ({
+        url: "/auth/resend-otp",
         method: "POST",
         body,
       }),
@@ -33,7 +30,7 @@ prepareHeaders: (headers) => {
 
     register: builder.mutation({
       query: (body) => ({
-        url: "/register",
+        url: "/auth/register",
         method: "POST",
         body,
       }),
@@ -67,8 +64,10 @@ prepareHeaders: (headers) => {
 export const {
   useLoginMutation,
   useVerifyOtpMutation,
+  useResendOtpMutation,
   useRegisterMutation,
   useUpdatePasswordMutation,
   useForgotPasswordMutation,
   useGetUserQuery,
+
 } = AuthAPI;

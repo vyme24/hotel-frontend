@@ -1,6 +1,8 @@
 import { X } from 'lucide-react';
 import React, { createContext, useState, useContext } from 'react'
-
+import Login from "../components/Forms/Login";
+import Register from '../components/Forms/Register';
+import ForgotPassword from '../components/Forms/Forgot';
 // Create the context
 const ModalContext = createContext({
   isOpen: false,
@@ -36,13 +38,12 @@ const [isOpen, setIsOpen] = useState(false);
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/60"
-        onClick={closeModal}
       />
 
       {/* Modal */}
-      <div className="relative z-[101] w-full max-w-lg mx-4 rounded-xl bg-white shadow-2xl">
+      <div className="relative z-[101] w-full max-w-lg mx-4 rounded-xl bg-white shadow-2xl p-3">
         {/* Header */}
-            <div className="flex justify-end p-3 border-b">
+            <div className="flex justify-end">
               <button
                 onClick={closeModal}
                 className="p-1 rounded-full hover:bg-gray-100"
@@ -51,8 +52,10 @@ const [isOpen, setIsOpen] = useState(false);
               </button>
             </div>
         {/* Body */}
-        <div className="px-5 py-4 text-gray-700">
-          {modalContent}
+        <div className="px-5 pb-5 text-gray-700">
+          {modalContent == "login" && <Login/>}
+          {modalContent == "register" && <Register/>}
+          {modalContent == "forgot" && <ForgotPassword/>}
         </div>
 
        

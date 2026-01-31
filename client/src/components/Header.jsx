@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { ChevronDown, Link, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
+import {Link} from "react-router-dom"
 
 import { useModal } from "../hooks/ModalContext";
-import LoginModal from "./Forms/Login";
 
 const menus = {
   Stays: [
@@ -40,12 +40,6 @@ export default function Header() {
 
   const isAuthenticated = false;
 
-
-  const handleLoginModal = () => {
-    openModal(<>
-    <LoginModal/>
-    </>)
-  }
 
   return (
     <header className="sticky top-0 z-[60] bg-red-700 text-white shadow-lg">
@@ -94,17 +88,18 @@ export default function Header() {
             {!isAuthenticated ? (
               <>
                 <button
-                  onClick={ () => handleLoginModal()}
+                  onClick={ () => openModal("login")}
                   className="rounded-md border border-white px-4 py-1.5 text-sm hover:bg-white hover:text-red-700 transition"
                 >
                   Login
                 </button>
-                <Link
-                  to="/signup"
+                <button
+                      onClick={ () => openModal("register")}
+             
                   className="rounded-md bg-white px-4 py-1.5 text-sm font-semibold text-red-700 hover:bg-red-100 transition"
                 >
                   Sign Up
-                </Link>
+                </button>
               </>
             ) : (
               <Link to="/profile">My Account</Link>
@@ -145,13 +140,13 @@ export default function Header() {
           {!isAuthenticated && (
             <div className="pt-4 flex gap-3">
               <button
-                onClick={() => handleLoginModal()}
+                onClick={() => openModal("login")}
                 className="flex-1 text-center rounded-md border border-white py-2 text-sm"
               >
                 Login
               </button>
               <button
-                 onClick={() => handleLoginModal()}
+                 onClick={() => openModal("register")}
                 className="flex-1 text-center rounded-md bg-white py-2 text-sm font-semibold text-red-700"
               >
                 Sign Up
