@@ -101,7 +101,6 @@ const Dashboard = () => {
   const stats = matrixData || matrixData?.data || {};
   const api = matrixData?.data || matrixData || {};
 
-  // Your response looks like: matrixData.data = { booking:{total}, ... }
   const totalBookings = api?.booking?.total || 0;
   const totalHotels = api?.hotel?.total || 0;
   const totalRooms = api?.room?.total || 0;

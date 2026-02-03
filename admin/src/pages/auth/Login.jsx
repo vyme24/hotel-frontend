@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../../services/adminService";
 import toast from "react-hot-toast";
+import { useCallback } from "react";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -18,7 +19,10 @@ const Login = () => {
     }
   }, [isError, isLoading, isSuccess, data]);
 
-  const handleSubmit = async (e) => {
+
+
+
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     
     if (!form.user.trim() || !form.password.trim()) {
@@ -31,7 +35,7 @@ const Login = () => {
     } catch (error) {
       toast.error(error?.data?.message || "Login failed!");
     }
-  };
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

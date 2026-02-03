@@ -72,10 +72,10 @@ const InactiveRooms = () => {
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">{index + 1}</td>
                     <td className="px-6 py-4">
                       <img
-                        src={r.images?.[0] || "/images/no-hotel.png"}
+                        src={r.images?.[0] }
                         className="w-20 h-12 object-cover rounded-lg border"
                         alt="room"
-                        onError={(e) => { e.target.src = "/images/no-hotel.png"; }}
+                   
                       />
                     </td>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">{r.hotelId?.name || "N/A"}</td>

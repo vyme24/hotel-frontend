@@ -106,7 +106,7 @@ const PendingHotels = () => {
                           src={h.images && h.images.length > 0 ? h.images[0] : "/images/no-hotel.png"}
                           alt={h.name}
                           className="w-20 h-12 object-cover rounded-lg border shadow-sm"
-                          onError={(e) => { e.target.src = "/images/no-hotel.png"; }}
+                     
                         />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">

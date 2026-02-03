@@ -84,10 +84,10 @@ const GuestHistory = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <img
-                          src={b.hotelId?.images?.[0] || "/images/no-hotel.png"}
+                          src={b.hotelId?.images?.[0] }
                           alt="hotel"
                           className="w-16 h-10 object-cover rounded border shadow-sm"
-                          onError={(e) => { e.target.src = "/images/no-hotel.png"; }}
+                     
                         />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

@@ -18,6 +18,13 @@ export const userService = createApi({
         method: "GET",
       }),
     }),
+     updateProfile: builder.mutation({
+      query: (body) => ({
+        url: "/user/update",
+        method: "POST",
+        body
+      }),
+    }),
 
     logout: builder.mutation({
       query: () => ({
@@ -31,5 +38,6 @@ export const userService = createApi({
 export const {
   useGetUserQuery,
   useGetAllUsersQuery,
+  useUpdateProfileMutation,
   useLogoutMutation,
 } = userService;

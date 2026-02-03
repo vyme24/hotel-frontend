@@ -7,11 +7,11 @@ import { store } from './store/index.js';
 import { ModalProvider } from './hooks/ModalContext.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+
     <Provider store={store}>
     <ModalProvider>
       <App />
     </ModalProvider>
     </Provider>
-  </StrictMode>
+
 );

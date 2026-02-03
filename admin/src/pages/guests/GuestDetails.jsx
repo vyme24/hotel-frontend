@@ -43,10 +43,10 @@ const GuestDetails = () => {
               No. {booking.bookingId || "1"}
             </div>
             <img
-              src={booking.hotelId?.images?.[0] || "/images/no-hotel.png"}
+              src={booking.hotelId?.images?.[0] }
               alt="hotel"
               className="w-24 h-16 object-cover rounded-lg border shadow-sm"
-              onError={(e) => { e.target.src = "/images/no-hotel.png"; }}
+         
             />
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Guest Details</h1>

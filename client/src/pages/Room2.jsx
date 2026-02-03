@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -48,7 +48,8 @@ const Room2 = () => {
   };
 
   const { data, isLoading, isFetching, isError } = useGetHotelAllQuery();
-  const rooms = data?.data ?? [];
+  
+  const rooms = useMemo(() => data?.data ?? [], [])
 
   if (isLoading || isFetching)
     return <p className="text-center py-16 text-gray-500">Loading rooms...</p>;
@@ -68,7 +69,7 @@ const Room2 = () => {
             <div key={room._id} className="px-3">
               <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition">
                 <img
-                  src={room.image || "/images/no-hotel.png"}
+                  src={room.image }
                   alt={room.name}
                   className="h-56 w-full object-cover"
                   onError={(e) => {

@@ -69,7 +69,7 @@ const SoldOutRooms = () => {
                         src={r.images && r.images.length > 0 ? r.images[0] : "/images/no-hotel.png"}
                         alt={r.roomTypeName}
                         className="w-20 h-12 object-cover rounded-lg border shadow-sm grayscale"
-                        onError={(e) => { e.target.src = "/images/no-hotel.png"; }}
+                   
                       />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{r.hotelId?.name || "N/A"}</td>

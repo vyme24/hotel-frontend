@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -46,11 +46,7 @@ const Room = () => {
   };
 
   const { data, isFetching, isLoading, isError } = useGetHotelAllQuery();
-  const [hotels, setHotels] = useState([]);
-
-  useEffect(() => {
-    if (data?.data) setHotels(data.data);
-  }, [data]);
+ const hotels = useMemo(() => data?.data ?? [] , [data] )
 
   if (isLoading || isFetching)
     return <p className="text-center py-16 text-gray-500">Loading rooms...</p>;

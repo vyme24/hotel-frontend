@@ -1,35 +1,30 @@
 import { useEffect, useState } from "react";
 import { Camera, Mail, Phone, MapPin, ShieldCheck } from "lucide-react";
+import { useGetUserQuery, useUpdateProfileMutation } from "../../services/userService";
+import { useMemo } from "react";
 
-const AdminProfile = ({ user }) => {
+const AdminProfile = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const {isLoading, isSuccess, data , isError}= useGetUserQuery();
+  const [updateHandle, {isLoading: isULoading}]= useUpdateProfileMutation();
+  const user = useMemo(() => data?.data ?? {},[data])
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [country, setCountry] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    if (user) {
-      setName(user?.name || "Admin User");
-      setEmail(user?.email || "admin@luxstay.com");
-      setPhone(user?.phone || "");
-      setAddress(user?.address || "");
-      setCity(user?.city || "");
-      setState(user?.state || "");
-      setCountry(user?.country || "");
-    }
-  }, [user]);
 
   const handleAvatarChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setAvatar(file)
     setAvatarPreview(URL.createObjectURL(file));
   };
 
@@ -38,14 +33,17 @@ const AdminProfile = ({ user }) => {
     setMessage("");
 
     if (!name.trim()) return setMessage("❌ Name is required");
-    if (!email.trim()) return setMessage("❌ Email is required");
 
     try {
       setLoading(true);
 
-      // ✅ Replace this with API call (RTK Query mutation)
-      // await updateProfile({ name, email, phone, address, city, state, country })
+      const formdata = new FormData();
+      formdata.append("name", name)
+      formdata.append("avatar", avatar)
 
+      // ✅ Replace this with API call (RTK Query mutation)
+       await updateHandle(formdata)
+      
       setTimeout(() => {
         setMessage("✅ Profile updated successfully!");
         setLoading(false);
@@ -102,7 +100,7 @@ const AdminProfile = ({ user }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 text-sm text-gray-600">
             <p className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-gray-400" />{" "}
-              {email || "Not added"}
+              {user.email || "Not added"}
             </p>
             <p className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-gray-400" />{" "}
@@ -140,9 +138,10 @@ const AdminProfile = ({ user }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
+            
             <label className="block text-sm text-gray-600 mb-1">Full Name</label>
             <input
-              value={name}
+              value={user?.name}
               onChange={(e) => setName(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 outline-none"
               placeholder="Enter name"
@@ -152,17 +151,17 @@ const AdminProfile = ({ user }) => {
           <div>
             <label className="block text-sm text-gray-600 mb-1">Email</label>
             <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={user?.email}
               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 outline-none"
               placeholder="Enter email"
+              disabled
             />
           </div>
 
           <div>
             <label className="block text-sm text-gray-600 mb-1">Phone</label>
             <input
-              value={phone}
+              value={user?.phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 outline-none"
               placeholder="+91 98765 43210"
@@ -172,7 +171,7 @@ const AdminProfile = ({ user }) => {
           <div>
             <label className="block text-sm text-gray-600 mb-1">Country</label>
             <input
-              value={country}
+              value={user?.country}
               onChange={(e) => setCountry(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 outline-none"
               placeholder="India"
@@ -182,7 +181,7 @@ const AdminProfile = ({ user }) => {
           <div>
             <label className="block text-sm text-gray-600 mb-1">State</label>
             <input
-              value={state}
+              value={user?.state}
               onChange={(e) => setState(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 outline-none"
               placeholder="Maharashtra"
@@ -192,7 +191,7 @@ const AdminProfile = ({ user }) => {
           <div>
             <label className="block text-sm text-gray-600 mb-1">City</label>
             <input
-              value={city}
+              value={user?.city}
               onChange={(e) => setCity(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 outline-none"
               placeholder="Mumbai"
@@ -203,7 +202,7 @@ const AdminProfile = ({ user }) => {
         <div>
           <label className="block text-sm text-gray-600 mb-1">Address</label>
           <input
-            value={address}
+            value={user?.address}
             onChange={(e) => setAddress(e.target.value)}
             className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 outline-none"
             placeholder="Enter address"

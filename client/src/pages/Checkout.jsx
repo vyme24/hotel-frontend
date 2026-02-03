@@ -52,7 +52,7 @@ const Checkout = () => {
         {/* Right – Summary */}
         <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
           <img
-            src={h?.image || "/images/no-hotel.png"}
+            src={h?.image }
             alt={h?.name}
             className="w-full h-40 object-cover rounded-2xl"
             onError={(e) => (e.target.src = "/images/no-hotel.png")}

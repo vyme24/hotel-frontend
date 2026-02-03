@@ -94,7 +94,7 @@ const SingleHotel = () => {
           {/* Image */}
           <div className="md:col-span-2">
             <img
-              src={hotelImage || "/images/no-hotel.png"}
+              src={hotelImage }
               alt={h?.name}
               className="w-full h-96 object-cover rounded-3xl shadow-lg"
               onError={(e) => {
