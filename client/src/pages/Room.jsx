@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
-import { useGetHotelAllQuery } from "../services/hotel";
+import { useGetRoomAllQuery } from "../services/room";
 
 const NextArrow = ({ onClick }) => (
   <div
@@ -45,7 +45,7 @@ const Room = () => {
     ],
   };
 
-  const { data, isFetching, isLoading, isError } = useGetHotelAllQuery();
+  const { data, isFetching, isLoading, isError } = useGetRoomAllQuery();
  const hotels = useMemo(() => data?.data ?? [] , [data] )
 
   if (isLoading || isFetching)
@@ -95,11 +95,11 @@ const Room = () => {
 
                   <div className="flex items-center justify-between mt-4 pt-4 border-t">
                     <p className="text-xl font-bold text-gray-800">
-                      ₹{room.price}
+                      ₹{room.basePrice}
                       <span className="text-sm text-gray-500"> / night</span>
                     </p>
 
-                   <Link to={`/hotel/${room._id}`}>
+                   <Link to={`/room/${room._id}`}>
   <button className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700">
     Book Now
   </button>

@@ -25,6 +25,7 @@ import Cancellationpolicy from "./pages/Footer/CancellationPolicy.jsx";
 import Helpcenter from "./pages/Footer/HelpCenter.jsx";
 import Partnership from "./pages/Footer/Partnership.jsx";
 import AppLayout from "./Layouts/App.jsx";
+import SingleRoom from "./pages/SingleRoom.jsx";
 
 
 
@@ -39,6 +40,7 @@ function App() {
  <Route path="/" element={<Home />} />
         <Route path="/addhotel" element={<Addhotel />} />
         <Route path="/hotel/:id" element={<SingleHotel />} />
+        <Route path="/room/:id" element={<SingleRoom />} />
         <Route path="/facilities" element={<Facilities />} />
          <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
