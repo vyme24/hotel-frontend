@@ -1,40 +1,44 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useModal } from "../../hooks/ModalContext";
 import {
   useVerifyOtpMutation,
-  useResendOtpMutation,
+  useResendOtpMutation
 } from "../../services/auth";
+import { ShieldCheck, Timer } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../store/authSlice";
 
 const OTP_LENGTH = 6;
 
 const VerifyOTP = ({ user }) => {
+  if (!user) return null;
+
+  const dispatch = useDispatch();
   const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(""));
   const [expiredAt, setExpiredAt] = useState(user?.expired_at);
   const [timeLeft, setTimeLeft] = useState(0);
   const [canResend, setCanResend] = useState(false);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { closeModal, openModal } = useModal();
+
   const inputsRef = useRef([]);
   const timerRef = useRef(null);
 
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
-  const [resendOtp, { isLoading: resendLoading }] =
-    useResendOtpMutation();
+  const [resendOtp, { isLoading: resendLoading }] = useResendOtpMutation();
 
-  /* ---------------- SINGLE TIMER EFFECT ---------------- */
   useEffect(() => {
     if (!expiredAt) return;
-
-    // Clear old timer
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
+    if (timerRef.current) clearInterval(timerRef.current);
 
     const expiry = new Date(expiredAt).getTime();
-
     timerRef.current = setInterval(() => {
       const diff = Math.max(0, Math.floor((expiry - Date.now()) / 1000));
       setTimeLeft(diff);
-
       if (diff === 0) {
         setCanResend(true);
         clearInterval(timerRef.current);
@@ -46,14 +50,11 @@ const VerifyOTP = ({ user }) => {
     return () => clearInterval(timerRef.current);
   }, [expiredAt]);
 
-  /* ---------------- OTP INPUT ---------------- */
   const handleChange = (value, index) => {
     if (!/^\d?$/.test(value)) return;
-
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-
     if (value && index < OTP_LENGTH - 1) {
       inputsRef.current[index + 1]?.focus();
     }
@@ -67,63 +68,87 @@ const VerifyOTP = ({ user }) => {
 
   const otpValue = otp.join("");
 
-  /* ---------------- VERIFY OTP ---------------- */
   const handleVerify = async (e) => {
     e.preventDefault();
-
+    if ((!user.email && !user.phone) || !user.type) {
+      toast.error("Session expired. Please try again.");
+      return;
+    }
     if (otpValue.length !== OTP_LENGTH) {
-      toast.error("Enter complete OTP");
+      toast.error("Please enter the full code");
       return;
     }
 
     try {
-    const res =  await verifyOtp({
-        email: user.email,
+      const res = await verifyOtp({
+        [user.phone ? "phone" : "email"]: user.phone || user.email,
         type: user.type,
         otp: otpValue,
       }).unwrap();
- console.lg("ss",res)
-      toast.success(res.message);
+
+      toast.success(res.message || "Identity verified");
+
+      if (user.type === "login" && res.data?.token) {
+        dispatch(setCredentials({ token: res.data.token, user: res.data.user }));
+        if (location.state?.from) {
+          navigate(location.state.from, { replace: true });
+        }
+        closeModal();
+      }
+
+      if (user.type === "register") {
+        if (res.data?.token) {
+          dispatch(setCredentials({ token: res.data.token, user: res.data.user }));
+          toast.success("Welcome aboard!");
+          if (location.state?.from) {
+            navigate(location.state.from, { replace: true });
+          }
+        } else {
+          toast.success("Registration confirmed. Please login.");
+          openModal("login");
+          return;
+        }
+        closeModal();
+      }
+
+      if (user.type === "forgot" && res.data?.token) {
+        openModal("reset", { token: res.data.token });
+      }
 
     } catch (err) {
-      toast.error(err?.data?.message || "Invalid OTP");
+      toast.error(err?.data?.message || "Invalid code");
     }
   };
 
-  /* ---------------- RESEND OTP ---------------- */
   const handleResend = async () => {
+    if ((!user.email && !user.phone) || !user.type) return;
     try {
       const res = await resendOtp({
-        email: user.email,
+        [user.phone ? "phone" : "email"]: user.phone || user.email,
         type: user.type,
       }).unwrap();
-
-      toast.success("New OTP sent");
-
+      toast.success("Code resent successfully");
       setOtp(Array(OTP_LENGTH).fill(""));
-      setExpiredAt(res.data.expired_at); 
-
+      setExpiredAt(res.data?.expired_at);
     } catch (err) {
-      toast.error(err?.data?.message || "Failed to resend OTP");
+      toast.error(err?.data?.message || "Failed to resend code");
     }
   };
 
-  /* ---------------- UI ---------------- */
   return (
-    <div className="max-w-md w-full bg-white rounded-xl p-8">
-      <h2 className="text-2xl font-semibold text-center">
-        Verify your email
-      </h2>
+    <div className="w-full animate-fadeIn">
+      <div className="text-center mb-8">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
+          Verify OTP
+        </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          Enter the code sent to <br />
+          <span className="font-semibold text-gray-900 dark:text-white">{user?.phone || user?.email}</span>
+        </p>
+      </div>
 
-      <p className="text-center text-sm text-gray-500 mt-2">
-        Enter the 6-digit code sent to <br />
-        <span className="font-medium text-gray-800">
-          {user.email}
-        </span>
-      </p>
-
-      <form onSubmit={handleVerify} className="mt-8 space-y-6">
-        <div className="flex justify-center gap-3">
+      <form onSubmit={handleVerify} className="space-y-6">
+        <div className="flex justify-center gap-2">
           {otp.map((digit, i) => (
             <input
               key={i}
@@ -133,45 +158,38 @@ const VerifyOTP = ({ user }) => {
               onChange={(e) => handleChange(e.target.value, i)}
               onKeyDown={(e) => handleBackspace(e, i)}
               maxLength={1}
-              className="w-12 h-12 text-xl text-center border rounded-lg focus:ring-2 focus:ring-green-500"
+              className="w-10 h-12 text-xl font-bold text-center bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-red-500/20 focus:border-red-500 outline-none transition-all text-gray-900 dark:text-white"
             />
           ))}
         </div>
 
-        <p className="text-center text-sm">
-          {timeLeft > 0 ? (
-            <span className="text-gray-500">
-              Code expires in{" "}
-              <strong>
-                {Math.floor(timeLeft / 60)}:
-                {String(timeLeft % 60).padStart(2, "0")}
-              </strong>
-            </span>
-          ) : (
-            <span className="text-red-500">Code expired</span>
-          )}
-        </p>
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex items-center gap-2 text-xs font-medium text-gray-500">
+            <Timer size={14} className={timeLeft > 0 ? 'text-red-500' : 'text-gray-400'} />
+            {timeLeft > 0 ? (
+              <span>Resend in {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}</span>
+            ) : (
+              <span className="text-red-600">Code expired</span>
+            )}
+          </div>
 
-        <button
-          type="submit"
-          disabled={isLoading || timeLeft === 0}
-          className="w-full bg-green-600 text-white py-3 rounded-lg font-medium disabled:opacity-50"
-        >
-          {isLoading ? "Verifying..." : "Verify & Continue"}
-        </button>
+          <button
+            type="submit"
+            disabled={isLoading || timeLeft === 0}
+            className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-red-600/20"
+          >
+            {isLoading ? "Verifying..." : "Verify"}
+          </button>
+        </div>
       </form>
 
-      <div className="mt-4 text-center">
+      <div className="mt-6 text-center">
         <button
           onClick={handleResend}
           disabled={!canResend || resendLoading}
-          className="text-sm font-medium text-blue-600 disabled:text-gray-400"
+          className="text-sm font-bold text-red-600 hover:underline disabled:text-gray-400 disabled:no-underline transition-all"
         >
-          {resendLoading
-            ? "Resending..."
-            : canResend
-            ? "Resend code"
-            : `Resend in ${timeLeft}s`}
+          {resendLoading ? "Sending..." : "Resend Code"}
         </button>
       </div>
     </div>

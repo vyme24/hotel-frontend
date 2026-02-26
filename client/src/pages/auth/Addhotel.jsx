@@ -57,7 +57,7 @@ const Addhotel = () => {
       <div className="max-w-xl w-full space-y-8 bg-white p-8 sm:p-10 mt-10 rounded-xl shadow-2xl border border-gray-100">
 
         <div className="text-center"> 
-          <h4 className="text-3xl font-extrabold text-gray-900">
+          <h4 className="text-xl font-extrabold text-gray-900">
             Add New Hotel Details
           </h4>
         </div>

@@ -1,138 +1,113 @@
 import { useState, useEffect } from "react";
-
-import {  toast } from "react-hot-toast";
-import { useForgotPasswordMutation, useVerifyOtpMutation } from "../../services/auth";
+import { toast } from "react-hot-toast";
+import { useForgotPasswordMutation } from "../../services/auth";
 import { useModal } from "../../hooks/ModalContext";
+import { Mail, Phone, ArrowLeft, KeyRound, Sparkles } from "lucide-react";
 
 const ForgotPassword = () => {
+  const [forgotMethod, setForgotMethod] = useState("email");
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
-  const {openModal} = useModal();
+  const [phone, setPhone] = useState("");
+  const { openModal } = useModal();
 
-  const [
-    forgotPassword,
-    { isLoading: loadingEmail, isSuccess: isEmailSuccess, isError: isEmailError, error: emailError }
-  ] = useForgotPasswordMutation();
-
-  const [
-    verifyOtp,
-    { isLoading: loadingOtp, isSuccess: isOtpSuccess, data: verifyData, isError: isOtpError, error: otpError }
-  ] = useVerifyOtpMutation();
+  const [forgotPassword, { isLoading, isSuccess, isError, error, data: resData }] = useForgotPasswordMutation();
 
   useEffect(() => {
-    if (isEmailSuccess) {
-      setOtpSent(true);
-      toast.success("OTP sent to your email!");
+    if (isSuccess && resData) {
+      toast.success(`OTP sent to your ${forgotMethod}.`);
+      openModal("otp", {
+        email: forgotMethod === "email" ? email.trim() : null,
+        phone: forgotMethod === "phone" ? phone.trim() : null,
+        type: "forgot",
+        expired_at: resData.data?.expired_at
+      });
     }
-    if (isEmailError) {
-      toast.error(emailError?.data?.message || "Something went wrong!");
+    if (isError) {
+      toast.error(error?.data?.message || "Account recovery failed");
     }
-  }, [isEmailSuccess, isEmailError, emailError]);
+  }, [isSuccess, isError, error, resData, email, phone, forgotMethod, openModal]);
 
-  useEffect(() => {
-    if (isOtpSuccess) {
-      if (verifyData?.data?.token) {
-        toast.success("OTP verified!");
-        window.location.href = "/reset-password/" + verifyData.data.token;
-      } else {
-        toast.error("Reset token missing.");
-      }
-    }
-    if (isOtpError) {
-      toast.error(otpError?.data?.message || "Verification failed.");
-    }
-  }, [isOtpSuccess, isOtpError, otpError, verifyData]);
-
-  const handleEmailSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email.trim()) return toast.error("Please enter your email");
-
-   try {
-  await forgotPassword({ email: email.trim() }).unwrap();
-} catch (err) {
-  toast.error(err?.data?.message || "Something went wrong");
-}
-  };
-
-  const handleOtpSubmit = async (e) => {
-    e.preventDefault();
-    if (!otp.trim()) return toast.error("Please enter OTP");
+    const identity = forgotMethod === "email" ? email.trim() : phone.trim();
+    if (!identity) {
+      toast.error(`Please enter your ${forgotMethod}`);
+      return;
+    }
 
     try {
-      await verifyOtp({
-        email: email.trim(),
-        otp: otp.trim(),
-        type: "forgot",
-      }).unwrap();
-    } catch (err) {}
+      await forgotPassword({ [forgotMethod]: identity }).unwrap();
+    } catch (err) { }
   };
 
   return (
-    
-      <div className="max-w-md w-full space-y-6 ">
+    <div className="w-full animate-fadeIn">
+      <div className="text-center mb-8">
+        <div className="flex justify-center mb-4">
+          <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center transform hover:rotate-[15deg] transition-all duration-700 shadow-xl shadow-red-600/20">
+            <Sparkles size={20} className="text-white" />
+          </div>
+        </div>
+        <h1 className="text-xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-2 italic">
+          <span className="text-red-600 non-italic">LUX</span>STAY
+        </h1>
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white tracking-tight">
+          Forgot Password
+        </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Enter your identity to reset your password</p>
+      </div>
 
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold text-gray-900">
-            <span className="text-red-600">LUX</span>STAY
-          </h1>
+      <div className="flex p-1 bg-gray-100 dark:bg-gray-800 rounded-xl mb-6">
+        <button
+          onClick={() => setForgotMethod("email")}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-lg transition-all ${forgotMethod === "email" ? "bg-white dark:bg-gray-700 text-red-600 shadow-sm" : "text-gray-500"
+            }`}
+        >
+          <Mail size={16} /> Email
+        </button>
+        <button
+          onClick={() => setForgotMethod("phone")}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-lg transition-all ${forgotMethod === "phone" ? "bg-white dark:bg-gray-700 text-red-600 shadow-sm" : "text-gray-500"
+            }`}
+        >
+          <Phone size={16} /> Phone
+        </button>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-500 transition-colors">
+            {forgotMethod === "email" ? <Mail size={18} /> : <Phone size={18} />}
+          </div>
+          <input
+            type={forgotMethod === "email" ? "email" : "tel"}
+            placeholder={forgotMethod === "email" ? "Registered Email" : "Registered Phone"}
+            value={forgotMethod === "email" ? email : phone}
+            onChange={(e) => forgotMethod === "email" ? setEmail(e.target.value) : setPhone(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-sm text-gray-900 dark:text-white"
+            required
+          />
         </div>
 
-        {!otpSent && (
-          <>
-            <h2 className="text-2xl font-bold text-center">Forgot Password?</h2>
-            <p className="text-center text-sm text-gray-600">Enter your email to receive OTP.</p>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-red-600/20"
+        >
+          {isLoading ? "Sending OTP..." : "Reset Password"}
+        </button>
+      </form>
 
-            <form onSubmit={handleEmailSubmit} className="space-y-4">
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md"
-              />
-
-              <button
-                disabled={loadingEmail}
-                className="w-full py-2 bg-red-600 text-white rounded-md disabled:opacity-50"
-              >
-                {loadingEmail ? "Sending..." : "Send OTP"}
-              </button>
-            </form>
-          </>
-        )}
-
-        {otpSent && (
-          <>
-            <h2 className="text-2xl font-bold text-center">Verify OTP</h2>
-            <p className="text-center text-sm text-green-600">OTP sent to {email}</p>
-
-            <form onSubmit={handleOtpSubmit} className="space-y-4">
-              <input
-                type="text"
-                placeholder="123456"
-                maxLength={6}
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md text-center"
-              />
-
-              <button
-                disabled={loadingOtp}
-                className="w-full py-2 bg-red-600 text-white rounded-md disabled:opacity-50"
-              >
-                {loadingOtp ? "Verifying..." : "Verify OTP"}
-              </button>
-            </form>
-          </>
-        )}
-
-        <p className="text-center text-sm pt-4">
-          Remember your password?
-          <button  onClick={() => openModal("login")} className="text-red-600 ml-1">Back to Login</button>
-        </p>
+      <div className="mt-8 text-center">
+        <button
+          onClick={() => openModal("login")}
+          className="inline-flex items-center justify-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500 transition-colors"
+        >
+          <ArrowLeft size={14} />
+          Back to Login
+        </button>
       </div>
-    
+    </div>
   );
 };
 

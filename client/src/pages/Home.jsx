@@ -1,25 +1,17 @@
-
 import Hero from "../components/Hero";
-import Facilities from "./Facilities"
-import Information from "../pages/Information";
-import Room from "../pages/Room";
-import Room2 from "../pages/Room2";
+import FeaturedHotels from "../components/FeaturedHotels";
+import FeaturedRooms from "../components/FeaturedRooms";
+import FeaturedReviews from "../components/FeaturedReviews";
 
-
-
-const Home =()=>{
-    return(
-        <>
-       
-   <Hero/>
-   
-   <Room/>
-    <Room2/>
-    
-<Information/>
-< Facilities/>
-
-        </>
+const Home = () => {
+    return (
+        <main className="bg-white dark:bg-[#050505]">
+            <Hero />
+            <FeaturedHotels />
+            <FeaturedRooms />
+            <FeaturedReviews />
+        </main>
     )
 }
+
 export default Home;

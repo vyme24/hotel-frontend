@@ -12,141 +12,129 @@ import {
   Mail,
   GraduationCap,
   Zap,
-  Phone,
+  Sparkles
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Careers = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
 
-      {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-center mb-6">
-            <div className="p-4 bg-white/20 rounded-full">
-              <Briefcase className="h-14 w-14" />
-            </div>
+      {/* Hero Section */}
+      <section className="relative py-24 md:py-32 bg-gray-900 border-b border-gray-800 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-red-600/10 blur-[120px] rounded-full" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-600/10 rounded-full mb-8 border border-red-600/20">
+            <Briefcase className="w-4 h-4 text-red-500" />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-red-500">
+              Careers at LuxStay
+            </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Careers at BookMyHotelRoom
+
+          <h1 className="text-3xl md:text-4xl font-black text-white mb-6 tracking-tighter">
+            Build the Future of <span className="text-red-600 italic">Hospitality</span>
           </h1>
-          <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto mb-6">
-            Join us to build the future of hotel booking.
+
+          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+            Join an elite team dedicated to redefining the luxury booking experience through innovation, design, and impeccable service.
           </p>
-          <div className="flex justify-center gap-6 text-sm">
+
+          <div className="flex flex-wrap justify-center gap-8 text-[10px] font-black uppercase tracking-widest text-gray-500">
             <div className="flex items-center gap-2">
-              <Users size={16} /> 200+ Team Members
+              <Users size={14} className="text-red-600" /> 200+ Visionaries
             </div>
             <div className="flex items-center gap-2">
-              <MapPin size={16} /> Remote Friendly
+              <MapPin size={14} className="text-red-600" /> Global & Remote
             </div>
             <div className="flex items-center gap-2">
-              <Target size={16} /> Fast Growing
+              <Target size={14} className="text-red-600" /> Series B Scale
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Benefits */}
-      <div className="py-16">
+      {/* Benefits Section */}
+      <section className="py-24">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-10">Why Join Us?</h2>
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight">The LuxStay <span className="text-red-600 italic">Legacy</span></h2>
+            <p className="text-gray-500 font-light max-w-lg mx-auto uppercase tracking-widest text-[10px]">Why top talent chooses us</p>
+          </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-xl shadow">
-              <DollarSign className="text-blue-600 mb-2" />
-              <h3 className="font-bold">Good Salary</h3>
-              <p className="text-sm text-gray-600">Competitive pay with bonuses.</p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow">
-              <Clock className="text-blue-600 mb-2" />
-              <h3 className="font-bold">Flexible Hours</h3>
-              <p className="text-sm text-gray-600">Work-life balance matters.</p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow">
-              <Heart className="text-blue-600 mb-2" />
-              <h3 className="font-bold">Health Care</h3>
-              <p className="text-sm text-gray-600">Medical and wellness benefits.</p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow">
-              <GraduationCap className="text-blue-600 mb-2" />
-              <h3 className="font-bold">Learning</h3>
-              <p className="text-sm text-gray-600">Budget for courses and growth.</p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow">
-              <Award className="text-blue-600 mb-2" />
-              <h3 className="font-bold">Rewards</h3>
-              <p className="text-sm text-gray-600">Performance-based rewards.</p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow">
-              <Zap className="text-blue-600 mb-2" />
-              <h3 className="font-bold">Modern Tech</h3>
-              <p className="text-sm text-gray-600">Work with latest tools.</p>
-            </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { icon: DollarSign, title: "Executive Compensation", desc: "Industry-leading packages with equity options.", color: "text-green-500" },
+              { icon: Clock, title: "Pure Flexibility", desc: "Work from anywhere in the world on your schedule.", color: "text-red-600" },
+              { icon: Heart, title: "Holistic Wellness", desc: "Comprehensive health and mental wellness coverage.", color: "text-red-500" },
+              { icon: GraduationCap, title: "Continuous Mastery", desc: "Generous budget for personal and professional growth.", color: "text-gray-400" },
+              { icon: Award, title: "Meritocratic Rewards", desc: "Bi-annual bonuses and performance incentives.", color: "text-red-700" },
+              { icon: Zap, title: "Cutting Edge Stack", desc: "Build with the latest technologies and tools.", color: "text-amber-500" }
+            ].map((v, i) => (
+              <div key={i} className="group bg-white dark:bg-gray-900 rounded-[2rem] p-8 shadow-xl border border-gray-100 dark:border-gray-800 hover:-translate-y-2 transition-all duration-500">
+                <div className="w-12 h-12 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center mb-6 group-hover:bg-red-600 group-hover:text-white transition-all duration-500">
+                  <v.icon className={`h-6 w-6 ${v.color} group-hover:text-white`} />
+                </div>
+                <h3 className="text-lg font-black text-gray-900 dark:text-white mb-3 tracking-tight">{v.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed">{v.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Open Positions */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-10">Open Positions</h2>
-
-          <div className="bg-white p-6 rounded-xl shadow mb-6">
-            <h3 className="font-bold text-lg">Senior Full Stack Developer</h3>
-            <p className="text-sm text-gray-600">Engineering • Remote • Full-time • 5+ years</p>
-            <button className="mt-4 w-full py-2 bg-blue-600 text-white rounded flex items-center justify-center">
-              Apply Now <ChevronRight className="ml-2" size={16} />
-            </button>
+      <section className="py-24 bg-gray-50 dark:bg-gray-900/50">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight mb-4">Open <span className="text-red-600 italic">Quests</span></h2>
+            <p className="text-gray-500 font-light uppercase tracking-widest text-[10px]">Current opportunities to lead</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow mb-6">
-            <h3 className="font-bold text-lg">UX/UI Designer</h3>
-            <p className="text-sm text-gray-600">Design • Delhi • Full-time • 3+ years</p>
-            <button className="mt-4 w-full py-2 bg-blue-600 text-white rounded flex items-center justify-center">
-              Apply Now <ChevronRight className="ml-2" size={16} />
-            </button>
-          </div>
+          <div className="space-y-6 text-center">
+            <div className="bg-white dark:bg-gray-950 p-12 rounded-[3rem] shadow-2xl border border-gray-100 dark:border-gray-800 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 px-6 py-2 bg-red-600 text-white text-[9px] font-black uppercase tracking-widest rounded-bl-3xl">
+                High Priority
+              </div>
+              <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">Engineering & Design</h3>
+              <p className="text-gray-500 font-light mb-8 max-w-md mx-auto">We are actively seeking visionary developers and designers to build our next generation mobile ecosystem.</p>
 
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h3 className="font-bold text-lg">Customer Success Manager</h3>
-            <p className="text-sm text-gray-600">Operations • Remote • Full-time • 4+ years</p>
-            <button className="mt-4 w-full py-2 bg-blue-600 text-white rounded flex items-center justify-center">
-              Apply Now <ChevronRight className="ml-2" size={16} />
-            </button>
-          </div>
+              <Link to="/contact" className="inline-flex items-center gap-3 px-8 py-4 bg-red-600 text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl shadow-xl shadow-red-600/20 hover:bg-black transition-all">
+                Inquire for Details
+                <ChevronRight size={14} />
+              </Link>
+            </div>
 
-          <div className="text-center mt-8">
-            <a
-              href="mailto:careers@bookmyhotelroom.com"
-              className="inline-flex items-center gap-2 text-blue-600 font-semibold"
-            >
-              <Mail size={16} /> Send General Application
-            </a>
+            <div className="mt-12 text-center decoration-red-600 underline-offset-8">
+              <a
+                href="mailto:talent@luxstay.com"
+                className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-red-600 transition-colors"
+              >
+                <Mail size={16} className="text-red-600" />
+                Submit Spontaneous Application
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* CTA */}
-      <div className="py-16 text-center">
-        <h2 className="text-3xl font-bold mb-3">Ready to Join Us?</h2>
-        <p className="text-gray-600 mb-6">
-          Build your career with a fast-growing travel company.
+      {/* CTA Section */}
+      <section className="py-24 text-center">
+        <h2 className="text-xl md:text-3xl font-black text-gray-900 dark:text-white mb-6 tracking-tight">Not Ready <span className="text-red-600 italic">Yet?</span></h2>
+        <p className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto mb-10 font-light leading-relaxed">
+          Follow our journey on LinkedIn or stay tuned for our next talent wave.
         </p>
-        <div className="flex justify-center gap-4">
-          <a href="/careers/apply" className="px-6 py-3 bg-blue-600 text-white rounded">
-            View Openings
-          </a>
-          <a href="mailto:talent@bookmyhotelroom.com" className="px-6 py-3 border border-blue-600 text-blue-600 rounded">
-            Contact HR
-          </a>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link to="/blog" className="px-10 py-5 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-black uppercase tracking-widest text-[10px] rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+            Inside LuxStay
+          </Link>
+          <Link to="/contact" className="px-10 py-5 bg-black text-white font-black uppercase tracking-widest text-[10px] rounded-2xl hover:bg-red-600 transition-all">
+            Talk to Talent Team
+          </Link>
         </div>
-      </div>
+      </section>
 
     </div>
   );

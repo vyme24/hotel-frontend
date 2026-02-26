@@ -1,133 +1,136 @@
 import { useEffect, useState } from "react";
-import { useLoginMutation, useVerifyOtpMutation } from "../../services/auth";
+import { useLoginMutation } from "../../services/auth";
 import { useModal } from "../../hooks/ModalContext";
-import VerifyOTP from "../Auth/VerifyOtp";
 import toast from "react-hot-toast";
-const Login= () => {
-     const [email, setEmail] = useState("");
+import { Mail, Phone, Lock, Sparkles } from "lucide-react";
+
+const Login = () => {
+  const [loginMethod, setLoginMethod] = useState("email");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [otp, setOtp] = useState("");
-  const [Otpmodel, setOtpmodel] = useState(false);
-const {openModal} = useModal();
-  const [
-    login,
-    { isLoading, isSuccess, data, isError, error }
-  ] = useLoginMutation();
+  const { openModal } = useModal();
 
-
+  const [login, { isLoading, isSuccess, data, isError, error }] = useLoginMutation();
 
   useEffect(() => {
     if (isSuccess && data) {
-      localStorage.setItem("userEmail", email);
-      toast.success("OTP sent to your email. Please verify.");
-      setOtpmodel(true);
+      openModal("otp", {
+        email: loginMethod === "email" ? email.trim() : null,
+        phone: loginMethod === "phone" ? phone.trim() : null,
+        type: data.data?.type || "login",
+        expired_at: data.data?.expired_at
+      });
     }
 
     if (isError) {
       toast.error(error?.data?.message || "Login failed");
     }
-  }, [isSuccess, data, isError, error, email]);
-
-
+  }, [isSuccess, data, isError, error, email, phone, loginMethod, openModal]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    if (!email.trim() || !password.trim()) {
-      toast.error("Please fill all fields");
+    const identity = loginMethod === "email" ? email.trim() : phone.trim();
+    if (!identity || !password.trim()) {
+      toast.error("Please enter your credentials");
       return;
     }
 
     try {
-      await login({ email, password }).unwrap();
-    } catch (err) {}
+      await login({ [loginMethod]: identity, password }).unwrap();
+    } catch (err) { }
   };
 
-return (
-    <>
-    
 
-        {!Otpmodel && (
-            <div className="max-w-md w-full space-y-8">
-         <div className="text-center">
-                    <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
-                        <span className="text-red-600">LUX</span>STAY
-                    </h1>
-                </div>
-        <div className="text-center">
-        
-          <h2 className="mt-4 text-2xl font-bold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md mt-1"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="Enter password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md mt-1"
-                />
-              </div>
-            </div>
-            <div className="flex justify-between">
- <div className="text-sm">
-                            <button onClick={() => openModal("forgot")} className="font-medium text-red-600 hover:text-red-500">
-                                Forgot Password?
-                            </button>
-                        </div>
- <div className="text-sm  ">
-                         <a to="/signup" className="font-medium  text-red-600 hover:text-red-500 ml-1">
-                            Sign up
-                        </a>
-                  </div>
-            </div>
-           
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-2 rounded-md bg-red-600 text-white disabled:opacity-50"
-            >
-              {isLoading ? "Loading..." : "Signin"}
-            </button>
-            
-            
-
-
-               
-
-                   
-                    
-          </form>
+  return (
+    <div className="w-full animate-fadeIn">
+      <div className="text-center mb-8">
+        <div className="flex justify-center mb-4">
+          <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center transform hover:rotate-[15deg] transition-all duration-700 shadow-xl shadow-red-600/20">
+            <Sparkles size={20} className="text-white" />
           </div>
-        )}
+        </div>
+        <h1 className="text-xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-2 italic">
+          <span className="text-red-600 non-italic">LUX</span>STAY
+        </h1>
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white tracking-tight">
+          Login to your Account
+        </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Enter your details to continue</p>
+      </div>
 
-        {Otpmodel && (
-          <VerifyOTP/>
-        )}
-    
-    </>
-)
+      <div className="flex p-1 bg-gray-100 dark:bg-gray-800 rounded-xl mb-6">
+        <button
+          onClick={() => setLoginMethod("email")}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-lg transition-all ${loginMethod === "email" ? "bg-white dark:bg-gray-700 text-red-600 shadow-sm" : "text-gray-500"
+            }`}
+        >
+          <Mail size={16} /> Email
+        </button>
+        <button
+          onClick={() => setLoginMethod("phone")}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-lg transition-all ${loginMethod === "phone" ? "bg-white dark:bg-gray-700 text-red-600 shadow-sm" : "text-gray-500"
+            }`}
+        >
+          <Phone size={16} /> Phone
+        </button>
+      </div>
 
-}
+      <form onSubmit={handleLogin} className="space-y-4">
+        <div className="space-y-3">
+          <div className="relative group">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-500 transition-colors">
+              {loginMethod === "email" ? <Mail size={18} /> : <Phone size={18} />}
+            </div>
+            <input
+              type={loginMethod === "email" ? "email" : "tel"}
+              placeholder={loginMethod === "email" ? "email@example.com" : "Phone Number"}
+              value={loginMethod === "email" ? email : phone}
+              onChange={(e) => loginMethod === "email" ? setEmail(e.target.value) : setPhone(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-[11px] font-bold tracking-widest text-gray-900 dark:text-white"
+              required
+            />
+          </div>
+
+          <div className="relative group">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-500 transition-colors">
+              <Lock size={18} />
+            </div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-[11px] font-bold tracking-widest text-gray-900 dark:text-white"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center px-1">
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input type="checkbox" className="w-3 h-3 rounded border-gray-300 dark:border-gray-800 text-red-600 focus:ring-red-500/20" />
+            <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Remember Me</span>
+          </label>
+          <button type="button" onClick={() => openModal("forgot")} className="text-[9px] font-black text-red-600 uppercase tracking-widest hover:underline decoration-2 underline-offset-4">Forgot Password?</button>
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full py-4 bg-red-600 hover:bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-xl transition-all duration-300 active:scale-[0.98] disabled:opacity-50 shadow-xl shadow-red-600/10"
+        >
+          {isLoading ? "Validating..." : "Sign In to LuxStay"}
+        </button>
+      </form>
+
+
+      <p className="text-center text-[10px] font-black text-gray-400 uppercase tracking-widest">
+        New Privilege Member? {" "}
+        <button onClick={() => openModal("register")} className="text-red-600 hover:underline decoration-2 underline-offset-4">Register Now</button>
+      </p>
+    </div>
+  );
+};
 
 export default Login;

@@ -1,126 +1,121 @@
 import React from "react";
-import { FileText, AlertCircle, Shield, CreditCard, Scale, Mail, Phone, CheckCircle } from "lucide-react";
+import { FileText, AlertCircle, Shield, CreditCard, Scale, Mail, CheckCircle, Sparkles } from "lucide-react";
 
 const TermandUse = () => {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
 
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-4 bg-gray-900 rounded-full mb-6">
-            <FileText className="h-8 w-8 text-white" />
+      {/* Hero Section */}
+      <section className="relative py-20 bg-gray-900 border-b border-gray-800 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute bottom-0 right-1/2 translate-x-1/2 w-[500px] h-[500px] bg-red-600/10 blur-[120px] rounded-full" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-600/10 rounded-full mb-6 border border-red-600/20">
+            <FileText className="w-4 h-4 text-red-500" />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-red-500">
+              Service Agreement
+            </span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">Terms of Use</h1>
-          <p className="text-gray-600 mb-4">
-            Please read these terms carefully before using BookMyHotelRoom.
+
+          <h1 className="text-2xl md:text-4xl font-black text-white mb-4 tracking-tighter">
+            Terms of <span className="text-red-600 italic">Engagement</span>
+          </h1>
+
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-6 font-light leading-relaxed">
+            The legal framework governing your luxury travel experiences and our commitment to excellence.
           </p>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded p-4 max-w-2xl mx-auto flex gap-2 text-left">
-            <AlertCircle className="text-yellow-700" />
-            <p className="text-yellow-800 text-sm">
-              By accessing or using our services, you agree to be bound by these terms.
-              If you do not agree, please do not use our services.
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-red-600/5 dark:bg-red-600/10 border border-red-600/20 rounded-2xl max-w-xl text-left">
+            <AlertCircle className="text-red-500 flex-shrink-0" size={18} />
+            <p className="text-red-200/80 text-[10px] uppercase font-bold tracking-widest leading-relaxed">
+              By accessing the LuxStay platform, you enter into a binding covenant with our global hospitality collective.
             </p>
           </div>
         </div>
+      </section>
 
-        {/* Section 1 */}
-        <div className="bg-white rounded-xl shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-3">1. Acceptance of Terms</h2>
-          <p className="text-gray-700">
-            By accessing or using BookMyHotelRoom, you agree to these Terms of Use.
-            If you do not agree, please do not use our site or services.
-          </p>
-        </div>
+      <section className="py-24">
+        <div className="max-w-4xl mx-auto px-6">
 
-        {/* Section 2 */}
-        <div className="bg-white rounded-xl shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-3">2. Service Description</h2>
-          <p className="text-gray-700 mb-3">
-            BookMyHotelRoom provides an online platform for booking hotel rooms.
-            We act only as an intermediary and do not own or operate hotels.
-          </p>
-          <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
-            We are a booking platform only. All hotel services are provided by third-party partners.
-          </p>
-        </div>
-
-        {/* Section 3 */}
-        <div className="bg-white rounded-xl shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-3">3. User Eligibility</h2>
-          <p className="text-gray-700">
-            You must be at least 18 years old to use our services.
-          </p>
-        </div>
-
-        {/* Section 4 */}
-        <div className="bg-white rounded-xl shadow p-6 mb-8">
-          <div className="flex items-center gap-2 mb-3">
-            <Shield className="text-blue-600" />
-            <h2 className="text-xl font-semibold">4. Account Security</h2>
+          {/* Acceptance */}
+          <div className="mb-16 space-y-6">
+            <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-3 italic">
+              Covenant Acceptance
+            </h2>
+            <div className="bg-gray-50 dark:bg-gray-900/50 p-10 rounded-[2.5rem] border border-gray-100 dark:border-gray-800">
+              <p className="text-gray-500 dark:text-gray-400 font-light leading-relaxed">
+                Utilization of LuxStay services constitutes an absolute acceptance of these terms. Our digital and physical sanctuaries are reserved for those who align with our standards of conduct and mutual respect.
+              </p>
+            </div>
           </div>
-          <p className="text-gray-700">
-            You are responsible for maintaining the confidentiality of your account.
-            Notify us immediately of any unauthorized use.
-          </p>
-        </div>
 
-        {/* Section 5 */}
-        <div className="bg-white rounded-xl shadow p-6 mb-8">
-          <div className="flex items-center gap-2 mb-3">
-            <CreditCard className="text-blue-600" />
-            <h2 className="text-xl font-semibold">5. Booking & Payments</h2>
+          {/* Grid of Terms */}
+          <div className="grid md:grid-cols-2 gap-8 mb-24">
+            {[
+              { icon: Shield, title: "Eligibility", desc: "Access is exclusive to individuals aged 18 and above with full legal capacity." },
+              { icon: Sparkles, title: "Service Scope", desc: "LuxStay acts as an elite intermediary, curating third-party hospitality assets of the highest caliber." },
+              { icon: Scale, title: "Account Sovereignty", desc: "Members maintain total responsibility for their credential security and all associated activities." },
+              { icon: CreditCard, title: "Transaction Logic", desc: "Bookings are subject to dynamic availability and individual property protocols. All payments are secured via high-tier encryption." }
+            ].map((item, i) => (
+              <div key={i} className="group p-10 bg-white dark:bg-gray-950 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-xl transition-all hover:border-red-600/20">
+                <div className="w-12 h-12 rounded-2xl bg-gray-50 dark:bg-gray-900 flex items-center justify-center text-red-600 mb-6 group-hover:bg-red-600 group-hover:text-white transition-all">
+                  <item.icon size={20} />
+                </div>
+                <h3 className="text-lg font-black text-gray-900 dark:text-white mb-3 tracking-tight">{item.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
           </div>
-          <p className="text-gray-700">
-            Bookings are subject to availability and hotel policies. Payments are processed securely via third-party providers.
-          </p>
-        </div>
 
-        {/* Section 6 */}
-        <div className="bg-white rounded-xl shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-3">6. User Conduct</h2>
-          <ul className="list-disc pl-5 text-gray-700 space-y-1">
-            <li>Do not use the site for illegal activities</li>
-            <li>Do not post harmful or false content</li>
-            <li>Do not attempt to hack or disrupt services</li>
-            <li>Do not create fake bookings</li>
-          </ul>
-        </div>
+          {/* Conduct */}
+          <div className="mb-24 space-y-8">
+            <div className="text-center">
+              <h2 className="text-xl font-black text-gray-900 dark:text-white tracking-tight mb-4">The <span className="text-red-600 italic">Code of Conduct</span></h2>
+              <p className="text-gray-400 text-[10px] uppercase font-bold tracking-[0.3em]">Behaviors strictly prohibited within our network</p>
+            </div>
 
-        {/* Section 7 */}
-        <div className="bg-white rounded-xl shadow p-6 mb-8">
-          <div className="flex items-center gap-2 mb-3">
-            <Scale className="text-blue-600" />
-            <h2 className="text-xl font-semibold">7. Limitation of Liability</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                "Utilization for illicit or state-violating activities",
+                "Dissemination of fraudulent or malevolent content",
+                "Interruption of platform architectural integrity",
+                "Generation of non-authentic reservation inquiries"
+              ].map((text, i) => (
+                <div key={i} className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-800">
+                  <div className="w-2 h-2 rounded-full bg-red-600" />
+                  <span className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{text}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <p className="text-gray-700">
-            Our services are provided “as is”. We are not liable for indirect or consequential damages.
-          </p>
-        </div>
 
-        {/* Contact */}
-        <div className="bg-gray-900 rounded-xl p-6 text-white text-center">
-          <h2 className="text-xl font-semibold mb-3">Contact</h2>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a className="flex items-center justify-center gap-2" href="mailto:legal@bookmyhotelroom.com">
-              <Mail size={16} /> legal@bookmyhotelroom.com
-            </a>
-            <a className="flex items-center justify-center gap-2" href="tel:+18001234567">
-              <Phone size={16} /> +91 88948 10531
-            </a>
+          {/* Finalization */}
+          <div className="relative">
+            <div className="absolute -inset-2 bg-gradient-to-r from-red-600 to-black rounded-[3rem] blur-xl opacity-20" />
+            <div className="relative bg-gray-900 p-12 md:p-16 rounded-[3rem] text-center border border-gray-800">
+              <CheckCircle size={20} className="text-red-500 mx-auto mb-8 animate-pulse" />
+              <h2 className="text-xl font-black text-white mb-6 tracking-tighter">Agreement Finality</h2>
+              <p className="text-gray-400 font-light mb-10 max-w-sm mx-auto leading-relaxed">
+                By persisting in your exploration of LuxStay, you signify your unreserved commitment to these Terms of Engagement.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center pt-4 border-t border-gray-800">
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">Legal Archives</p>
+                  <a href="mailto:legal@luxstay.com" className="text-sm font-bold text-white hover:text-red-600 transition-colors">legal@luxstay.com</a>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">Global Registry</p>
+                  <span className="text-sm font-bold text-white">+91 88948 10531</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {/* Final */}
-        <div className="bg-white rounded-xl shadow p-6 mt-8 text-center">
-          <CheckCircle className="text-green-500 mx-auto mb-2" />
-          <p className="text-gray-700">
-            By continuing to use BookMyHotelRoom, you agree to these Terms of Use.
-          </p>
         </div>
+      </section>
 
-      </div>
     </div>
   );
 };
