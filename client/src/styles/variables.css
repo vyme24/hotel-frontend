@@ -1,0 +1,246 @@
+/* ====================================
+   DESIGN SYSTEM - GLOBAL VARIABLES
+   ==================================== */
+
+:root {
+  /* ━━━━━━━━ COLOR PALETTE ━━━━━━━━ */
+  
+  /* Primary Colors */
+  --primary-900: #0f172a;
+  --primary-800: #1e3a8a;
+  --primary-700: #1e40af;
+  --primary-600: #2563eb;
+  --primary-500: #3b82f6;
+  --primary-400: #60a5fa;
+  --primary-300: #93c5fd;
+  --primary-200: #bfdbfe;
+  --primary-100: #dbeafe;
+  --primary-50: #eff6ff;
+
+  /* Secondary - Orange/Accent */
+  --accent-900: #7c2d12;
+  --accent-700: #ea580c;
+  --accent-600: #f97316;
+  --accent-500: #fb923c;
+  --accent-400: #fdba74;
+  --accent-300: #fed7aa;
+  --accent-100: #ffedd5;
+  --accent-50: #fff7ed;
+
+  /* Neutral */
+  --neutral-50: #f8fafc;
+  --neutral-100: #f1f5f9;
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1e293b;
+  --neutral-900: #0f172a;
+
+  /* Semantic Colors */
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --error: #ef4444;
+  --error-light: #fee2e2;
+  --info: #0ea5e9;
+  --info-light: #cffafe;
+
+  /* ━━━━━━━━ TYPOGRAPHY ━━━━━━━━ */
+  
+  /* Font Stack */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+
+  /* Font Weights */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+
+  /* ━━━━━━━━ SPACING ━━━━━━━━ */
+  
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-7: 1.75rem;
+  --spacing-8: 2rem;
+  --spacing-9: 2.25rem;
+  --spacing-10: 2.5rem;
+  --spacing-11: 2.75rem;
+  --spacing-12: 3rem;
+  --spacing-14: 3.5rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --spacing-28: 7rem;
+  --spacing-32: 8rem;
+  --spacing-36: 9rem;
+  --spacing-40: 10rem;
+  --spacing-48: 12rem;
+
+  /* ━━━━━━━━ BORDER RADIUS ━━━━━━━━ */
+  
+  --radius-none: 0;
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ━━━━━━━━ SHADOWS ━━━━━━━━ */
+  
+  --shadow-none: 0 0 #0000;
+  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -2px rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.15), 0 4px 6px -4px rgba(15, 23, 42, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.2), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  
+  /* Elevation Shadows (Premium Look) */
+  --shadow-elevation-1: 0 2px 8px rgba(30, 58, 138, 0.08);
+  --shadow-elevation-2: 0 4px 16px rgba(30, 58, 138, 0.12);
+  --shadow-elevation-3: 0 8px 24px rgba(30, 58, 138, 0.16);
+  --shadow-elevation-4: 0 12px 32px rgba(30, 58, 138, 0.20);
+  
+  /* Glassmorphism Shadow */
+  --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
+
+  /* ━━━━━━━━ TRANSITIONS ━━━━━━━━ */
+  
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slower: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ━━━━━━━━ Z-INDEX SCALE ━━━━━━━━ */
+  
+  --z-hide: -1;
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+  --z-notification: 80;
+
+  /* ━━━━━━━━ BREAKPOINTS (Mobile-First) ━━━━━━━━ */
+  
+  --bp-mobile: 375px;
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --bp-2xl: 1536px;
+
+  /* ━━━━━━━━ CONTAINER ━━━━━━━━ */
+  
+  --container-max: 1280px;
+  --container-padding: var(--spacing-4);
+
+  @media (min-width: 768px) {
+    --container-padding: var(--spacing-8);
+  }
+
+  @media (min-width: 1024px) {
+    --container-padding: var(--spacing-12);
+  }
+}
+
+/* ━━━━━━━━ LIGHT MODE (DEFAULT) ━━━━━━━━ */
+
+body {
+  --bg-primary: var(--neutral-50);
+  --bg-secondary: #ffffff;
+  --bg-tertiary: var(--neutral-100);
+  --bg-overlay: rgba(15, 23, 42, 0.1);
+  
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-600);
+  --text-tertiary: var(--neutral-500);
+  --text-inverse: #ffffff;
+  
+  --border-default: var(--neutral-200);
+  --border-light: var(--neutral-100);
+  --border-dark: var(--neutral-300);
+  
+  --input-bg: #ffffff;
+  --input-border: var(--neutral-200);
+  --input-focus-ring: rgba(30, 58, 138, 0.15);
+}
+
+/* ━━━━━━━━ DARK MODE (OPTIONAL) ━━━━━━━━ */
+
+@media (prefers-color-scheme: dark) {
+  body {
+    --bg-primary: var(--neutral-900);
+    --bg-secondary: var(--neutral-800);
+    --bg-tertiary: var(--neutral-700);
+    --bg-overlay: rgba(0, 0, 0, 0.4);
+    
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-tertiary: var(--neutral-400);
+    --text-inverse: var(--neutral-900);
+    
+    --border-default: var(--neutral-700);
+    --border-light: var(--neutral-800);
+    --border-dark: var(--neutral-600);
+    
+    --input-bg: var(--neutral-800);
+    --input-border: var(--neutral-700);
+    --input-focus-ring: rgba(59, 130, 246, 0.2);
+  }
+}
+
+/* ━━━━━━━━ REDUCED MOTION ━━━━━━━━ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

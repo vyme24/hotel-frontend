@@ -1,0 +1,56 @@
+/* Register.css — reuse Login.css base styles */
+/* This file holds register-specific overrides only */
+
+.auth-role-toggle {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(248, 250, 252, 0.9);
+  border-radius: 12px;
+  padding: 4px;
+  border: 1.5px solid rgba(30, 58, 138, 0.12);
+}
+
+.auth-role-btn {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 9px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  background: transparent;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.auth-role-btn.active {
+  background: white;
+  color: #1E3A8A;
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.12);
+}
+
+.auth-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.auth-terms input[type="checkbox"] {
+  accent-color: #1E3A8A;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.auth-terms a {
+  color: #1E3A8A;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-card[style] {
+  max-width: 620px !important;
+}

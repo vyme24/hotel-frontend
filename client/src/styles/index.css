@@ -1,0 +1,125 @@
+/* ====================================
+   MAIN CSS INDEX - IMPORT ALL STYLES
+   ==================================== */
+
+/* Design System */
+@import './variables.css';
+@import './globals.css';
+@import './typography.css';
+@import './animations.css';
+@import './layout.css';
+@import './components.css';
+@import './forms.css';
+
+/* Component Styles */
+@import '../components/Header/Header.css';
+@import '../components/Footer/Footer.css';
+@import '../components/Hero/Hero.css';
+
+/* Page Styles */
+@import '../pages/Home/Home.css';
+@import '../pages/AllHotels/AllHotels.css';
+@import '../pages/SingleHotel/SingleHotel.css';
+@import '../pages/Checkout/Checkout.css';
+@import '../pages/Payment/Payment.css';
+@import '../pages/auth/Auth.css';
+@import '../pages/MyBookings/Dashboard.css';
+
+/* ====================================
+   GLOBAL OVERRIDES & FINAL ADJUSTMENTS
+   ==================================== */
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: var(--leading-normal);
+}
+
+/* Ensure smooth page transitions */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent layout shift with scrollbar */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Loading state for page transitions */
+.page-loading {
+  opacity: 0;
+  animation: fadeIn var(--transition-slow);
+}
+
+/* Utility for hidden content */
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden !important;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+  }
+
+  .btn,
+  button {
+    border: 1px solid #000;
+  }
+}
+
+/* ====================================
+   ACCESSIBILITY IMPROVEMENTS
+   ==================================== */
+
+/* Skip to main content link */
+.skip-to-main {
+  position: absolute;
+  left: -9999px;
+  z-index: var(--z-tooltip);
+
+  &:focus {
+    left: 0;
+    top: 0;
+    background-color: var(--primary-600);
+    color: white;
+    padding: var(--spacing-4);
+    text-decoration: none;
+  }
+}
+
+/* Enhanced focus states for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  :root {
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

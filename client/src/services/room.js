@@ -1,20 +1,21 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import baseQuery from "./baseAPI";
 
 export const RoomAPI = createApi({
   reducerPath: "roomAPI",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://127.0.0.1:5000/api/room" }),
+  baseQuery: baseQuery,
   endpoints: (builder) => ({
 
     getRoomAll: builder.query({
       query: () => ({
-        url: "/getAll",
+        url: "/room/getAll",
         method: "GET",
       }),
     }),
 
     getRoomById: builder.query({
       query: (id) => ({
-        url: `/get/${id}`,
+        url: `/room/get/${id}`,
         method: "GET",
       }),
     }),

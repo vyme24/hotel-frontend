@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+.notif-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  padding-top: 80px;
+}
+
+.notif-page__container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.notif-page__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.notif-page__eyebrow {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #f97316;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.45rem;
+}
+
+.notif-page__title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.notif-badge-count {
+  min-width: 28px;
+  height: 28px;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: #0f172a;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.notif-mark-all-btn {
+  min-height: 42px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: white;
+  color: #0f172a;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.notif-mark-all-btn:hover {
+  border-color: rgba(15, 23, 42, 0.22);
+}
+
+.notif-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.notif-item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: white;
+  border-radius: 1.35rem;
+  padding: 1rem 1rem 1rem 0.95rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.notif-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(15, 23, 42, 0.2);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+.notif-item.unread {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.95), white);
+}
+
+.notif-item__icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notif-item__icon.booking { background: rgba(37, 99, 235, 0.1); color: #1d4ed8; }
+.notif-item__icon.payment { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
+.notif-item__icon.offer { background: rgba(249, 115, 22, 0.12); color: #ea580c; }
+.notif-item__icon.alert { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+.notif-item__icon.general { background: rgba(148, 163, 184, 0.12); color: #475569; }
+
+.notif-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-item__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.notif-item__type {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.notif-item__title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.notif-item__message {
+  margin-top: 0.3rem;
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.55;
+}
+
+.notif-item__time {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.notif-item__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #2563eb;
+  flex-shrink: 0;
+  margin-top: 0.4rem;
+}
+
+.notif-empty {
+  margin-top: 2rem;
+  border: 1px dashed rgba(148, 163, 184, 0.28);
+  border-radius: 1.6rem;
+  background: white;
+  text-align: center;
+  padding: 3.5rem 1.25rem;
+  color: #64748b;
+}
+
+.notif-empty__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  margin: 0 auto 1rem;
+  background: #f8fafc;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-empty__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.45rem;
+}
+
+@media (max-width: 640px) {
+  .notif-page {
+    padding-top: 72px;
+  }
+
+  .notif-page__title {
+    font-size: 1.6rem;
+  }
+
+  .notif-item {
+    padding: 0.9rem;
+  }
+
+  .notif-item__topline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}

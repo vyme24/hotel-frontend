@@ -36,13 +36,7 @@ export const AuthAPI = createApi({
       }),
     }),
 
-    updatePassword: builder.mutation({
-      query: (body) => ({
-        url: "/updatePassword",
-        method: "POST",
-        body,
-      }),
-    }),
+  
 
     forgotPassword: builder.mutation({
       query: (body) => ({
@@ -58,13 +52,14 @@ export const AuthAPI = createApi({
         body,
       }),
     }),
-
     getUser: builder.query({
       query: () => ({
-        url: "/getUser",
+        url: "/user/get",
         method: "GET",
       }),
     }),
+
+  
   }),
 });
 
@@ -73,7 +68,6 @@ export const {
   useVerifyOtpMutation,
   useResendOtpMutation,
   useRegisterMutation,
-  useUpdatePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useGetUserQuery,

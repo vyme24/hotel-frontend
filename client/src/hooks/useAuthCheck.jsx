@@ -1,20 +1,26 @@
-import { useNavigate } from "react-router-dom";
-import { useModal } from "./ModalContext";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 export const useAuthCheck = () => {
-    const { openModal } = useModal();
     const navigate = useNavigate();
+    const location = useLocation();
     const { isAuthenticated } = useSelector((state) => state.auth);
 
     const handleAuthorizedAction = (action) => {
         if (!isAuthenticated) {
-            openModal("login");
+            toast.error("Please login first to continue");
+            navigate("/auth/login", {
+                state: {
+                    from: `${location.pathname}${location.search}${location.hash}`,
+                    message: "Please login first to continue",
+                },
+            });
             return false;
         }
 
         if (action && typeof action === "function") {
-            action();
+            return action();
         }
 
         return true;

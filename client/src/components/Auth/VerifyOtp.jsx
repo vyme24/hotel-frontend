@@ -86,10 +86,9 @@ const VerifyOTP = ({ user }) => {
         otp: otpValue,
       }).unwrap();
 
-      toast.success(res.message || "Identity verified");
-
       if (user.type === "login" && res.data?.token) {
         dispatch(setCredentials({ token: res.data.token, user: res.data.user }));
+        toast.success(res.message || "Login successful ✅");
         if (location.state?.from) {
           navigate(location.state.from, { replace: true });
         }
@@ -99,7 +98,7 @@ const VerifyOTP = ({ user }) => {
       if (user.type === "register") {
         if (res.data?.token) {
           dispatch(setCredentials({ token: res.data.token, user: res.data.user }));
-          toast.success("Welcome aboard!");
+          toast.success("Welcome 🎉");
           if (location.state?.from) {
             navigate(location.state.from, { replace: true });
           }
@@ -112,6 +111,7 @@ const VerifyOTP = ({ user }) => {
       }
 
       if (user.type === "forgot" && res.data?.token) {
+        toast.success("OTP Verified ✅");
         openModal("reset", { token: res.data.token });
       }
 

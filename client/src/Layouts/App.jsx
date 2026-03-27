@@ -1,32 +1,22 @@
-import { Outlet, useLocation } from "react-router-dom"
-import { useEffect } from "react"
-import { useSelector } from "react-redux"
-import { useModal } from "../hooks/ModalContext"
-import Header from "../components/Header"
-import Footer from "../components/Footer"
+import { Outlet, useLocation } from "react-router-dom";
+import Navbar from "../components/Navbar/Navbar";
+import Footer from "../components/Footer/Footer";
 
 const AppLayout = () => {
     const location = useLocation();
-    const { openModal } = useModal();
-    const { isAuthenticated } = useSelector((state) => state.auth);
-
-    useEffect(() => {
-        if (location.state?.openLogin && !isAuthenticated) {
-            openModal("login");
-            // Clear the state to prevent re-triggering
-            window.history.replaceState({}, document.title);
-        }
-    }, [location.state, openModal, isAuthenticated]);
+    // pages that have their own full-height hero don't need top padding
+    const noTopPad = ["/", "/auth/login", "/auth/register", "/auth/otp", "/auth/forgot-password"];
+    const hasPad = !noTopPad.includes(location.pathname);
 
     return (
         <>
-            <Header />
-            <main className={location.pathname === "/" ? "" : "pt-32"}>
+            <Navbar />
+            <main style={{ minHeight: "100vh", paddingTop: hasPad ? "68px" : 0, width: "100%", overflowX: "hidden" }}>
                 <Outlet />
             </main>
             <Footer />
         </>
-    )
-}
+    );
+};
 
-export default AppLayout
+export default AppLayout;

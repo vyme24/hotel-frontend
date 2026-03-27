@@ -1,32 +1,58 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import { getStoredAuthState, getTokenExpiry } from "../utils/auth";
+import { removeStoredValue, STORAGE_KEYS, writeStorage } from "../utils/storage";
+
+const persistedAuth = getStoredAuthState();
 
 const authSlice = createSlice({
-    name: 'auth',
-    initialState: {
-        token: localStorage.getItem('token') || null,
-        user: null,
-        isAuthenticated: !!localStorage.getItem('token'),
-        isLoading: false,
+  name: "auth",
+  initialState: {
+    token: persistedAuth.token,
+    user: persistedAuth.user,
+    expiresAt: persistedAuth.expiresAt,
+    isAuthenticated: persistedAuth.isAuthenticated,
+    isLoading: false,
+  },
+  reducers: {
+    setCredentials: (state, action) => {
+      const { token, user } = action.payload;
+      state.token = token;
+      state.user = user || state.user;
+      state.expiresAt = getTokenExpiry(token);
+      state.isAuthenticated = true;
+
+      localStorage.setItem("token", token);
+      writeStorage(STORAGE_KEYS.auth, {
+        token,
+        user: state.user,
+        expiresAt: state.expiresAt,
+      });
     },
-    reducers: {
-        setCredentials: (state, action) => {
-            const { token, user } = action.payload;
-            state.token = token;
-            state.user = user;
-            state.isAuthenticated = true;
-            localStorage.setItem('token', token);
-        },
-        logout: (state) => {
-            state.token = null;
-            state.user = null;
-            state.isAuthenticated = false;
-            localStorage.removeItem('token');
-        },
-        setLoading: (state, action) => {
-            state.isLoading = action.payload;
-        },
+    setUser: (state, action) => {
+      state.user = action.payload;
+      if (state.token) {
+        writeStorage(STORAGE_KEYS.auth, {
+          token: state.token,
+          user: state.user,
+          expiresAt: state.expiresAt,
+        });
+      }
     },
+    logout: (state) => {
+      state.token = null;
+      state.user = null;
+      state.expiresAt = null;
+      state.isAuthenticated = false;
+      localStorage.removeItem("token");
+      removeStoredValue(STORAGE_KEYS.auth);
+      removeStoredValue(STORAGE_KEYS.cartCheckout, "session");
+      removeStoredValue(STORAGE_KEYS.pendingCartIntent, "session");
+    },
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
+  },
 });
 
-export const { setCredentials, logout, setLoading } = authSlice.actions;
+export const { setCredentials, setUser, logout, setLoading } = authSlice.actions;
 export default authSlice.reducer;

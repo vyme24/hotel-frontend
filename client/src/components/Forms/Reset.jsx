@@ -25,7 +25,7 @@ const ResetPassword = ({ data }) => {
                 token: data?.token,
             }).unwrap();
 
-            toast.success("Password reset successful. You can now login.");
+            toast.success("Your password changed successfully ✅");
             openModal("login");
         } catch (err) {
             toast.error(err?.data?.message || "Failed to reset password");

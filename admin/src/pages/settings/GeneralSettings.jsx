@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const GeneralSettings = () => {
   const [siteName, setSiteName] = useState("LUXSTAY");
-  const [supportEmail, setSupportEmail] = useState("support@luxstay.com");
+  const [supportEmail, setSupportEmail] = useState("arvind889481@gmail.com");
 
   return (
     <div className="p-6 space-y-6 max-w-2xl">

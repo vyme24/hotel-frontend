@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ShieldCheck, Sparkles } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../store/authSlice';
+import toast from 'react-hot-toast';
 
 const OAuthSuccess = () => {
     const navigate = useNavigate();
@@ -16,6 +17,7 @@ const OAuthSuccess = () => {
 
         if (token) {
             dispatch(setCredentials({ token, user: { _id: userId } }));
+            toast.success('Login successful!');
 
             // Redirect to home or profile
             setTimeout(() => {

@@ -1,145 +1,133 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Mail, Phone, ArrowLeft } from "lucide-react";
+import { useForgotPasswordMutation } from "../../redux/apiSlice";
+import toast from "react-hot-toast";
+import "./Login/Login.css";
+import "./Register/Register.css";
 
-import { toast } from "react-hot-toast";
-import { useForgotPasswordMutation, useVerifyOtpMutation } from "../../services/auth";
-import { useModal } from "../../hooks/ModalContext";
-import { Sparkles } from "lucide-react";
-
-const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
-  const { openModal } = useModal();
-
-  const [
-    forgotPassword,
-    { isLoading: loadingEmail, isSuccess: isEmailSuccess, isError: isEmailError, error: emailError }
-  ] = useForgotPasswordMutation();
-
-  const [
-    verifyOtp,
-    { isLoading: loadingOtp, isSuccess: isOtpSuccess, data: verifyData, isError: isOtpError, error: otpError }
-  ] = useVerifyOtpMutation();
+export default function ForgotPassword() {
+  const navigate = useNavigate();
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const [usePhone, setUsePhone] = useState(false);
+  const [identifier, setIdentifier] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (isEmailSuccess) {
-      setOtpSent(true);
-      toast.success("OTP sent to your email!");
-    }
-    if (isEmailError) {
-      toast.error(emailError?.data?.message || "Something went wrong!");
-    }
-  }, [isEmailSuccess, isEmailError, emailError]);
+    setError("");
+  }, [usePhone]);
 
-  useEffect(() => {
-    if (isOtpSuccess) {
-      if (verifyData?.data?.token) {
-        toast.success("OTP verified!");
-        window.location.href = "/reset-password/" + verifyData.data.token;
-      } else {
-        toast.error("Reset token missing.");
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!identifier.trim()) {
+      setError(`Please enter your ${usePhone ? "phone number" : "email"}`);
+      return;
+    }
+
+    try {
+      const body = usePhone
+        ? { phone: identifier.trim() }
+        : { email: identifier.trim() };
+
+      const res = await forgotPassword(body).unwrap();
+      const isSuccess = res?.success || res?.status;
+
+      if (isSuccess) {
+        toast.success(res.message || "OTP sent successfully!");
+        navigate("/auth/otp", {
+          state: {
+            type: "forgot",
+            identifier: identifier.trim(),
+            isEmail: !usePhone,
+          },
+        });
+        return;
       }
-    }
-    if (isOtpError) {
-      toast.error(otpError?.data?.message || "Verification failed.");
-    }
-  }, [isOtpSuccess, isOtpError, otpError, verifyData]);
 
-  const handleEmailSubmit = async (e) => {
-    e.preventDefault();
-    if (!email.trim()) return toast.error("Please enter your email");
-
-    try {
-      await forgotPassword({ email: email.trim() }).unwrap();
+      toast.error(res?.message || "Unable to continue");
     } catch (err) {
-      toast.error(err?.data?.message || "Something went wrong");
+      const message = err?.data?.message || "Unable to send OTP";
+      setError(message);
+      toast.error(message);
     }
-  };
-
-  const handleOtpSubmit = async (e) => {
-    e.preventDefault();
-    if (!otp.trim()) return toast.error("Please enter OTP");
-
-    try {
-      await verifyOtp({
-        email: email.trim(),
-        otp: otp.trim(),
-        type: "forgot",
-      }).unwrap();
-    } catch (err) { }
   };
 
   return (
+    <div className="auth-page">
+      <motion.div
+        className="auth-card"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+      >
+        <Link to="/" className="auth-card__logo">
+          <div className="auth-card__logo-icon">L</div>
+          <span className="auth-card__logo-text">Lux<span>Stay</span></span>
+        </Link>
 
-    <div className="max-w-md w-full space-y-6 ">
+        <h1 className="auth-card__title">Forgot password</h1>
+        <p className="auth-card__subtitle">
+          Enter your {usePhone ? "phone number" : "email address"} to receive a verification OTP.
+        </p>
 
-      <div className="text-center">
-        <div className="flex justify-center mb-4">
-          <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center transform hover:rotate-[15deg] transition-all duration-700 shadow-xl shadow-red-600/20">
-            <Sparkles size={24} className="text-white" />
+        <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          <div className="auth-role-toggle">
+            <button
+              type="button"
+              className={`auth-role-btn${!usePhone ? " active" : ""}`}
+              onClick={() => setUsePhone(false)}
+            >
+              Email
+            </button>
+            <button
+              type="button"
+              className={`auth-role-btn${usePhone ? " active" : ""}`}
+              onClick={() => setUsePhone(true)}
+            >
+              Phone
+            </button>
           </div>
-        </div>
-        <h1 className="text-2xl font-extrabold text-gray-900 italic">
-          <span className="text-red-600 non-italic">LUX</span>STAY
-        </h1>
-      </div>
 
-      {!otpSent && (
-        <>
-          <h2 className="text-2xl font-bold text-center">Forgot Password?</h2>
-          <p className="text-center text-sm text-gray-600">Enter your email to receive OTP.</p>
+          <div className="auth-field">
+            <label>{usePhone ? "Phone Number" : "Email Address"}</label>
+            <div className="auth-field__input-wrap">
+              <span className="auth-field__icon">
+                {usePhone ? <Phone size={16} /> : <Mail size={16} />}
+              </span>
+              <input
+                className={`auth-input${error ? " error" : ""}`}
+                type={usePhone ? "tel" : "email"}
+                placeholder={usePhone ? "+91 9876543210" : "you@example.com"}
+                value={identifier}
+                onChange={(event) => setIdentifier(event.target.value)}
+                autoComplete={usePhone ? "tel" : "email"}
+              />
+            </div>
+            {error && <span className="auth-error-msg">{error}</span>}
+          </div>
 
-          <form onSubmit={handleEmailSubmit} className="space-y-4">
-            <input
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
-            />
+          <button className="auth-submit-btn" type="submit" disabled={isLoading}>
+            {isLoading ? <span className="auth-btn-spinner" /> : null}
+            {isLoading ? "Sending OTP..." : "Send OTP ->"}
+          </button>
+        </form>
 
-            <button
-              disabled={loadingEmail}
-              className="w-full py-2 bg-red-600 text-white rounded-md disabled:opacity-50"
-            >
-              {loadingEmail ? "Sending..." : "Send OTP"}
-            </button>
-          </form>
-        </>
-      )}
+        <p className="auth-footer">
+          Remembered your password?{" "}
+          <Link to="/auth/login">Back to login</Link>
+        </p>
 
-      {otpSent && (
-        <>
-          <h2 className="text-2xl font-bold text-center">Verify OTP</h2>
-          <p className="text-center text-sm text-green-600">OTP sent to {email}</p>
-
-          <form onSubmit={handleOtpSubmit} className="space-y-4">
-            <input
-              type="text"
-              placeholder="123456"
-              maxLength={6}
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md text-center"
-            />
-
-            <button
-              disabled={loadingOtp}
-              className="w-full py-2 bg-red-600 text-white rounded-md disabled:opacity-50"
-            >
-              {loadingOtp ? "Verifying..." : "Verify OTP"}
-            </button>
-          </form>
-        </>
-      )}
-
-      <p className="text-center text-sm pt-4">
-        Remember your password?
-        <button onClick={() => openModal("login")} className="text-red-600 ml-1">Back to Login</button>
-      </p>
+        <button
+          type="button"
+          className="otp-back-link"
+          style={{ margin: "1rem auto 0" }}
+          onClick={() => navigate("/auth/login")}
+        >
+          <ArrowLeft size={16} /> Go back
+        </button>
+      </motion.div>
     </div>
-
   );
-};
-
-export default ForgotPassword;
+}

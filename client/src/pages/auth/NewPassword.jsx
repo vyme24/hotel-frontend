@@ -1,144 +1,126 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-// Removed import '../../css/NewPassword.css'
-import { Toaster, toast } from "react-hot-toast";
-import { useResetPasswordMutation } from "../../services/auth";
-import { Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Lock, Eye, EyeOff } from "lucide-react";
+import { useResetPasswordMutation } from "../../redux/apiSlice";
+import toast from "react-hot-toast";
+import "./Login/Login.css";
 
-const NewPassword = () => {
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const navigate = useNavigate();
+export default function NewPassword() {
+  const navigate = useNavigate();
+  const { token } = useParams();
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [form, setForm] = useState({ password: "", confirmPassword: "" });
+  const [errors, setErrors] = useState({});
 
-    const [
-        resetPassword,
-        {
-            isLoading,
-            isSuccess,
-            isError,
-            error
-        }
-    ] = useResetPasswordMutation();
+  useEffect(() => {
+    if (!token) {
+      toast.error("Invalid or expired reset link.");
+      navigate("/auth/forgot-password", { replace: true });
+    }
+  }, [navigate, token]);
 
-    useEffect(() => {
-        if (isSuccess) {
-            toast.success("Password updated successfully!");
-            setTimeout(() => {
-                navigate("/", { state: { openLogin: true } });
-            }, 1000);
-        }
+  const validate = () => {
+    const nextErrors = {};
+    if (!form.password) nextErrors.password = "New password is required";
+    else if (form.password.length < 6) nextErrors.password = "Password must be at least 6 characters";
+    if (form.password !== form.confirmPassword) nextErrors.confirmPassword = "Passwords do not match";
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
 
-        if (isError) {
-            const errorMessage = error?.data?.message || "Something went wrong. Please try again later.";
-            toast.error(errorMessage);
-        }
-    }, [isSuccess, isError, error]);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!validate()) return;
 
+    try {
+      const res = await resetPassword({
+        newPassword: form.password,
+        token,
+      }).unwrap();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+      toast.success(res?.message || "Password updated successfully!");
+      navigate("/auth/login", {
+        replace: true,
+        state: {
+          message: "Password updated successfully. Please login.",
+          toastType: "success",
+        },
+      });
+    } catch (err) {
+      toast.error(err?.data?.message || "Unable to update password");
+    }
+  };
 
-        if (newPassword === "" || confirmPassword === "") {
-            toast.error("Please fill all fields");
-            return;
-        }
+  return (
+    <div className="auth-page">
+      <motion.div
+        className="auth-card"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+      >
+        <Link to="/" className="auth-card__logo">
+          <div className="auth-card__logo-icon">L</div>
+          <span className="auth-card__logo-text">Lux<span>Stay</span></span>
+        </Link>
 
-        if (newPassword !== confirmPassword) {
-            toast.error("Passwords do not match");
-            return;
-        }
+        <h1 className="auth-card__title">Set new password</h1>
+        <p className="auth-card__subtitle">
+          Create a secure password for your account and continue back to login.
+        </p>
 
-        let token = null;
-        try {
-
-            token = window.location.pathname.split("/reset-password/")[1];
-        } catch (e) {
-            toast.error("Invalid or missing reset link token.");
-            return;
-        }
-
-        if (!token) {
-            toast.error("Invalid or missing reset link token.");
-            return;
-        }
-
-        try {
-            await resetPassword({
-                newPassword,
-                token
-            }).unwrap();
-        } catch (err) {
-            // Error handling in useEffect
-        }
-    };
-
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#0a0a0a] py-12 px-4 sm:px-6 lg:px-8">
-            <Toaster position="top-center" reverseOrder={false} />
-            <div className="max-w-md w-full space-y-6 bg-white dark:bg-[#0a0a0a] p-8 sm:p-10 rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-white/5">
-
-                <div className="text-center">
-                    <div className="flex justify-center mb-4">
-                        <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center transform hover:rotate-[15deg] transition-all duration-700 shadow-xl shadow-red-600/20">
-                            <Sparkles size={24} className="text-white" />
-                        </div>
-                    </div>
-                    <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white italic">
-                        <span className="text-red-600 non-italic">LUX</span>STAY
-                    </h1>
-                </div>
-
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center">Set New Password</h2>
-
-                <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
-
-                    <div>
-                        <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">New Password</label>
-                        <div className="mt-1">
-                            <input
-                                type="password"
-                                id="newPassword"
-                                placeholder="Enter new password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                required
-                                className="appearance-none relative block w-full px-5 py-4 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-900 dark:text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 sm:text-sm font-black tracking-widest"
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm New Password</label>
-                        <div className="mt-1">
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                placeholder="Re-enter new password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
-                                className="appearance-none relative block w-full px-5 py-4 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-900 dark:text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 sm:text-sm font-black tracking-widest"
-                            />
-                        </div>
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-black tracking-widest uppercase rounded-2xl text-white bg-red-600 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 transition duration-300 shadow-xl"
-                        disabled={isLoading}
-                    >
-                        {isLoading ? "Updating..." : "Update Password"}
-                    </button>
-                </form>
-
-                <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-                    <Link to="/" state={{ openLogin: true }} className="font-medium text-red-600 hover:text-red-500">
-                        Back to Login
-                    </Link>
-                </p>
+        <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          <div className="auth-field">
+            <label>New Password</label>
+            <div className="auth-field__input-wrap">
+              <span className="auth-field__icon"><Lock size={16} /></span>
+              <input
+                className={`auth-input${errors.password ? " error" : ""}`}
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter new password"
+                value={form.password}
+                onChange={(event) => setForm({ ...form, password: event.target.value })}
+                autoComplete="new-password"
+              />
+              <button type="button" className="auth-eye-btn" onClick={() => setShowPassword((value) => !value)}>
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
-        </div>
-    );
-};
+            {errors.password && <span className="auth-error-msg">{errors.password}</span>}
+          </div>
 
-export default NewPassword;
+          <div className="auth-field">
+            <label>Confirm New Password</label>
+            <div className="auth-field__input-wrap">
+              <span className="auth-field__icon"><Lock size={16} /></span>
+              <input
+                className={`auth-input${errors.confirmPassword ? " error" : ""}`}
+                type={showConfirm ? "text" : "password"}
+                placeholder="Re-enter new password"
+                value={form.confirmPassword}
+                onChange={(event) => setForm({ ...form, confirmPassword: event.target.value })}
+                autoComplete="new-password"
+              />
+              <button type="button" className="auth-eye-btn" onClick={() => setShowConfirm((value) => !value)}>
+                {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+            {errors.confirmPassword && <span className="auth-error-msg">{errors.confirmPassword}</span>}
+          </div>
+
+          <button className="auth-submit-btn" type="submit" disabled={isLoading}>
+            {isLoading ? <span className="auth-btn-spinner" /> : null}
+            {isLoading ? "Updating..." : "Update Password ->"}
+          </button>
+        </form>
+
+        <p className="auth-footer">
+          <Link to="/auth/login">Back to login</Link>
+        </p>
+      </motion.div>
+    </div>
+  );
+}

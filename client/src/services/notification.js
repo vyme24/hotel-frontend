@@ -1,17 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import baseQuery from "./baseAPI";
 export const NotificationAPI = createApi({
     reducerPath: "notificationAPI",
-    baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:5000/api/notifications", // Corrected base URL based on routes config
-        prepareHeaders: (headers) => {
-            const token = localStorage.getItem("token");
-            if (token) {
-                headers.set("authorization", `Bearer ${token}`);
-            }
-            return headers;
-        },
-    }),
+ baseQuery: baseQuery,
     endpoints: (builder) => ({
 
         getNotificationAll: builder.query({

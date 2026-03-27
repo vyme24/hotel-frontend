@@ -1,0 +1,211 @@
+/* ─── Dashboard.css ──────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+.dashboard-page {
+  min-height: 100vh;
+  background: #F8FAFC;
+  font-family: 'Inter', sans-serif;
+  padding-top: 80px;
+}
+
+.dashboard-page__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+}
+
+.dashboard-page__header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-avatar-large {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1E3A8A, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(30, 58, 138, 0.25);
+}
+
+.dashboard-page__name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.dashboard-page__email {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.dashboard-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid rgba(30, 58, 138, 0.08);
+  padding-bottom: 0;
+  overflow-x: auto;
+}
+
+.dashboard-tab {
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.2s;
+  margin-bottom: -2px;
+}
+
+.dashboard-tab:hover {
+  color: #1E3A8A;
+}
+
+.dashboard-tab.active {
+  color: #1E3A8A;
+  border-bottom-color: #1E3A8A;
+}
+
+/* ─── Booking Card ─────────────────────────── */
+.booking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.booking-item {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(30, 58, 138, 0.08);
+  box-shadow: 0 2px 12px rgba(30, 58, 138, 0.04);
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.booking-item__img {
+  width: 110px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #e2e8f0;
+}
+
+.booking-item__body {
+  flex: 1;
+}
+
+.booking-item__hotel {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin-bottom: 0.2rem;
+}
+
+.booking-item__room {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.booking-item__dates {
+  font-size: 0.85rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.booking-item__price {
+  font-size: 0.85rem;
+  color: #1E3A8A;
+  font-weight: 700;
+  margin-top: 0.25rem;
+}
+
+.booking-item__status {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-badge.confirmed { background: #dcfce7; color: #15803d; }
+.status-badge.pending { background: #fef9c3; color: #a16207; }
+.status-badge.cancelled { background: #fee2e2; color: #dc2626; }
+.status-badge.completed { background: #dbeafe; color: #1d4ed8; }
+
+.dashboard-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #64748b;
+}
+
+.dashboard-empty__icon { font-size: 3rem; margin-bottom: 1rem; }
+.dashboard-empty__title { font-size: 1.1rem; font-weight: 700; color: #0F172A; margin-bottom: 0.5rem; }
+.dashboard-empty__text { font-size: 0.875rem; margin-bottom: 1.5rem; }
+
+.dashboard-action-btn {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #1E3A8A, #2563eb);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.dashboard-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+}
+
+@media (max-width: 640px) {
+  .booking-item {
+    flex-direction: column;
+  }
+
+  .booking-item__img {
+    width: 100%;
+    height: 160px;
+  }
+
+  .booking-item__status {
+    margin-left: 0;
+  }
+}

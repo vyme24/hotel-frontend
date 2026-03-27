@@ -4,6 +4,7 @@ import Login from "../components/Forms/Login";
 import Register from '../components/Forms/Register';
 import ForgotPassword from '../components/Forms/Forgot';
 import VerifyOTP from '../components/Auth/VerifyOtp';
+import ResetPassword from '../components/Forms/Reset';
 // Create the context
 const ModalContext = createContext({
   isOpen: false,
@@ -38,14 +39,14 @@ export const ModalProvider = ({ children }) => {
       <ModalContext.Provider value={{ isOpen, modalContent, openModal, closeModal }}>
         {children}
         {isOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center">
+          <div className="fixed inset-0 z-[2000] flex items-center justify-center">
             {/* Overlay */}
             <div
               className="absolute inset-0 bg-black/60"
             />
 
             {/* Modal */}
-            <div className="relative z-[101] w-full max-w-lg mx-4 rounded-xl bg-white shadow-2xl p-3">
+            <div className="relative z-[2001] w-full max-w-lg mx-4 rounded-xl bg-white shadow-2xl p-3">
               {/* Header */}
               <div className="flex justify-end">
                 <button
@@ -61,6 +62,7 @@ export const ModalProvider = ({ children }) => {
                 {modalContent == "register" && <Register />}
                 {modalContent == "forgot" && <ForgotPassword />}
                 {modalContent == "otp" && <VerifyOTP user={modalData} />}
+                {modalContent == "reset" && <ResetPassword data={modalData} />}
               </div>
 
 

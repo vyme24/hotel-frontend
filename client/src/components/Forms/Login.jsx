@@ -3,6 +3,7 @@ import { useLoginMutation } from "../../services/auth";
 import { useModal } from "../../hooks/ModalContext";
 import toast from "react-hot-toast";
 import { Mail, Phone, Lock, Sparkles } from "lucide-react";
+import { FaGoogle, FaGithub, FaFacebook } from "react-icons/fa";
 
 const Login = () => {
   const [loginMethod, setLoginMethod] = useState("email");
@@ -11,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const { openModal } = useModal();
 
-  const [login, { isLoading, isSuccess, data, isError, error }] = useLoginMutation();
+  const [login, { isLoading, isSuccess, data, isError, error, reset }] = useLoginMutation();
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -86,7 +87,10 @@ const Login = () => {
               type={loginMethod === "email" ? "email" : "tel"}
               placeholder={loginMethod === "email" ? "email@example.com" : "Phone Number"}
               value={loginMethod === "email" ? email : phone}
-              onChange={(e) => loginMethod === "email" ? setEmail(e.target.value) : setPhone(e.target.value)}
+              onChange={(e) => {
+                if (isError) reset();
+                loginMethod === "email" ? setEmail(e.target.value) : setPhone(e.target.value);
+              }}
               className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-[11px] font-bold tracking-widest text-gray-900 dark:text-white"
               required
             />
@@ -100,7 +104,10 @@ const Login = () => {
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                if (isError) reset();
+                setPassword(e.target.value);
+              }}
               className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-[11px] font-bold tracking-widest text-gray-900 dark:text-white"
               required
             />
@@ -124,6 +131,21 @@ const Login = () => {
         </button>
       </form>
 
+      <div className="flex items-center gap-4 my-6 before:h-px before:flex-1 before:bg-gray-200 dark:before:bg-gray-800 after:h-px after:flex-1 after:bg-gray-200 dark:after:bg-gray-800">
+        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">OR</span>
+      </div>
+
+      <div className="flex justify-center gap-4 mb-6">
+        <a href="http://localhost:5000/api/auth/google" className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:scale-110 hover:shadow-md hover:text-red-600 transition-all text-gray-600 dark:text-gray-400">
+          <FaGoogle size={16} />
+        </a>
+        <a href="http://localhost:5000/api/auth/github" className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:scale-110 hover:shadow-md hover:text-red-600 transition-all text-gray-600 dark:text-gray-400">
+          <FaGithub size={16} />
+        </a>
+        <a href="http://localhost:5000/api/auth/facebook" className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:scale-110 hover:shadow-md hover:text-red-600 transition-all text-gray-600 dark:text-gray-400">
+          <FaFacebook size={16} />
+        </a>
+      </div>
 
       <p className="text-center text-[10px] font-black text-gray-400 uppercase tracking-widest">
         New Privilege Member? {" "}
